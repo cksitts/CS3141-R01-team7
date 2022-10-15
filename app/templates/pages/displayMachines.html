@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Display Machines</title>
+    </head>
+    <body>
+        {% if filter == 'available' %}
+            <h2>Available Machines</h2>
+        {% elif filter == 'unavailable' %}
+            <h2>Unavailable Machines</h2>
+        {% endif %}
+
+        <!--TODO filter functionality-->
+        <button type="button">Washer</button>
+        <button type="button">Dryer</button>
+        <select id="roomDropdown" name="preferredRoom">
+            {% for room in laundryRoomList %}
+                <option value='{{ room }}'>{{ room }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        {% if filter == 'unavailable' %}
+            <label for="timeInput">Max time remaining:</label>
+            <!--TODO what do we want the max amount of time a machine can be checked out to be? no max time for being checked out, but slider caps out at an hour remaining because they can be done but still checked out-->
+            <!--TODO turn into slider-->
+            <input type="number" id="timeInput" min="0" max="60">
+            minutes
+        {% endif %}
+
+
+        {% for machine in allMachines | sort(attribute='time-remaining') %}
+            {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
+                <!--TODO implement filtering from above-->
+                {% if machine['available'] %}
+                    <h3>Available</h3>
+                {% else %}
+                    <h3>Unavailable</h3>
+                    <p>{{ machine['time-remaining'] }} minutes remaining</p>
+                    <progress id="progressBar" value="{{ 100 - machine['time-remaining'] }}" max="100"></progress><br>
+                {% endif %}
+
+                <!--TODO change image based on washer/dryer-->
+                <img src="{{ url_for('static', filename='placeholder.png') }}" width="100" height="100">
+
+                <p>{{ machine['type'] | capitalize }} #{{ machine['number'] }}</p>
+                <p>{{ machine['location'] }}</p>
+
+                {% if machine['available'] %}
+                    <button type="button">Check Out</button>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </body>
+</html>

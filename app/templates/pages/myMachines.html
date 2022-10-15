@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>My Machines</title>
+    </head>
+    <body>
+        <h2>My Machines</h2>
+        {% for machine in allMachines %}
+            {% if machine['code'] in userMachines %}
+                <div class="machineInfo">
+                    <!--TODO change image based on washer/dryer-->
+                    <img src="{{ url_for('static', filename='placeholder.png') }}" width="100" height="100">
+                    <p>{{ machine['type'] | capitalize }} - {{ machine['location'] }}</p>
+                    {% if machine['time-remaining'] == 0 %}
+                        <p>Done</p>
+                        <progress id="progressBar" value="100" max="100"></progress>
+                    {% else %}
+                        <p>{{ machine['time-remaining'] }} minutes remaining</p>
+                        <progress id="progressBar" value="{{ 100 - machine['time-remaining'] }}" max="100"></progress>
+                    {% endif %}
+                </div>
+                <br><br>
+            {% endif %}
+        {% endfor %}
+    </body>
+</html>

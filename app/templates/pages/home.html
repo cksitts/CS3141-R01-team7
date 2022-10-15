@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Home</title>
+    </head>
+    <header>
+        <h1>Laundry Tracker Lite</h1>
+        <button>Profile Info</button> <!--TODO button functionality-->
+    </header>
+    <body>
+        {% include "pages/myMachines.html" %}
+        <hr>
+        {% with filter='available' %}
+            {% include "pages/displayMachines.html" %}
+        {% endwith %}
+        <hr>
+        {% with filter='unavailable' %}
+            {% include "pages/displayMachines.html" %}
+        {% endwith %}
+    </body>
+    <footer>
+        <!--TODO all the links and their pages (if we even want that, I just thought a footer looked more professional)-->
+        <a href="/home">About Laundry Tracker Lite</a><br>
+        <a href="/home">Meet the Team</a><br>
+        <a href="/home">Report an Issue</a>
+    </footer>
+</html>

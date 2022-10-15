@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% if requestType == "signup" %}
+            <title>Sign Up</title>
+        {% elif requestType == "edit" %}
+            <title>Edit Account</title>
+        {% endif %}
+    </head>
+    <body>
+        {% if requestType == "signup" %}
+            <h1>Sign Up</h1>
+        {% elif requestType == "edit" %}
+            <h1>Edit Account</h1>
+        {% endif %}
+        <form id="form" onsubmit="return validateForm()" method="post">
+            {% if userData %}
+                <!--keeps track of the old email so we know which record to update in the database-->
+                <input type="hidden" name="oldEmail" value="{{ userData['email'] }}" required>
+            {% endif %}
+            <label for="emailInput">Email:</label>
+            <input type="email" id="emailInput" name="email" {% if userData %}value="{{ userData['email'] }}"{% endif %} required>
+            <br>
+            <label for="usernameInput">Username:</label>
+            <input type="text" id="usernameInput" name="username" {% if userData %}value="{{ userData['username'] }}"{% endif %} required>
+            <br>
+            <label for="passwordInput">Password:</label>
+            <!--FIXME passwords are hashed so we cannot get them back-->
+            <input type="password" id="passwordInput" name="password" {% if userData %}value="{{ userData['password'] }}"{% endif %} required>
+            <br>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="passwordConfirm" {% if userData %}value="{{ userData['password'] }}"{% endif %} required>
+            <br>
+            <label for="roomDropdown">Preferred Laundry Room:</label>
+            <select id="roomDropdown" name="preferredRoom">
+                {% for room in roomList %}
+                    {% if( (userData) and (room == userData['preferredRoom']) ) %}
+                        <option value='{{ room }}' selected>{{ room }}</option>
+                    {% else %}
+                        <option value='{{ room }}'>{{ room }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <br>
+            {% if requestType == "signup" %}
+            <button type="button" onclick="location.href='/index'">Cancel</button>
+            <input type="submit" value="Sign Up">
+            {% elif requestType == "edit" %}
+            <button type="button" onclick="location.href='/home'">Cancel</button>
+            <input type="submit" value="Save Changes">
+            {% endif %}
+        </form>
+        {% if requestType == "signup" %}
+            <script>document.getElementById('form').action="signup/request"</script>
+        {% elif requestType == "edit" %}
+            <script>document.getElementById('form').action="editaccount/request"</script>
+        {% endif %}
+
+        <script>
+            function validateForm() {
+                //validate email
+                //TODO check if email is already taken in the database
+                if(false) {
+                    alert("That email is already registered")
+                    return false
+                }
+
+                //validate username
+                //TODO what regex should it use to check (right now it allows letters and digits, min length 1)
+                const usernameRegex = /^[a-zA-Z_0-9]{1,}$/
+                if(!usernameRegex.test(document.getElementById('usernameInput').value)) {
+                    alert("Invalid username, please do not use special characters (minimum length 1)")
+                    return false
+                }
+                //TODO check if username is already taken in the database
+                if(false) {
+                    alert("That username is already taken")
+                    return false
+                }
+
+                //validate password
+                //TODO what regex should it use to check (right now for testing purposes it allows letters and digits like the username, min length 1)
+                const passwordRegex = /^[a-zA-Z_0-9]{1,}$/
+                if(!passwordRegex.test(document.getElementById('passwordInput').value)) {
+                    alert("Invalid password, please do not use special characters (minimum length 1)")
+                    return false
+                }
+
+                //ensure password and confirm password match
+                if(document.getElementById('passwordInput').value != document.getElementById('confirmPassword').value) {
+                    alert("Password and confirmation do not match")
+                    return false
+                }
+
+                //if everything else has been validated
+                return true
+            }
+        </script>
+    </body>
+</html>
