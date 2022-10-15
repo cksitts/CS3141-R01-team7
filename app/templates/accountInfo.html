@@ -25,11 +25,10 @@
             <input type="text" id="usernameInput" name="username" {% if userData %}value="{{ userData['username'] }}"{% endif %} required>
             <br>
             <label for="passwordInput">Password:</label>
-            <!--FIXME passwords are hashed so we cannot get them back-->
-            <input type="password" id="passwordInput" name="password" {% if userData %}value="{{ userData['password'] }}"{% endif %} required>
+            <input type="password" id="passwordInput" name="password" required>
             <br>
             <label for="confirmPassword">Confirm Password:</label>
-            <input type="password" id="confirmPassword" name="passwordConfirm" {% if userData %}value="{{ userData['password'] }}"{% endif %} required>
+            <input type="password" id="confirmPassword" name="passwordConfirm" required>
             <br>
             <label for="roomDropdown">Preferred Laundry Room:</label>
             <select id="roomDropdown" name="preferredRoom">
@@ -56,45 +55,6 @@
             <script>document.getElementById('form').action="editaccount/request"</script>
         {% endif %}
 
-        <script>
-            function validateForm() {
-                //validate email
-                //TODO check if email is already taken in the database
-                if(false) {
-                    alert("That email is already registered")
-                    return false
-                }
-
-                //validate username
-                //TODO what regex should it use to check (right now it allows letters and digits, min length 1)
-                const usernameRegex = /^[a-zA-Z_0-9]{1,}$/
-                if(!usernameRegex.test(document.getElementById('usernameInput').value)) {
-                    alert("Invalid username, please do not use special characters (minimum length 1)")
-                    return false
-                }
-                //TODO check if username is already taken in the database
-                if(false) {
-                    alert("That username is already taken")
-                    return false
-                }
-
-                //validate password
-                //TODO what regex should it use to check (right now for testing purposes it allows letters and digits like the username, min length 1)
-                const passwordRegex = /^[a-zA-Z_0-9]{1,}$/
-                if(!passwordRegex.test(document.getElementById('passwordInput').value)) {
-                    alert("Invalid password, please do not use special characters (minimum length 1)")
-                    return false
-                }
-
-                //ensure password and confirm password match
-                if(document.getElementById('passwordInput').value != document.getElementById('confirmPassword').value) {
-                    alert("Password and confirmation do not match")
-                    return false
-                }
-
-                //if everything else has been validated
-                return true
-            }
-        </script>
+        <script src="{{ url_for('static', filename='js/accountInfo.js') }}"></script>
     </body>
 </html>

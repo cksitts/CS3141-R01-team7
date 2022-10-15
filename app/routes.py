@@ -8,7 +8,7 @@ from app import l_app
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not session.get('username'):
+        if not session.get('email'):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function  
@@ -19,7 +19,7 @@ def login_required(f):
 @l_app.route('/index')
 @l_app.route('/index/<validLogin>')
 def index(validLogin=True):
-    return render_template('pages/index.html', validLogin=validLogin)
+    return render_template('index.html', validLogin=validLogin)
 
 
 
@@ -31,8 +31,7 @@ def login():
     loginValid = True
     
     if(loginValid):
-        #TODO use email
-        session['username'] = request.form['username'] #will be used to validate that someone is logged in
+        session['email'] = request.form['email'] #will be used to validate that someone is logged in
         return redirect(url_for('home'))
     else:
         return redirect(url_for('index', validLogin=False)) #show invalid login error and have then try again
@@ -42,7 +41,7 @@ def login():
 @l_app.route('/logout')
 @login_required
 def logout():
-    session.pop('username', default=None)
+    session.pop('email', default=None)
     return redirect(url_for('index'))
 
 
@@ -52,7 +51,7 @@ def signup():
     #TODO pull list of laundry rooms from database
     roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
 
-    return render_template('pages/accountInfo.html', requestType='signup', roomList=roomList)
+    return render_template('accountInfo.html', requestType='signup', roomList=roomList)
 
 
 
@@ -85,7 +84,7 @@ def editAccount():
     #TODO get user data of person currently logged in
     userData = {'email':'user@gmail.com','username':'testUser','password':'blegh','preferredRoom':'154W Wads (First floor west)'}
 
-    return render_template('pages/accountInfo.html', requestType='edit', userData=userData, roomList=roomList)
+    return render_template('accountInfo.html', requestType='edit', userData=userData, roomList=roomList)
 
 
 
@@ -106,8 +105,7 @@ def editAccountRequest():
 @l_app.route('/home')
 @login_required
 def home():
-    #TODO pull actual data from database
-    #TODO format better based on how database works
+    #TODO pull actual data from database and format better based on how database works
     allMachines = [
             {
                 'code':'134EWH1',
@@ -163,4 +161,4 @@ def home():
     #TODO pull list of laundry rooms from database
     roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
     
-    return render_template('pages/home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
+    return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)

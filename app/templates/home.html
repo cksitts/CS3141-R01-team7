@@ -8,14 +8,14 @@
         <button>Profile Info</button> <!--TODO button functionality-->
     </header>
     <body>
-        {% include "pages/myMachines.html" %}
+        {% include "myMachines.html" %}
         <hr>
         {% with filter='available' %}
-            {% include "pages/displayMachines.html" %}
+            {% include "displayMachines.html" %}
         {% endwith %}
         <hr>
         {% with filter='unavailable' %}
-            {% include "pages/displayMachines.html" %}
+            {% include "displayMachines.html" %}
         {% endwith %}
     </body>
     <footer>
