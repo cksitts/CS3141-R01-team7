@@ -8,8 +8,12 @@
         {% for machine in allMachines %}
             {% if machine['code'] in userMachines %}
                 <div class="machineInfo">
-                    <!--TODO change image based on washer/dryer-->
-                    <img src="{{ url_for('static', filename='placeholder.png') }}" width="100" height="100">
+                    {% if machine['type'] == 'washer' %}
+                        <img src="{{ url_for('static', filename='images/washer_icon.png') }}" width="86" height="100">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/dryer_icon.png') }}" width="86" height="100">
+                    {% endif %}
+
                     <p>{{ machine['type'] | capitalize }} - {{ machine['location'] }}</p>
                     {% if machine['time-remaining'] == 0 %}
                         <p>Done</p>
