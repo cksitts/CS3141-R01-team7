@@ -1,8 +1,11 @@
 from symbol import decorator
+from functools import wraps
+
 from flask import render_template, redirect, url_for
 from flask import request, session
-from functools import wraps
+
 from app import l_app
+from app import mysql
 
 #allows us require someone is logged in to get to a certain page
 def login_required(f):
@@ -105,6 +108,14 @@ def editAccountRequest():
 @l_app.route('/home')
 @login_required
 def home():
+
+    cursor = mysql.connection.cursor()
+
+    cursor.execute( ''' insert into MachineUser values ("asdf", "asdf", "FFFFFFFFF", "XYZXYZ") ''' )
+    
+    mysql.connection.commit()
+    cursor.close()
+
     #TODO pull actual data from database and format better based on how database works
     allMachines = [
             {
@@ -161,4 +172,5 @@ def home():
     #TODO pull list of laundry rooms from database
     roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
     
-    return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
+    #return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
+    return "Hi my name is Jeff"
