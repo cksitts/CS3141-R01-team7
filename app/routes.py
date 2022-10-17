@@ -109,11 +109,21 @@ def editAccountRequest():
 @login_required
 def home():
 
+    # connect to the sql server so that we can run queries
     cursor = mysql.connection.cursor()
 
+    # execute a query to insert data into the database
+    # note: if this executes correctly, you will only be able to successfully run it once
+    # that's just for testing purposes obviously this won't be a problem in the final application
     cursor.execute( ''' insert into MachineUser values ("asdf", "asdf", "FFFFFFFFF", "XYZXYZ") ''' )
-    
+    cursor.execute( ''' select pass_hash from MachineUser where email="asdf" ''')
+
+    output = cursor.fetchall()
+
+    # commit the changes to the sql server
     mysql.connection.commit()
+
+    # close the connection to the cursor
     cursor.close()
 
     #TODO pull actual data from database and format better based on how database works
@@ -125,52 +135,6 @@ def home():
                 'type':'washer',
                 'available':False,
                 'time-remaining':30
-            },
-            {
-                'code':'134EWH2',
-                'location':'134E Wads (First floor east)',
-                'number':2,
-                'type':'washer',
-                'available':False,
-                'time-remaining':20
-            },
-            {
-                'code':'134EWH3',
-                'location':'134E Wads (First floor east)',
-                'number':1,
-                'type':'dryer',
-                'available':False,
-                'time-remaining':60
-            },
-            {
-                'code':'154WWH1',
-                'location':'154W Wads (First floor west)',
-                'number':1,
-                'type':'washer',
-                'available':True,
-                'time-remaining':0
-            },
-            {
-                'code':'154WWH2',
-                'location':'154W Wads (First floor west)',
-                'number':2,
-                'type':'washer',
-                'available':True,
-                'time-remaining':0
-            },
-            {
-                'code':'154WWH3',
-                'location':'154W Wads (First floor west)',
-                'number':3,
-                'type':'washer',
-                'available':False,
-                'time-remaining':10
-            }
-    ]
-    userMachines = ['134EWH1','134EWH2','154WWH2']
-    
-    #TODO pull list of laundry rooms from database
-    roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
-    
-    #return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
-    return "Hi my name is Jeff"
+            }]
+
+    return str(output)
