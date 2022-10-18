@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
         <title>Home</title>
     </head>
     <header>
         <h1>Laundry Tracker Lite</h1>
-        <button>Profile Info</button> <!--TODO button functionality-->
+        <button onclick="toggleDropdown()" class="dropdownButton" id="dropdownButton">{{ session['username'][0] | capitalize }}</button>
+        <div id="profileDropdown" class="dropdownContent">
+            {{ session['username'] }}<br>
+            <a href="{{ url_for('editAccount') }}">Edit Account</a><br>
+            <a href="{{ url_for('logout') }}">Sign Out</a>
+        </div>
     </header>
     <body>
         {% include "myMachines.html" %}
@@ -17,11 +23,15 @@
         {% with filter='unavailable' %}
             {% include "displayMachines.html" %}
         {% endwith %}
+
+        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
     </body>
     <footer>
         <!--TODO all the links and their pages (if we even want that, I just thought a footer looked more professional)-->
-        <a href="/home">About Laundry Tracker Lite</a><br>
-        <a href="/home">Meet the Team</a><br>
-        <a href="/home">Report an Issue</a>
+        <div class="footerLinks">
+            <a href="/home">About Laundry Tracker Lite</a><br>
+            <a href="/home">Meet the Team</a><br>
+            <a href="/home">Report an Issue</a>
+        </div>
     </footer>
 </html>

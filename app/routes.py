@@ -82,7 +82,7 @@ def editAccount():
     roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
 
     #TODO get user data of person currently logged in
-    userData = {'email':'user@gmail.com','username':'testUser','password':'blegh','preferredRoom':'154W Wads (First floor west)'}
+    userData = {'email':'user@gmail.com','username':'testUser','preferredRoom':'154W Wads (First floor west)'}
 
     return render_template('accountInfo.html', requestType='edit', userData=userData, roomList=roomList)
 
@@ -97,6 +97,9 @@ def editAccountRequest():
     #request.form['username']
     #request.form['password']
     #request.form['passwordConfirm']
+
+    #update session information
+    session['username'] = request.form['username']
 
     return redirect(url_for('home')) #redirect to home page
 
