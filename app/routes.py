@@ -11,7 +11,7 @@ from app import mysql
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not session.get('email'):
+        if not session.get('username'):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function  
@@ -34,7 +34,7 @@ def login():
     loginValid = True
     
     if(loginValid):
-        session['email'] = request.form['email'] #will be used to validate that someone is logged in
+        session['username'] = request.form['username'] #will be used to validate that someone is logged in
         return redirect(url_for('home'))
     else:
         return redirect(url_for('index', validLogin=False)) #show invalid login error and have then try again
@@ -44,7 +44,7 @@ def login():
 @l_app.route('/logout')
 @login_required
 def logout():
-    session.pop('email', default=None)
+    session.pop('username', default=None)
     return redirect(url_for('index'))
 
 
@@ -85,7 +85,7 @@ def editAccount():
     roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
 
     #TODO get user data of person currently logged in
-    userData = {'email':'user@gmail.com','username':'testUser','password':'blegh','preferredRoom':'154W Wads (First floor west)'}
+    userData = {'email':'user@gmail.com','username':'testUser','preferredRoom':'154W Wads (First floor west)'}
 
     return render_template('accountInfo.html', requestType='edit', userData=userData, roomList=roomList)
 
@@ -100,6 +100,9 @@ def editAccountRequest():
     #request.form['username']
     #request.form['password']
     #request.form['passwordConfirm']
+
+    #update session information
+    session['username'] = request.form['username']
 
     return redirect(url_for('home')) #redirect to home page
 

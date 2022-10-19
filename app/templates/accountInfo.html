@@ -9,8 +9,10 @@
     </head>
     <body>
         {% if requestType == "signup" %}
+            <a href="{{ url_for('index') }}">&lt Back</a>
             <h1>Sign Up</h1>
         {% elif requestType == "edit" %}
+            <a href="{{ url_for('home') }}">&lt Back</a>
             <h1>Edit Account</h1>
         {% endif %}
         <form id="form" onsubmit="return validateForm()" method="post">
