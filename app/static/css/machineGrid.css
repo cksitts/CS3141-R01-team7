@@ -1,0 +1,111 @@
+@import "global.css";
+
+/* Machine Info Block */
+.availableMachineBlock, .unavailableMachineBlock {
+    position : relative;
+    width : 140px;
+    height : 225px;
+    margin : 30px;
+}
+.availableMachineBlock > h3, .unavailableMachineBlock > h3 {
+    position : relative;
+    width : 100%;
+    margin : 0px;
+
+    padding : 10px 0px;
+    text-align : center;
+}
+.unavailableMachineBlock > p.timeRemaining {
+    position : absolute;
+    left : 0px;
+    top : 35px;
+    margin : 0px;
+
+    width : 100%;
+    text-align: center;
+    font-size: 0.75em;
+}
+.unavailableMachineBlock progress.timeRemaining {
+    margin : 5px 0px;
+    width : 100%;
+}
+.availableMachineBlock img {
+    position : absolute;
+    left : 27px;
+    top : 40px;
+
+    width : 86px;
+    height : 100px;
+}
+.unavailableMachineBlock img {
+    position : absolute;
+    left : 27px;
+    top : 65px;
+
+    width : 86px;
+    height : 100px;
+}
+.availableMachineBlock .machineType {
+    position : absolute;
+    top : 145px;
+    margin : 0px;
+
+    width : 100%;
+    text-align: center;
+}
+.unavailableMachineBlock .machineType {
+    position : absolute;
+    top : 170px;
+    margin : 0px;
+
+    width : 100%;
+    text-align: center;
+}
+.availableMachineBlock .machineLocation {
+    position : absolute;
+    top : 170px;
+    margin : 0px;
+
+    width : 100%;
+    text-align: center;
+    font-size: 0.75em;
+}
+.unavailableMachineBlock .machineLocation {
+    position : absolute;
+    top : 195px;
+    margin : 0px;
+
+    width : 100%;
+    text-align: center;
+    font-size: 0.75em;
+}
+.availableMachineBlock > button {
+    display : none;
+}
+.availableMachineBlock:hover > button {
+    position : absolute;
+    top : 202px;
+    left : 30px;
+    margin : 0px;
+
+    width : 80px;
+    display : block;
+
+    background-color: var(--main-dark);
+    color : var(--background-color);
+}
+.availableMachineBlock:hover > .backgroundHighlight {
+    position : absolute;
+    z-index: -1;
+    top : 0px;
+    left : -10px;
+    margin : 0;
+
+    width : 160px;
+    height : 235px;
+
+    background-color: var(--main-light);
+}
+.availableMachineBlock > button:hover {
+    background-color: var(--hover-dark);
+}

@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/myMachines.css') }}">
         <title>My Machines</title>
     </head>
     <body>
         <h2>My Machines</h2>
-        {% for machine in allMachines %}
+        {% for machine in allMachines | sort(attribute='time-remaining') %}
             {% if machine['code'] in userMachines %}
                 <div class="machineInfo">
                     {% if machine['type'] == 'washer' %}
-                        <img src="{{ url_for('static', filename='images/washer_icon.png') }}" width="86" height="100">
+                        <img src="{{ url_for('static', filename='images/washer_icon.png') }}">
                     {% else %}
-                        <img src="{{ url_for('static', filename='images/dryer_icon.png') }}" width="86" height="100">
+                        <img src="{{ url_for('static', filename='images/dryer_icon.png') }}">
                     {% endif %}
 
-                    <p>{{ machine['type'] | capitalize }} - {{ machine['location'] }}</p>
+                    <p class="info">{{ machine['type'] | capitalize }} - {{ machine['location'] }}</p>
                     {% if machine['time-remaining'] == 0 %}
-                        <p>Done</p>
-                        <progress id="progressBar" value="100" max="100"></progress>
+                        <p class="timeRemainingDone">Done</p>
+                        <progress class="timeRemainingDone" id="progressBar" value="60" max="60"></progress>
+                        <div class="doneHighlight"></div>
                     {% else %}
-                        <p>{{ machine['time-remaining'] }} minutes remaining</p>
-                        <progress id="progressBar" value="{{ 100 - machine['time-remaining'] }}" max="100"></progress>
+                        <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
+                        <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress>
                     {% endif %}
                 </div>
                 <br><br>

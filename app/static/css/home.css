@@ -94,6 +94,11 @@ header > h1 {
 }
 
 /* ------------------------- */
+/* Section Headings */
+h2 {
+    padding-left : 25px;
+    margin-bottom : 0px;
+}
 /* Horizontal Line */
 hr {
     size : 5px;
