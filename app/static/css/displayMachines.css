@@ -13,6 +13,7 @@
     padding : 0px 10px;
     border : 1px solid var(--main-dark);
     border-radius: 25px;
+    font-size : 0.85em;
 
     opacity : 1;
     background-color: var(--main-light);
@@ -28,9 +29,17 @@
     border : 1px solid var(--main-dark);
     border-radius: 25px;
     text-align: center;
+    font-size : 0.85em;
     
     background-color: var(--main-light);
 }
 .filterButtons .dropdownSelect:hover {
     background-color: var(--hover-light);
+}
+/* TODO slider hover color change */
+.filterButtons input.timeSlider {
+    accent-color: var(--main-dark);
+}
+.filterButtons label.timeSlider, .filterButtons output.timeSlider {
+    font-size : 0.85em;
 }

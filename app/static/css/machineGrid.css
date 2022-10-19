@@ -1,6 +1,7 @@
 @import "global.css";
 
 /* Machine Info Block */
+/* Available Machines */
 .availableMachineBlock, .unavailableMachineBlock {
     position : relative;
     width : 140px;
@@ -15,32 +16,10 @@
     padding : 10px 0px;
     text-align : center;
 }
-.unavailableMachineBlock > p.timeRemaining {
-    position : absolute;
-    left : 0px;
-    top : 35px;
-    margin : 0px;
-
-    width : 100%;
-    text-align: center;
-    font-size: 0.75em;
-}
-.unavailableMachineBlock progress.timeRemaining {
-    margin : 5px 0px;
-    width : 100%;
-}
 .availableMachineBlock img {
     position : absolute;
     left : 27px;
     top : 40px;
-
-    width : 86px;
-    height : 100px;
-}
-.unavailableMachineBlock img {
-    position : absolute;
-    left : 27px;
-    top : 65px;
 
     width : 86px;
     height : 100px;
@@ -53,26 +32,9 @@
     width : 100%;
     text-align: center;
 }
-.unavailableMachineBlock .machineType {
-    position : absolute;
-    top : 170px;
-    margin : 0px;
-
-    width : 100%;
-    text-align: center;
-}
 .availableMachineBlock .machineLocation {
     position : absolute;
     top : 170px;
-    margin : 0px;
-
-    width : 100%;
-    text-align: center;
-    font-size: 0.75em;
-}
-.unavailableMachineBlock .machineLocation {
-    position : absolute;
-    top : 195px;
     margin : 0px;
 
     width : 100%;
@@ -108,4 +70,48 @@
 }
 .availableMachineBlock > button:hover {
     background-color: var(--hover-dark);
+}
+
+
+/* Unavailable Machines */
+.unavailableMachineBlock > p.timeRemaining {
+    position : absolute;
+    left : 0px;
+    top : 35px;
+    margin : 0px;
+
+    width : 100%;
+    text-align: center;
+    font-size: 0.75em;
+}
+.unavailableMachineBlock progress.timeRemaining {
+    margin : 5px 0px;
+    width : 100%;
+
+    accent-color : var(--main-dark);
+}
+.unavailableMachineBlock img {
+    position : absolute;
+    left : 27px;
+    top : 65px;
+
+    width : 86px;
+    height : 100px;
+}
+.unavailableMachineBlock .machineType {
+    position : absolute;
+    top : 170px;
+    margin : 0px;
+    
+    width : 100%;
+    text-align: center;
+}
+.unavailableMachineBlock .machineLocation {
+    position : absolute;
+    top : 195px;
+    margin : 0px;
+    
+    width : 100%;
+    text-align: center;
+    font-size: 0.75em;
 }

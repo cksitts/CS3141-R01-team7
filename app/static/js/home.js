@@ -1,5 +1,5 @@
 function toggleDropdown() {
-    if(document.getElementById('profileDropdown').style.display === 'block') {
+    if(getComputedStyle(document.getElementById('profileDropdown')).getPropertyValue("display") == 'block') {
         document.getElementById('profileDropdown').style.animationName = 'dropupAnimation';
         document.getElementById('profileDropdown').style.animationPlayState = 'running';
 

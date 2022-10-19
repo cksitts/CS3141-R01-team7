@@ -14,21 +14,22 @@
 
         <!--TODO filter functionality-->
         <div class="filterButtons">
-            <button onclick="toggleWasher()" class="toggleButton" id="washerToggle" type="button">Washer</button>
-            <button onclick="toggleDryer()" class="toggleButton" id="dryerToggle" type="button">Dryer</button>
+            <button onclick="toggle(this)" class="toggleButton" id="washerToggle" type="button">Washer</button>
+            <button onclick="toggle(this)" class="toggleButton" id="dryerToggle" type="button">Dryer</button>
             <select class="dropdownSelect" id="roomDropdown" name="preferredRoom">
                 {% for room in laundryRoomList %}
                     <option value='{{ room }}'>{{ room }}</option>
                 {% endfor %}
             </select>
-        </div>
-        <br>
+            <br>
         {% if filter == 'unavailable' %}
-            <label for="timeInput">Max time remaining:</label>
-            <!--TODO turn into slider-->
-            <input type="number" id="timeInput" min="0" max="60">
-            minutes
+            <form oninput="timeSliderValue.value=parseInt(timeInput.value) + ' minutes'">
+                <label for="timeInput" class="timeSlider">Max time remaining:</label>
+                <input type="range" id="timeInput" class="timeSlider" min="0" max="60" value="60">
+                <output id="timeSliderValue" for="timeInput" class="timeSlider">60 minutes</output>
+            </form>
         {% endif %}
+        </div>
 
 
         {% for machine in allMachines | sort(attribute='time-remaining') %}
