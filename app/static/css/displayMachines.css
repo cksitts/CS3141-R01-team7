@@ -1,0 +1,36 @@
+@import "global.css";
+
+/* Sort Buttons */
+.filterButtons {
+    position : relative;
+    margin-left : 25px;
+    margin-top : 5px;
+}
+.filterButtons .toggleButton {
+    width : 75px;
+    height : 25px;
+
+    padding : 0px 10px;
+    border : 1px solid var(--main-dark);
+    border-radius: 25px;
+
+    opacity : 1;
+    background-color: var(--main-light);
+}
+.filterButtons .toggleButton:hover {
+    background-color: var(--hover-light);
+}
+.filterButtons .dropdownSelect {
+    width : 250px;
+    height : 25px;
+
+    padding : 0px 10px;
+    border : 1px solid var(--main-dark);
+    border-radius: 25px;
+    text-align: center;
+    
+    background-color: var(--main-light);
+}
+.filterButtons .dropdownSelect:hover {
+    background-color: var(--hover-light);
+}

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/machineGrid.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/displayMachines.css') }}">
         <title>Display Machines</title>
     </head>
     <body>
@@ -11,13 +13,15 @@
         {% endif %}
 
         <!--TODO filter functionality-->
-        <button type="button">Washer</button>
-        <button type="button">Dryer</button>
-        <select id="roomDropdown" name="preferredRoom">
-            {% for room in laundryRoomList %}
-                <option value='{{ room }}'>{{ room }}</option>
-            {% endfor %}
-        </select>
+        <div class="filterButtons">
+            <button onclick="toggleWasher()" class="toggleButton" id="washerToggle" type="button">Washer</button>
+            <button onclick="toggleDryer()" class="toggleButton" id="dryerToggle" type="button">Dryer</button>
+            <select class="dropdownSelect" id="roomDropdown" name="preferredRoom">
+                {% for room in laundryRoomList %}
+                    <option value='{{ room }}'>{{ room }}</option>
+                {% endfor %}
+            </select>
+        </div>
         <br>
         {% if filter == 'unavailable' %}
             <label for="timeInput">Max time remaining:</label>
@@ -31,26 +35,33 @@
             {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
                 <!--TODO implement filtering from above-->
                 {% if machine['available'] %}
+                <div class="availableMachineBlock">
                     <h3>Available</h3>
+                    <div class="backgroundHighlight"></div>
                 {% else %}
+                <div class="unavailableMachineBlock">
                     <h3>Unavailable</h3>
-                    <p>{{ machine['time-remaining'] }} minutes remaining</p>
-                    <progress id="progressBar" value="{{ 100 - machine['time-remaining'] }}" max="100"></progress><br>
+                    <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
+                    <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
                 {% endif %}
 
                 {% if machine['type'] == 'washer' %}
-                    <img src="{{ url_for('static', filename='images/washer_icon.png') }}" width="86" height="100">
+                    <img src="{{ url_for('static', filename='images/washer_icon.png') }}">
                 {% else %}
-                    <img src="{{ url_for('static', filename='images/dryer_icon.png') }}" width="86" height="100">
+                    <img src="{{ url_for('static', filename='images/dryer_icon.png') }}">
                 {% endif %}
 
-                <p>{{ machine['type'] | capitalize }} #{{ machine['number'] }}</p>
-                <p>{{ machine['location'] }}</p>
+                <p class="machineType">{{ machine['type'] | capitalize }}</p>
+                <p class="machineLocation">{{ machine['location'] }}</p>
 
                 {% if machine['available'] %}
+                    <!--TOOD button functionality-->
                     <button type="button">Check Out</button>
                 {% endif %}
+                </div>
             {% endif %}
         {% endfor %}
+   
+        <script src="{{ url_for('static', filename='js/displayMachines.js') }}"></script>
     </body>
 </html>

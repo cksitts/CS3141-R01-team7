@@ -1,0 +1,66 @@
+@import "global.css";
+
+/* Div */
+.machineInfo {
+    position : relative;
+    width : 100%;
+    height : 100px;
+    margin-top : 15px;
+}
+
+/* Image */
+.machineInfo img {
+    position : absolute;
+    left : 30px;
+    top : 0;
+
+    width : 86px;
+    height : 100px;
+}
+/* Machine Information */
+.info {
+    position : absolute;
+    top : 0;
+    left : 140px;
+}
+
+/* Time Remaining */
+.machineInfo p.timeRemaining {
+    position : absolute;
+    top : 40px;
+    left : 140px;
+    width : 180px;
+}
+.machineInfo progress.timeRemaining {
+    position : absolute;
+    top : 58px;
+    left : 330px;
+    width : calc(100% - 330px - 30px);
+
+    accent-color: var(--main-dark);
+}
+.machineInfo p.timeRemainingDone {
+    position : absolute;
+    top : 40px;
+    left : 140px;
+    width : 45px;
+}
+.machineInfo progress.timeRemainingDone {
+    position : absolute;
+    top : 58px;
+    left : 195px;
+    width : calc(100% - 195px - 30px);
+    
+    accent-color: var(--main-dark);
+}
+.doneHighlight {
+    position : absolute;
+    z-index: -10;
+    top : -10px;
+    height : 120px;
+    left : 20px;
+    right : 20px;
+
+    background-color: var(--main-light);
+    opacity: 0.5;
+}
