@@ -15,13 +15,17 @@
             <a href="{{ url_for('home') }}">&lt Back</a>
             <h1>Edit Account</h1>
         {% endif %}
-        <form id="form" onsubmit="return validateForm()" method="post">
+        <form id="form" action="/signup/request" onsubmit="return validateForm()" method="post">
             {% if userData %}
                 <!--keeps track of the old email so we know which record to update in the database-->
                 <input type="hidden" name="oldEmail" value="{{ userData['email'] }}" required>
             {% endif %}
             <label for="emailInput">Email:</label>
             <input type="email" id="emailInput" name="email" {% if userData %}value="{{ userData['email'] }}"{% endif %} required>
+            <br>
+            {% if emailTaken %}
+                <label for="emailTaken">That email already has an account.</label>
+            {% endif %}
             <br>
             <label for="usernameInput">Username:</label>
             <input type="text" id="usernameInput" name="username" {% if userData %}value="{{ userData['username'] }}"{% endif %} required>
@@ -52,7 +56,8 @@
             {% endif %}
         </form>
         {% if requestType == "signup" %}
-            <script>document.getElementById('form').action="signup/request"</script>
+            <!-- This line causes an odd redirection error. Shouldn't send form info this way I guess?? -->
+            <!-- <script>document.getElementById('form').action="signup/request"</script> -->
         {% elif requestType == "edit" %}
             <script>document.getElementById('form').action="editaccount/request"</script>
         {% endif %}
