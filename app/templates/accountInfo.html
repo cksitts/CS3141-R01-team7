@@ -44,11 +44,11 @@
             </select>
             <br>
             {% if requestType == "signup" %}
-            <button type="button" onclick="location.href='/index'">Cancel</button>
-            <input type="submit" value="Sign Up">
+                <button type="button" onclick="location.href='/index'">Cancel</button>
+                <input type="submit" value="Sign Up">
             {% elif requestType == "edit" %}
-            <button type="button" onclick="location.href='/home'">Cancel</button>
-            <input type="submit" value="Save Changes">
+                <button type="button" onclick="location.href='/home'">Cancel</button>
+                <input type="submit" value="Save Changes">
             {% endif %}
         </form>
         {% if requestType == "signup" %}
