@@ -1,8 +1,11 @@
 from symbol import decorator
-from flask import render_template, redirect, url_for
-from flask import request, session
 from functools import wraps
+
+from flask import render_template, redirect, url_for, flash
+from flask import request, session
+
 from app import l_app
+from app import mysql
 from app.python import databaseAccess as db
 
 #allows us require someone is logged in to get to a certain page
@@ -29,7 +32,7 @@ def login():
     #TODO check if login valid:
     #request.form['username']
     #request.form['password']
-    loginValid = True
+    loginValid = False
     
     if(loginValid):
         session['username'] = request.form['username'] #will be used to validate that someone is logged in
@@ -46,23 +49,42 @@ def logout():
     return redirect(url_for('index'))
 
 
-
 @l_app.route('/signup')
-def signup():
+@l_app.route('/signup/<emailTaken>')
+def signup(emailTaken=False):
     #TODO pull list of laundry rooms from database
     roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
 
-    return render_template('accountInfo.html', requestType='signup', roomList=roomList)
+    return render_template('accountInfo.html', requestType='signup', roomList=roomList, emailTaken=emailTaken)
 
 
 
 @l_app.route('/signup/request', methods=['GET','POST'])
 def signupRequest():
+    # if the user tries to redirect with a link, send them back to the
+    # original page that they were at.
+
     #TODO save new account to database
-    #request.form['email']
-    #request.form['username']
-    #request.form['password']
-    #request.form['passwordConfirm']
+    email = request.form['email']
+    username = request.form['username']
+    request.form['password']
+
+    # connect to the database with cursor
+    cursor = mysql.connection.cursor()
+
+    # check the database to see if the email already exists
+    cursor.execute( '''SELECT * FROM MachineUser WHERE email="%s"''' % str(email) )
+    temp = cursor.fetchall()
+
+    if (len(temp) != 0): 
+        return redirect(url_for('signup', emailTaken=True))
+
+    # if the email doesn't exist, validate the email
+    # TODO create, then pull this from a supplementary python script used for
+    # methods that help the routes file in the backend
+    
+    # close database connection
+    cursor.close()
 
     return redirect(url_for('home')) #redirect to home page
 
@@ -109,60 +131,14 @@ def editAccountRequest():
 @l_app.route('/home')
 @login_required
 def home():
+
     #TODO pull actual data from database and format better based on how database works
-    allMachines = [
-            {
-                'code':'134EWH1',
-                'location':'134E Wads (First floor east)',
-                'number':1,
-                'type':'washer',
-                'available':False,
-                'time-remaining':30
-            },
-            {
-                'code':'134EWH2',
-                'location':'134E Wads (First floor east)',
-                'number':2,
-                'type':'washer',
-                'available':False,
-                'time-remaining':20
-            },
-            {
-                'code':'134EWH3',
-                'location':'134E Wads (First floor east)',
-                'number':1,
-                'type':'dryer',
-                'available':False,
-                'time-remaining':60
-            },
-            {
-                'code':'154WWH1',
-                'location':'154W Wads (First floor west)',
-                'number':1,
-                'type':'washer',
-                'available':True,
-                'time-remaining':0
-            },
-            {
-                'code':'154WWH2',
-                'location':'154W Wads (First floor west)',
-                'number':2,
-                'type':'washer',
-                'available':True,
-                'time-remaining':0
-            },
-            {
-                'code':'154WWH3',
-                'location':'154W Wads (First floor west)',
-                'number':3,
-                'type':'washer',
-                'available':False,
-                'time-remaining':10
-            }
-    ]
-    userMachines = ['134EWH1','134EWH2','154WWH2']
-    
-    #TODO pull list of laundry rooms from database
-    roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
+
+    # userMachines represents the machines that a user currently has checked out (is using)
+    # allMachines shows all machines and their status
+    # laundryRoomList contains the names of the laundry rooms
+    userMachines = []
+    allMachines = []
+    roomList = []
     
     return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
