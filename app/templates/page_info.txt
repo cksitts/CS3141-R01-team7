@@ -2,11 +2,8 @@ This .txt file explains which .html files are connected to each route, which url
 
 Routes:             HTML:                  URLs:                            Function:
 index()             index.html             /, /index                        page the user first sees when accessing the website
-login()             index.html             /login                           processes a login request, redirects to home.html if login successful
 logout()                                   /logout                          processes a logout request, redirects to index.html
 signup()            signup.html            /signup                          displays the accountInfo.html page in signup mode
-signupRequest()                            /signup/request                  handles a sign up request, redirects to home.html if successful
 passwordReset()     forgotPassword.html    /passwordreset                   resets the user's password
 editAccount()       editAccount.html       /editaccount                     displays the accountInfo.html page in edit mode
-editAccountRequest()                       /editaccount/request             handles changes made to the account details, redirects to home.html
 home()              home.html              /home                            main data page for the application
