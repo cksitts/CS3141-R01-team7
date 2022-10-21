@@ -24,9 +24,13 @@
             <input type="email" id="emailInput" name="email" {% if userData %}value="{{ userData['email'] }}"{% endif %} required>
             <br>
             {% if emailTaken %}
-                <label for="emailTaken">That email already has an account.</label>
+                <p>That email already has an account.</p>
+                <br>
             {% endif %}
-            <br>
+            {% if emailValid == "False" %}
+                <p>That email is invalid.</p>
+                <br>
+            {% endif %}
             <label for="usernameInput">Username:</label>
             <input type="text" id="usernameInput" name="username" {% if userData %}value="{{ userData['username'] }}"{% endif %} required>
             <br>
