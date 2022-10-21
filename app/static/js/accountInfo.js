@@ -1,21 +1,10 @@
 function validateForm() {
-    //validate email
-    //TODO check if email is already taken in the database
-    if(false) {
-        alert("That email is already registered")
-        return false
-    }
-
+    
     //validate username
     //Regex used: any combination of letters, numbers, and underscores. Min length 6 characters.
     const usernameRegex = /^[\w]{6,}$/
     if(!usernameRegex.test(document.getElementById('usernameInput').value)) {
         alert("Invalid username, please do not use special characters (minimum length 6)")
-        return false
-    }
-    //TODO check if username is already taken in the database
-    if(false) {
-        alert("That username is already taken")
         return false
     }
 
