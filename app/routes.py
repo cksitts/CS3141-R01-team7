@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for
 from flask import request, session
 from functools import wraps
 from app import l_app
+from app.python import databaseAccess as db
 
 #allows us require someone is logged in to get to a certain page
 def login_required(f):
