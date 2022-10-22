@@ -1,5 +1,3 @@
-#from re import L
-#from symbol import decorator
 from functools import wraps
 
 from flask import render_template, redirect, url_for
@@ -10,8 +8,6 @@ from app import mysql
 
 import app.static.python.signup_helper as signupHelper
 
-# used for debugging
-import sys
 
 #allows us require someone is logged in to get to a certain page
 def login_required(f):
