@@ -59,12 +59,12 @@
                 <input type="submit" value="Save Changes">
             {% endif %}
         </form>
-        {% if requestType == "signup" %}
-            <!-- This line causes an odd redirection error. Shouldn't send form info this way I guess?? -->
-            <!-- <script>document.getElementById('form').action="signup"</script> -->
+        <!--{% if requestType == "signup" %}
+            <!- This line causes an odd redirection error. Shouldn't send form info this way I guess?? ->
+            <!- <script>document.getElementById('form').action="signup"</script> ->
         {% elif requestType == "edit" %}
             <script>document.getElementById('form').action="editaccount"</script>
-        {% endif %}
+        {% endif %}-->
 
         <script src="{{ url_for('static', filename='js/accountInfo.js') }}"></script>
     </body>

@@ -1,0 +1,22 @@
+<!doctype html>
+
+<html>
+
+    <head>
+        <title>Verify Email</title>
+    </head>
+
+    <body>
+        <h1><b> Please enter the verification code sent to: {{ email }} </b></h1>
+        <form id="form" action="/verifyemail/{{ email }}/{{ count }}" method="post">
+            <label>Verification code: </label>
+            <!-- hidden form so that the email can be grabbed from here for the backend -->
+            <input type="hidden" id="email" name="email" value="{{ email }}">
+            <input type="hidden" id="count" name="count" value="{{ count }}">
+
+            <input type="text" id="codeInput" name="codeInput">
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
