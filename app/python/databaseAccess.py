@@ -11,7 +11,14 @@ def validLogin(username, password):
 
 # Returns a list of laundry rooms from the database
 def getLaundryRooms():
+    #TODO
     return ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
+
+
+# Returns a list of all machines and their data
+def getAllMachines():
+    #TODO
+    return []
 
 
 # Checks if an email is already being used in the database
@@ -49,3 +56,9 @@ def updateUser(oldEmail, newEmail, username, password):
 def getUserData(username):
     #TODO get user data based on username
     return {'email':'user@gmail.com','username':'testUser','preferredRoom':'154W Wads (First floor west)'}
+
+
+# Returns a list of machines that the user has checked out
+def getUserMachines(username):
+    #TODO
+    return[]

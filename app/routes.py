@@ -110,8 +110,8 @@ def home():
     # userMachines represents the machines that a user currently has checked out (is using)
     # allMachines shows all machines and their status
     # laundryRoomList contains the names of the laundry rooms
-    userMachines = []
-    allMachines = []
-    roomList = []
+    userMachines = db.getUserMachines(session['username'])
+    allMachines = db.getAllMachines()
+    roomList = db.getLaundryRooms()
     
     return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
