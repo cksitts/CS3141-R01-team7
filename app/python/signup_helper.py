@@ -1,5 +1,5 @@
 # File holds the methods that help with the signup process
-from app.static.python.send_email import sendEmail
+from app.python.send_email import sendEmail
 import secrets
 from hashlib import sha256
 
