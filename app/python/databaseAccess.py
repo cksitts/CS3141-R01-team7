@@ -1,4 +1,5 @@
 from app import mysql
+from app.python import helper
 
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
@@ -6,7 +7,7 @@ def validLogin(username, password):
     #TODO 
     # check if username is in database
     # check if password matches username
-    return True
+    return False
 
 
 # Returns a list of laundry rooms from the database
@@ -23,25 +24,42 @@ def getAllMachines():
 
 # Checks if an email is already being used in the database
 def checkEmailTaken(email):
+     # connect to the database with cursor
+    # TODO use ACID transactions to help with concurrent queries
+    #   - set transaction isolation level serializable
     cursor = mysql.connection.cursor()
 
     # check the database to see if the email already exists
-    cursor.execute( '''SELECT * FROM MachineUser WHERE email="%s"''' % str(email) )
-    temp = cursor.fetchall()
-
-    # close database connection
-    cursor.close()
-
-    if (len(temp) != 0): 
+    cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
+    if (len(cursor.fetchall()) != 0): 
+        # close the database connection
+        cursor.close()
         return True
     else:
+        # close the database connection
+        cursor.close()
         return False
 
 
 # Registers a new user in the database
 # Returns 0 if successful, otherwise 1
-def registerUser(email, username, password):
-    #TODO register user in the database
+def registerUser(form):
+    # connect to the database with cursor
+    # TODO use ACID transactions to help with concurrent queries
+    #   - set transaction isolation level serializable
+    cursor = mysql.connection.cursor()
+
+    # First, salt and hash the password and store all of the info in the database
+    # the password is only now pulled from the form
+    pass_hash = helper.generateHashAndSalt(str(form['password']))
+
+    cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s)'''), 
+                    (str(form['email']), str(form['username']), str(pass_hash[0]), str(pass_hash[1])) )
+
+    # close the database connection
+    cursor.close()
+    mysql.connection.commit()
+
     return 0
 
 

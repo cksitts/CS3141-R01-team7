@@ -9,3 +9,4 @@ mysqlclient==2.1.1
 python-dotenv==0.21.0
 Werkzeug==2.2.2
 zipp==3.9.0
+waiting==1.4.1

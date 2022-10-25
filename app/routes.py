@@ -1,14 +1,11 @@
 from functools import wraps
 
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, abort
 from flask import request, session
 
 from app import l_app
 from app.python import databaseAccess as db
 from app.python import emailManagement
-
-from app import mysql
-import app.python.signup_helper as signupHelper
 
 
 #allows us require someone is logged in to get to a certain page
@@ -19,6 +16,16 @@ def login_required(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function  
+
+#Error handling
+@l_app.errorhandler(404)
+def page_not_found(error):
+    #TODO return render_template('404.html'), 404
+    return "Page not found, 404", 404
+@l_app.errorhandler(500)
+def internal_error(error):
+    #TODO return render_template('500.html'), 500
+    return "Internal server error, 500", 500
 
 
 @l_app.route('/')
@@ -46,82 +53,40 @@ def logout():
 
 
 @l_app.route('/signup', methods=['GET', 'POST'])
-@l_app.route('/signup/<emailTaken>', methods=['GET', 'POST'])
-def signup(emailTaken=False):
-    #TODO pull list of laundry rooms from database
-
+def signup():
     if (request.method == 'GET'):
-        roomList = ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
-        return render_template('accountInfo.html', requestType='signup', roomList=roomList, emailTaken=emailTaken)
+        roomList = db.getLaundryRooms()
+        return render_template('accountInfo.html', requestType='signup', roomList=roomList, emailTaken=request.args.get('emailTaken', default=False), emailValid=request.args.get('emailValid', default=True))
 
-    if (request.method == 'POST'):
-        # get the email and username from the form
-        email = request.form['email']
-        username = request.form['username']
-
-        # connect to the database with cursor
-        # TODO use ACID transactions to help with concurrent queries
-        #   - set transaction isolation level serializable
-        cursor = mysql.connection.cursor()
-
-        # check the database to see if the email already exists
-        cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
-        if (len(cursor.fetchall()) != 0): 
+    else:
+        email = request.form['email'] # get the email from the form
+        if(db.checkEmailTaken(email)): #Checks if email is taken
             return redirect(url_for('signup', emailTaken=True))
+        else: #TODO make a page show up to prompt the user to check their email
+            if(emailManagement.isValid(email, request.url_root)): #will pause execution until the code is verified (sends the root url to generate a custom verification url)
+                #Adds the user to the database
+                db.registerUser(request.form)
+                return redirect(url_for('home')) #redirect to home page
+            else:
+                return redirect(url_for('signup', emailValid=False))
 
-        # First, salt and hash the password and store all of the info in the database
-        # the password is only now pulled from the form
-        pass_hash = signupHelper.generateHashAndSalt(str(request.form['password']))
 
-        cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s)'''), 
-                        (str(email), str(username), str(pass_hash[0]), str(pass_hash[1])) )
-
-        # close the database connection and validate the email
-        cursor.close()
-        mysql.connection.commit()
-        return redirect(url_for('verifyEmail', email=str(email), count=1))
-    
-
-@l_app.route('/verifyemail', methods = ['GET', 'POST'])
-@l_app.route('/verifyemail/<email>/<count>', methods = ['GET', 'POST'])
-def verifyEmail(email, count):
-    
-    # if we are sending a GET
-    if (request.method == 'GET'):
-        verification_code = signupHelper.sendSignupEmail(email)
-        session['verification_code'] = verification_code
-        return render_template('email_verifier.html', email=email, count=count)
-
-    if (request.method == 'POST'):
-        # get the current number of attempts
-        attempt_count = request.form['count']
-
-        # if the correct code is input
-        if (session.get('verification_code') == str(request.form['codeInput'])):
-            return redirect(url_for('index'))
-
-        # if we still haven't passed 3 attempts let another attempt happen
-        _count = int(attempt_count)
-        if (_count <= 3):
-            _count += 1
-            return redirect(url_for('verifyEmail', email=email, count=_count))
-
-            # If unsuccessful, open a connection to the database and remove the tuple for "email"
-        # Then redirect to the sign up page
-        cursor = mysql.connection.cursor()
-        cursor.execute( '''DELETE FROM MachineUser WHERE email=%s''', (str(email),) )
-        cursor.close()
-        mysql.connection.commit()
-        return redirect(url_for('signup'))
+@l_app.route('/verify/<verificationCode>')
+def verify(verificationCode=''):
+    if(emailManagement.verifyCode(verificationCode) == 0):
+        # successful verification
+        return "Verified" #TODO make verified html page
+    else:
+        # unsuccessful
+        abort(500)
 
 
 
 @l_app.route('/passwordreset')
 @login_required
 def passwordReset():
-    #TODO whole method
-    return "password reset"
-
+    #TODO whole method (return 501 means not implemented)
+    return "password reset", 501
 
 
 @l_app.route('/editaccount', methods=['GET','POST'])

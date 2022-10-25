@@ -23,7 +23,7 @@
             <label for="emailInput">Email:</label>
             <input type="email" id="emailInput" name="email" {% if userData %}value="{{ userData['email'] }}"{% endif %} required>
             <br>
-            {% if emailTaken %}
+            {% if emailTaken == "True" %}
                 <p>That email already has an account.</p>
                 <br>
             {% endif %}

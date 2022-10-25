@@ -1,20 +1,5 @@
-# File holds the methods that help with the signup process
-from app.python.send_email import sendEmail
 import secrets
 from hashlib import sha256
-
-"""
-Function to send an email with a verification code specifically for signups
-@param to: the address to send the message to
-@return the code that was sent so that it can be verified
-"""
-def sendSignupEmail(to):
-    # generate a random verification code using a random hex sequence
-    # the length of the sequence is 6 total digits (3 bytes converted to 2 digits each)
-    code_length = 3
-    code = str(secrets.token_hex(code_length)).upper()
-    sendEmail("Enter Verification Code: %s" % code, to)
-    return code
 
 """
 Generate a password's salt, then hash it
