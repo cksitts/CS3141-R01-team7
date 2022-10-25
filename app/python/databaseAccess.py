@@ -16,7 +16,7 @@ def getLaundryRooms():
     return ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
 
 
-# Returns a list of all machines and their data
+# Returns a list of all machines and their data from the database
 def getAllMachines():
     #TODO
     return []
