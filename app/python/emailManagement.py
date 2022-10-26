@@ -43,8 +43,6 @@ def sendSignupEmail(to, url):
     return code
 
 
-
-
 #Global variable to keep track of which codes still need to be verified
 verificationDict = {}
 

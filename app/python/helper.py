@@ -2,6 +2,14 @@ import secrets
 from hashlib import sha256
 
 """
+Generate just a hash for an input string.
+@param str: the string to hash
+@return a string of the hash's hexadecimal digest
+"""
+def getHash(string: str):
+    return str( sha256(string.encode()).hexdigest() )
+
+"""
 Generate a password's salt, then hash it
 @param password: the password to hash
 @return a tuple with the hash and the salt added before hashing
@@ -20,6 +28,6 @@ def generateHashAndSalt(password):
         salt += new_char;                                        # add that character to the salt sequence
 
     # hash the password with the salt string
-    _hash = sha256( str(password + salt).encode() )
+    _hash = getHash( str(password + salt) )
 
-    return [_hash.hexdigest(), salt]                             # return the tuple
+    return [_hash, salt]                             # return the tuple
