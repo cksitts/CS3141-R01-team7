@@ -22,7 +22,7 @@ create table Machine (	machine_id char(10) primary key not null,
 create table UsingMachine (	machine_id char(10) primary key not null, 
 							email varchar(64) not null,
 							username varchar(64) not null, 
-							time_started time not null default 0, 
+							time_started numeric(5,0) not null default 0, 
 							foreign key (machine_id) references Machine(machine_id),
 							foreign key (email) references MachineUser(email),
                             foreign key (username) references MachineUser(username)	);

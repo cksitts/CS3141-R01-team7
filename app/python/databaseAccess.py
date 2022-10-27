@@ -1,5 +1,6 @@
 from app import mysql
 from app.python import helper
+from time import time
 
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
@@ -9,7 +10,7 @@ def validLogin(username, password):
     # get this user's data if it exists
     cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (str(username),))
     tuple = cursor.fetchone()
-    if len(tuple) != 0:
+    if tuple != None:
         # username is in the database so get the password hash
         t_hash = tuple[2]                                           # get the password hash stored in the
         hash = helper.getHash( str(password + tuple[3]) )           # generate a hash to compare
@@ -33,11 +34,23 @@ def getAllMachines():
     cursor = mysql.connection.cursor()      # open database connection
 
     # all machines, doesn't show whether or not they are in use.
-    cursor.execute( ''' SELECT * FROM Machine ''' )
+    cursor.execute( '''     SELECT  machine_id, machine_type, location, ifnull(username, 'None') as username, 
+                                    ifnull(time_started, 0) as time_started, ifnull(available, 1) as available
+                            FROM Machine NATURAL LEFT JOIN (
+                                SELECT machine_id, username, time_started, 0 AS available 
+                                FROM Machine NATURAL JOIN UsingMachine
+                            ) inUseMachines
+                    ''' )
     all_machine_tuples = cursor.fetchall()
 
     for t in all_machine_tuples:
-        machines.append( {'machine-id' : t[0], 'email' : t[1], 'username' : t[2], 'time-remaining' : 0 } )
+        start_time = int(t[4])                                  # start time (SEC) 1666901715
+        current_time = int(time())
+        time_elapsed = int( (current_time - start_time) / 60 )      # the time that the machine has left until finishing (MIN)
+        time_remaining = (60 - time_elapsed) if (time_elapsed < 60 and time_elapsed >= 0) else 0
+
+        machines.append({  'machine-id' : t[0], 'machine-type' : t[1], 'location' : t[2],    
+                            'username' : t[3], 'time-remaining' : time_remaining, 'available' : bool(t[5]) })
 
     cursor.close()
 
@@ -53,7 +66,7 @@ def checkEmailTaken(email):
 
     # check the database to see if the email already exists
     cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
-    if (len(cursor.fetchall()) != 0): 
+    if (cursor.fetchall() != None): 
         # close the database connection
         cursor.close()
         return True
@@ -85,7 +98,7 @@ def registerUser(form):
     return 0
 
 
-# Registers a new user in the database
+# Updates a current user in the database
 # Returns 0 if successful, otherwise 1
 def updateUser(oldEmail, newEmail, username, password):
     #TODO update user data based on oldEmail (email may or may not change)
