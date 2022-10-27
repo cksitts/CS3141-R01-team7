@@ -2,7 +2,8 @@
 :root {
     /* TODO pick actual colors */
     --background-color : white;
-    --text-color : black;
+    --dark-text : black;
+    --light-text : white;
     
     --main-dark : darkgreen;
     --main-light : darkseagreen;
@@ -15,7 +16,7 @@
 body {
     font-family : Verdana, Tahoma, sans-serif;
     font-size : 100%;
-    color : var(--text-color);
+    color : var(--dark-text);
 
     background-color: var(--background-color);
 }

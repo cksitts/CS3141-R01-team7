@@ -54,7 +54,7 @@
     display : block;
 
     background-color: var(--main-dark);
-    color : var(--background-color);
+    color : var(--light-text);
 }
 .availableMachineBlock:hover > .backgroundHighlight {
     position : absolute;
