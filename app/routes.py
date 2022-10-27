@@ -66,6 +66,7 @@ def signup():
             if(emailManagement.isValid(email, request.url_root)): #will pause execution until the code is verified (sends the root url to generate a custom verification url)
                 #Adds the user to the database
                 db.registerUser(request.form)
+                session['username'] = request.form['username'] #registers that a user has signed in (by signing up they are automatically signed in)
                 return redirect(url_for('home')) #redirect to home page
             else:
                 return redirect(url_for('signup', emailValid=False))
