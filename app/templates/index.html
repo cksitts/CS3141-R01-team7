@@ -18,11 +18,11 @@
                 <br>
                 <input type="submit" value="Sign In">
             </form>
-            {% if validLogin != true %}
+            {% if validLogin == "False" %}
                 <p>Invalid email or password</p> 
             {% endif %}
             <br>
-            <form action="signup"><button type="submit">Sign Up</button></form>
+            <form action="/signup"><button type="submit">Sign Up</button></form>
             <form action="passwordReset"><button type="submit">Forgot Password</button></form>
         </div>
     </body>

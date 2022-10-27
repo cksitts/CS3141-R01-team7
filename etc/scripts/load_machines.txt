@@ -1,0 +1,97 @@
+G46E_WH_1	Atlantis/The Lab	Washer
+G46E_WH_2	Atlantis/The Lab	Washer
+G46E_WH_3	Atlantis/The Lab	Washer
+G46E_WH_4	Atlantis/The Lab	Washer
+G46E_WH_5	Atlantis/The Lab	Dryer
+G46E_WH_6	Atlantis/The Lab	Dryer
+
+147E_WH_1	Mafia/Utopia	Washer
+147E_WH_2	Mafia/Utopia	Washer
+147E_WH_3	Mafia/Utopia	Washer
+147E_WH_4	Mafia/Utopia	Washer
+147E_WH_5	Mafia/Utopia	Dryer
+147E_WH_6	Mafia/Utopia	Dryer
+
+222W_WH_1	Armada/Citadel	Washer
+222W_WH_2	Armada/Citadel	Washer
+222W_WH_3	Armada/Citadel	Washer
+222W_WH_4	Armada/Citadel	Washer
+222W_WH_5	Armada/Citadel	Dryer
+222W_WH_6	Armada/Citadel	Dryer
+
+258W_WH_1	Raptor/Moose Lodge	Washer
+258W_WH_2	Raptor/Moose Lodge	Washer
+258W_WH_3	Raptor/Moose Lodge	Washer
+258W_WH_4	Raptor/Moose Lodge	Washer
+258W_WH_5	Raptor/Moose Lodge	Dryer
+258W_WH_6	Raptor/Moose Lodge	Dryer
+
+256E_WH_1	Incognito/Kashmir	Washer
+256E_WH_2	Incognito/Kashmir	Washer
+256E_WH_3	Incognito/Kashmir	Washer
+256E_WH_4	Incognito/Kashmir	Washer
+256E_WH_5	Incognito/Kashmir	Dryer
+256E_WH_6	Incognito/Kashmir	Dryer
+
+322W_WH_1	Nightclub/The Agency	Washer
+322W_WH_2	Nightclub/The Agency	Washer
+322W_WH_3	Nightclub/The Agency	Washer
+322W_WH_4	Nightclub/The Agency	Washer
+322W_WH_5	Nightclub/The Agency	Dryer
+322W_WH_6	Nightclub/The Agency	Dryer
+
+358W_WH_1	Le Maison/Sleepy Hollow	Washer
+358W_WH_2	Le Maison/Sleepy Hollow	Washer
+358W_WH_3	Le Maison/Sleepy Hollow	Washer
+358W_WH_4	Le Maison/Sleepy Hollow	Washer
+358W_WH_5	Le Maison/Sleepy Hollow	Dryer
+358W_WH_6	Le Maison/Sleepy Hollow	Dryer
+
+356E_WH_1	Danger Zone/Valhalla	Washer
+356E_WH_2	Danger Zone/Valhalla	Washer
+356E_WH_3	Danger Zone/Valhalla	Washer
+356E_WH_4	Danger Zone/Valhalla	Washer
+356E_WH_5	Danger Zone/Valhalla	Dryer
+356E_WH_6	Danger Zone/Valhalla	Dryer
+
+422W_WH_1	Nighthouse/Troy	Washer
+422W_WH_2	Nighthouse/Troy	Washer
+422W_WH_3	Nighthouse/Troy	Washer
+422W_WH_4	Nighthouse/Troy	Washer
+422W_WH_5	Nighthouse/Troy	Dryer
+422W_WH_6	Nighthouse/Troy	Dryer
+
+458W_WH_1	Excello/Tombstone	Washer
+458W_WH_2	Excello/Tombstone	Washer
+458W_WH_3	Excello/Tombstone	Washer
+458W_WH_4	Excello/Tombstone	Washer
+458W_WH_5	Excello/Tombstone	Dryer
+458W_WH_6	Excello/Tombstone	Dryer
+
+456E_WH_1	Elysium/4D	Washer
+456E_WH_2	Elysium/4D	Washer
+456E_WH_3	Elysium/4D	Washer
+456E_WH_4	Elysium/4D	Washer
+456E_WH_5	Elysium/4D	Dryer
+456E_WH_6	Elysium/4D	Dryer
+
+522W_WH_1	Olympus/Shangri La	Washer
+522W_WH_2	Olympus/Shangri La	Washer
+522W_WH_3	Olympus/Shangri La	Washer
+522W_WH_4	Olympus/Shangri La	Washer
+522W_WH_5	Olympus/Shangri La	Dryer
+522W_WH_6	Olympus/Shangri La	Dryer
+
+558W_WH_1	Treehouse/Asgard	Washer
+558W_WH_2	Treehouse/Asgard	Washer
+558W_WH_3	Treehouse/Asgard	Washer
+558W_WH_4	Treehouse/Asgard	Washer
+558W_WH_5	Treehouse/Asgard	Dryer
+558W_WH_6	Treehouse/Asgard	Dryer
+
+556E_WH_1	Hyrule 1&2	Washer
+556E_WH_2	Hyrule 1&2	Washer
+556E_WH_3	Hyrule 1&2	Washer
+556E_WH_4	Hyrule 1&2	Washer
+556E_WH_5	Hyrule 1&2	Dryer
+556E_WH_6	Hyrule 1&2	Dryer
