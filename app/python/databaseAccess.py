@@ -66,11 +66,13 @@ def checkEmailTaken(email):
 
     # check the database to see if the email already exists
     cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
-    if (cursor.fetchall() != None): 
+    if(len(cursor.fetchall()) != 0): 
+        print("Email Taken")
         # close the database connection
         cursor.close()
         return True
     else:
+        print("Email Available")
         # close the database connection
         cursor.close()
         return False
