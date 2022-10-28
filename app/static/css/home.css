@@ -18,7 +18,7 @@ header > h1 {
     text-align: center;
     margin : 0px;
     padding : 40px 0px;
-    color : var(--background-color);
+    color : var(--light-text);
 }
 /* Dropdown Button */
 .dropdownButton {
@@ -135,7 +135,7 @@ footer {
     margin-top : 5px;
     margin-bottom : 5px;
 
-    color : var(--background-color);
+    color : var(--light-text);
     text-decoration: none;
 }
 .footerLinks > a:hover {
