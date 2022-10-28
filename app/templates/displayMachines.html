@@ -33,35 +33,38 @@
         </div>
 
 
-        {% for machine in allMachines | sort(attribute='time-remaining') %}
-            {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
-                <!--TODO implement filtering from above-->
-                {% if machine['available'] %}
-                <div class="availableMachineBlock">
-                    <h3>Available</h3>
-                    <div class="backgroundHighlight"></div>
-                {% else %}
-                <div class="unavailableMachineBlock">
-                    <h3>Unavailable</h3>
-                    <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
-                    <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
-                {% endif %}
+        <div class="gridContainer">
+            {% for machine in allMachines | sort(attribute='time-remaining') %}
+                {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
+                    <!--TODO implement filtering from above-->
+                    {% if machine['available'] %}
+                    <div class="availableMachineBlock">
+                        <h3>Available</h3>
+                        <div class="backgroundHighlight"></div>
+                    {% else %}
+                    <div class="unavailableMachineBlock">
+                        <h3>Unavailable</h3>
+                        <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
+                        <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
+                    {% endif %}
 
-                {% if machine['type'] == 'washer' %}
-                    <img src="{{ url_for('static', filename='images/washer_icon.png') }}">
-                {% else %}
-                    <img src="{{ url_for('static', filename='images/dryer_icon.png') }}">
-                {% endif %}
+                    {% if machine['machine-type'] == 'Washer' %}
+                        <img src="{{ url_for('static', filename='images/washer_icon.png') }}">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/dryer_icon.png') }}">
+                    {% endif %}
 
-                <p class="machineType">{{ machine['type'] | capitalize }}</p>
-                <p class="machineLocation">{{ machine['location'] }}</p>
+                    <p class="machineType">{{ machine['machine-type'] }}</p>
+                    <p class="machineLocation">{{ machine['location'] }}<br></p>
+                    <script>document.currentScript.previousElementSibling.innerHTML += getRoom("{{ machine['machine-id'] }}")</script>
 
-                {% if machine['available'] %}
-                    <!--TODO button functionality-->
-                    <button type="button">Check Out</button>
+                    {% if machine['available'] %}
+                        <!--TODO button functionality-->
+                        <button type="button">Check Out</button>
+                    {% endif %}
+                    </div>
                 {% endif %}
-                </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </div>
     </body>
 </html>

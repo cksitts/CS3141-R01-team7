@@ -36,6 +36,7 @@
 .filterButtons .dropdownSelect:hover {
     background-color: var(--hover-light);
 }
+
 /* TODO slider hover color change */
 .filterButtons input.timeSlider {
     accent-color: var(--main-dark);

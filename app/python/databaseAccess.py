@@ -21,8 +21,48 @@ def validLogin(username, password):
 
 # Returns a list of laundry rooms from the database
 def getLaundryRooms():
-    #TODO
-    return ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
+    rooms = []                           # array holds room strings
+
+    cursor = mysql.connection.cursor()      # open database connection
+
+    # all distinct room numbers and their building
+    cursor.execute( '''     SELECT DISTINCT
+	                            SUBSTRING_INDEX(machine_id, '_', 1) as Room,
+                                SUBSTRING_INDEX(substring_index(machine_id, '_', -2), '_' ,1) as Building
+                            FROM Machine;
+                    ''' )
+    all_room_tuples = cursor.fetchall()
+
+    for t in all_room_tuples:
+        room = t[0]
+        if t[1] == "WH":
+            building = "Wads"
+        elif t[1] == "MH":
+            building = "McNair"
+        elif t[1] == "DHH":
+            building = "DHH"
+        else:
+            building = ""
+
+        rooms.append(room + " " + building)
+
+    # all distinct locations
+    cursor.execute( '''     SELECT DISTINCT
+	                        LOCATION as Location
+                            from Machine;
+                    ''' )
+    all_room_tuples = cursor.fetchall()
+
+    i = 0
+    for t in all_room_tuples:
+        rooms[i] = rooms[i] + " (" + t[0] + ")"
+        i += 1
+
+    cursor.close()
+
+    # return the list as an array
+    print(rooms)
+    return rooms
 
 
 # Returns a list of all machines and their data from the database
@@ -67,12 +107,10 @@ def checkEmailTaken(email):
     # check the database to see if the email already exists
     cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
     if(len(cursor.fetchall()) != 0): 
-        print("Email Taken")
         # close the database connection
         cursor.close()
         return True
     else:
-        print("Email Available")
         # close the database connection
         cursor.close()
         return False
