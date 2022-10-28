@@ -15,8 +15,8 @@
 
         <!--TODO filter functionality-->
         <div class="filterButtons">
-            <button onclick="toggle(this)" class="toggleButton" id="washerToggle" type="button">Washer</button>
-            <button onclick="toggle(this)" class="toggleButton" id="dryerToggle" type="button">Dryer</button>
+            <button onclick="toggle(this)" class="toggleButton" id="WasherToggle" type="button">Washer</button>
+            <button onclick="toggle(this)" class="toggleButton" id="DryerToggle" type="button">Dryer</button>
             <select class="dropdownSelect" id="roomDropdown" name="preferredRoom">
                 {% for room in laundryRoomList %}
                     <option value='{{ room }}'>{{ room }}</option>

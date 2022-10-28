@@ -6,9 +6,22 @@ function toggle(element) {
     if(getComputedStyle(element).getPropertyValue("opacity") == 1) {
         //Toggle off
         element.style.opacity = 0.5
+
+        document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+            if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
+                block.style.display = 'none'
+            }
+        })
+
     } else {
         //Toggle on
         element.style.opacity = 1
+
+        document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+            if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
+                block.style.display = 'block'
+            }
+        })
     }
 }
 
