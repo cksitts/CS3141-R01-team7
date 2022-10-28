@@ -42,8 +42,7 @@ def index():
             return redirect(url_for('home'))
         else:
             return redirect(url_for('index', validLogin=False)) #show invalid login error and have them try again
-
-
+            
 
 @l_app.route('/logout')
 @login_required

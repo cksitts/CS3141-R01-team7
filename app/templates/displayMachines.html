@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/machineGrid.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/displayMachines.css') }}">
+        <script src="{{ url_for('static', filename='js/displayMachines.js') }}"></script>
         <title>Display Machines</title>
     </head>
     <body>
@@ -62,7 +63,5 @@
                 </div>
             {% endif %}
         {% endfor %}
-   
-        <script src="{{ url_for('static', filename='js/displayMachines.js') }}"></script>
     </body>
 </html>

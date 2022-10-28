@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
         <title>Home</title>
     </head>
     <header>
@@ -23,14 +24,12 @@
         {% with filter='unavailable' %}
             {% include "displayMachines.html" %}
         {% endwith %}
-
-        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
     </body>
     <footer>
         <!--TODO all the links and their pages (if we even want that, I just thought a footer looked more professional)-->
         <div class="footerLinks">
             <a href="/home">About Laundry Tracker Lite</a><br>
-            <a href="/home">Meet the Team</a><br>
+            <a href="/home">Resources</a><br>
             <a href="/home">Report an Issue</a>
         </div>
     </footer>

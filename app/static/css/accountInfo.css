@@ -1,0 +1,97 @@
+@import "global.css";
+@import "inputFields.css";
+
+/* General Layout */
+body {
+    margin : 0px;
+}
+div.position {
+    display : flex;
+    flex-flow : column nowrap;
+    align-items : center;
+    justify-content : center;
+    height : 100vh;
+    width : 100vw;
+}
+.position > h1 {
+    margin : 0;
+}
+form.inputForm {
+    width : 40%;
+}
+
+/* Cancel & Sign Up Buttons */
+.inputForm button, .inputForm input[type=submit] {
+    width : 35%;
+    margin-top : 25px;
+    padding : 10px 0px;
+
+    font-size : 1em;
+    border-width : 2px solid var(--main-dark);
+    border-radius: 5px;
+    background-color: var(--main-light);
+}
+.inputForm button:hover, .inputForm input[type=submit]:hover {
+    background-color : var(--hover-light);
+}
+.inputForm button {
+    margin-left : 12%;
+}
+.inputForm input[type=submit] {
+    margin-left : 6%;
+}
+
+
+/* Back Button */
+#backButton {
+    position: fixed;
+    left : 2px;
+    top : 2px;
+    height : 30px;
+    line-height : 30px;
+    overflow : hidden;
+
+    padding : 5px;
+    padding-left : 45px;
+    text-decoration : none;
+    color : var(--main-dark);
+    font-size : 1.1em;
+
+    background-image : url("https://img.icons8.com/ios-glyphs/344/circled-left-2.png");
+    background-repeat : no-repeat;
+    background-size : 40px;
+    background-position : 5px;
+
+    animation : hideBackLabel;
+    animation-delay : -0.5s;
+    animation-direction : normal;
+    animation-fill-mode : both;
+    animation-duration : 0.5s;
+}
+
+@keyframes showBackLabel {
+    0% {
+        width : 0px;
+        color : transparent;
+    }
+    1% {
+        color : var(--main-dark);
+    }
+    100% {
+        width : 45px;
+        color : var(--main-dark);
+    }
+}
+@keyframes hideBackLabel {
+    100% {
+        width : 0px;
+        color : transparent;
+    }
+    99% {
+        color : var(--main-dark);
+    }
+    0% {
+        width : 45px;
+        color : var(--main-dark);
+    }
+}

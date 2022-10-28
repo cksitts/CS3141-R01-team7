@@ -24,3 +24,31 @@ function validateForm() {
     //if everything else has been validated
     return true
 }
+
+
+
+
+function showBackLabel() {
+    document.getElementById('backButton').style.animationName = 'showBackLabel';
+    document.getElementById('backButton').style.animationDelay = '0s';
+    document.getElementById('backButton').style.animationPlayState = 'running';
+}
+function hideBackLabel() {
+    document.getElementById('backButton').style.animationName = 'hideBackLabel';
+    document.getElementById('backButton').style.animationDelay = '0s';
+    document.getElementById('backButton').style.animationPlayState = 'running';
+}
+
+
+
+
+function positionMessage() {
+    const errorMessage = document.getElementById('invalidMessage');
+    
+    errorMessage.style.position = 'absolute';
+    errorMessage.style.width = '40%';
+    errorMessage.style.fontSize = '0.8em';
+    errorMessage.style.textAlign = 'center';
+    errorMessage.style.marginTop = '2px';
+    errorMessage.style.top = document.getElementById('emailInput').getBoundingClientRect().y;
+}

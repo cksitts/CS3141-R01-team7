@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/accountInfo.css') }}">
+        <script src="{{ url_for('static', filename='js/accountInfo.js') }}"></script>
         {% if requestType == "signup" %}
             <title>Sign Up</title>
         {% elif requestType == "edit" %}
@@ -8,63 +10,63 @@
         {% endif %}
     </head>
     <body>
-        {% if requestType == "signup" %}
-            <a href="{{ url_for('index') }}">&lt Back</a>
-            <h1>Sign Up</h1>
-        {% elif requestType == "edit" %}
-            <a href="{{ url_for('home') }}">&lt Back</a>
-            <h1>Edit Account</h1>
-        {% endif %}
-        <form id="form" onsubmit="return validateForm()" method="post">
-            {% if userData %}
-                <!--keeps track of the old email so we know which record to update in the database-->
-                <input type="hidden" name="oldEmail" value="{{ userData['email'] }}" required>
-            {% endif %}
-            <label for="emailInput">Email:</label>
-            <input type="email" id="emailInput" name="email" {% if userData %}value="{{ userData['email'] }}"{% endif %} required>
-            <br>
-            {% if emailTaken == "True" %}
-                <p>That email already has an account.</p>
-                <br>
-            {% endif %}
-            {% if emailValid == "False" %}
-                <p>That email is invalid.</p>
-                <br>
-            {% endif %}
-            <label for="usernameInput">Username:</label>
-            <input type="text" id="usernameInput" name="username" {% if userData %}value="{{ userData['username'] }}"{% endif %} required>
-            <br>
-            <label for="passwordInput">Password:</label>
-            <input type="password" id="passwordInput" name="password" required>
-            <br>
-            <label for="confirmPassword">Confirm Password:</label>
-            <input type="password" id="confirmPassword" name="passwordConfirm" required>
-            <br>
-            <label for="roomDropdown">Preferred Laundry Room:</label>
-            <select id="roomDropdown" name="preferredRoom">
-                {% for room in roomList %}
-                    {% if( (userData) and (room == userData['preferredRoom']) ) %}
-                        <option value='{{ room }}' selected>{{ room }}</option>
-                    {% else %}
-                        <option value='{{ room }}'>{{ room }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <br>
+        <div class="position">
             {% if requestType == "signup" %}
-                <button type="button" onclick="location.href='/index'">Cancel</button>
-                <input type="submit" value="Sign Up">
+                <a href="{{ url_for('index') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
+                <h1>Sign Up</h1>
             {% elif requestType == "edit" %}
-                <button type="button" onclick="location.href='/home'">Cancel</button>
-                <input type="submit" value="Save Changes">
+                <a href="{{ url_for('home') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
+                <h1>Edit Account</h1>
             {% endif %}
-        </form>
-        {% if requestType == "signup" %}
-            <script>document.getElementById('form').action="/signup"</script>
-        {% elif requestType == "edit" %}
-            <script>document.getElementById('form').action="/editaccount"</script>
-        {% endif %}
-
-        <script src="{{ url_for('static', filename='js/accountInfo.js') }}"></script>
+            <form id="form" onsubmit="return validateForm()" method="post" class="inputForm">
+                {% if userData %}
+                    <!--keeps track of the old email so we know which record to update in the database-->
+                    <input type="hidden" name="oldEmail" value="{{ userData['email'] }}" required>
+                {% endif %}
+                <label for="emailInput">Email:</label>
+                <input type="email" id="emailInput" name="email" {% if userData %}value="{{ userData['email'] }}"{% endif %} required>
+                
+                {% if emailTaken == "True" %}
+                    <p id="invalidMessage">That email already has an account.</p>
+                    <script>positionMessage()</script>
+                {% endif %}
+                {% if emailValid == "False" %}
+                    <p id="invalidMessage">That email is invalid.</p>
+                    <script>positionMessage()</script>
+                {% endif %}
+                <label for="usernameInput">Username:</label>
+                <input type="text" id="usernameInput" name="username" {% if userData %}value="{{ userData['username'] }}"{% endif %} required>
+                
+                <label for="passwordInput">Password:</label>
+                <input type="password" id="passwordInput" name="password" required>
+                
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="passwordConfirm" required>
+                
+                <label for="roomDropdown" class="roomDropdown">Preferred Laundry Room:</label>
+                <select id="roomDropdown" name="preferredRoom">
+                    {% for room in roomList %}
+                        {% if( (userData) and (room == userData['preferredRoom']) ) %}
+                            <option value='{{ room }}' selected>{{ room }}</option>
+                        {% else %}
+                            <option value='{{ room }}'>{{ room }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                
+                {% if requestType == "signup" %}
+                    <button type="button" onclick="location.href='/index'">Cancel</button>
+                    <input type="submit" value="Sign Up">
+                {% elif requestType == "edit" %}
+                    <button type="button" onclick="location.href='/home'">Cancel</button>
+                    <input type="submit" value="Save Changes">
+                {% endif %}
+            </form>
+            {% if requestType == "signup" %}
+                <script>document.getElementById('form').action="/signup"</script>
+            {% elif requestType == "edit" %}
+                <script>document.getElementById('form').action="/editaccount"</script>
+            {% endif %}
+        </div>
     </body>
 </html>
