@@ -122,8 +122,6 @@ def editAccount(emailTaken=False, emailValid=True):
 @l_app.route('/home')
 @login_required
 def home():
-    #TODO pull actual data from database and format better based on how database works
-
     # userMachines represents the machines that a user currently has checked out (is using)
     # allMachines shows all machines and their status
     # laundryRoomList contains the names of the laundry rooms
