@@ -23,12 +23,12 @@
                 </form>
                 {% if validLogin == "False" %}
                     <span id="invalidMessage">Invalid email or password</span> 
-                    <script>positionMessage()</script>
-                {% endif %}
-                <br>
-                <form action="/signup" class="signUp"><button type="submit" class="signUp">Sign Up</button></form>
-                <form action="passwordReset" class="forgotPassword"><button type="submit" class="forgotPassword">Forgot?</button></form>
+                    {% endif %}
+                    <br>
+                    <form action="/signup" class="signUp"><button type="submit" class="signUp">Sign Up</button></form>
+                    <form action="passwordReset" class="forgotPassword"><button type="submit" class="forgotPassword">Forgot?</button></form>
+                </div>
+                <script>positionMessage()</script>
             </div>
-        </div>
     </body>
 </html>
