@@ -17,7 +17,8 @@
         <div class="filterButtons">
             <button onclick="toggle(this)" class="toggleButton" id="WasherToggle" type="button">Washer</button>
             <button onclick="toggle(this)" class="toggleButton" id="DryerToggle" type="button">Dryer</button>
-            <select class="dropdownSelect" id="roomDropdown" name="preferredRoom">
+            <select class="dropdownSelect" id="roomDropdown" name="preferredRoom" onchange="updateDropdownFilter(this)">
+                <option value="all" selected>All Laundry Rooms</option>
                 {% for room in laundryRoomList %}
                     <option value='{{ room }}'>{{ room }}</option>
                 {% endfor %}
@@ -38,11 +39,11 @@
                 {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
                     <!--TODO implement filtering from above-->
                     {% if machine['available'] %}
-                    <div class="availableMachineBlock">
+                    <div class="availableMachineBlock" data-show-location="True" data-show-type="True">
                         <h3>Available</h3>
                         <div class="backgroundHighlight"></div>
                     {% else %}
-                    <div class="unavailableMachineBlock">
+                    <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True">
                         <h3>Unavailable</h3>
                         <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
                         <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>

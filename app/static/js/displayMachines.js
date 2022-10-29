@@ -9,20 +9,53 @@ function toggle(element) {
 
         document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
             if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
-                block.style.display = 'none'
+                block.dataset.showType = "False"
             }
         })
-
     } else {
         //Toggle on
         element.style.opacity = 1
 
         document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
             if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
-                block.style.display = 'block'
+                block.dataset.showType = "True"
             }
         })
     }
+
+    updateVisible()
+}
+
+//Updates room selection dropdown filter
+function updateDropdownFilter(dropdown) {
+    if(dropdown.value == 'all') {
+        //Make all machines visible
+        document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+            block.dataset.showLocation = "True"
+        })
+    } else {
+        //Make only selected room visible
+        document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+            if (block.querySelector('p.machineLocation').innerHTML.split("<br>")[1] != dropdown.value.split(" (")[0]) {
+                block.dataset.showLocation = "False"
+            } else {
+                block.dataset.showLocation = "True"
+            }
+        })
+    }
+
+    updateVisible()
+}
+
+
+function updateVisible() {
+    document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+            if (block.dataset.showType == "True" && block.dataset.showLocation == "True") {
+                block.style.display = 'block'
+            } else {
+                block.style.display = 'none'
+            }
+        })
 }
 
 
