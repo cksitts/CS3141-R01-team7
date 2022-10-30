@@ -32,10 +32,10 @@
             <h3>Check Out</h3>
             <p>Would you like to check out washer 3 from Wads 335E for one hour?</p>
             <p>Due back at 10:32pm</p>
-            <button onclick="closeDialog()">No</button> 
-            <button onclick="closeDialog()">X</button>
+            <button onclick="closeDialog()" class="nobutton">No</button> 
+            <button onclick="closeDialog()" class="closeButton">&times</button>
             <form action='/checkout/machineId'>
-                <input type="submit" value="Yes">
+                <input type="submit" value="Yes" class="yesbutton">
             </form>
         </div>
     </body>

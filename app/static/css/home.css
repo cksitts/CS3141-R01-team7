@@ -124,14 +124,75 @@ hr {
     position : fixed;
     top : 50%;
     left : 50%;
-    margin-left : -250px; /* half width */
+    margin-left : -200px; /* half width */
     margin-top : -100px; /* half height */
 
-    width : 500px;
+    width : 400px;
     height : 200px;
 
-    background-color : lightblue;
+    background-color : var(--main-light);
+    border : 2px solid var(--main-dark);
+    border-radius : 20px;
 }
+.checkoutDialog h3 {
+    position : absolute;
+    margin-top : 0;
+    top : 0;
+
+    width : 100%;
+    height : 40px;
+    line-height : 40px;
+    text-align : center;
+
+    background-color : var(--main-dark);
+    color : var(--light-text);
+    border-radius : 18px 18px 0px 0px;
+}
+.checkoutDialog p {
+    text-align : center;
+    margin-left : 1em;
+    margin-right : 1em;
+}
+.checkoutDialog p:first-of-type {
+    margin-top : 50px;
+}
+.checkoutDialog .closeButton {
+    position : absolute;
+    top : 0;
+    right : 0;
+    height : 40px;
+    width : 40px;
+
+    background-color: transparent;
+    color : var(--light-text);
+    border : none;
+    font-size : 1.75em;
+    border-radius : 0px 20px 0px 0px;
+}
+.checkoutDialog .closeButton:hover {
+    background-color : var(--hover-dark);
+}
+.checkoutDialog .nobutton, .checkoutDialog .yesbutton {
+    position : absolute;
+    bottom : 15px;
+
+    width : 40%;
+    height : 35px;
+
+    background-color: var(--main-dark);
+    color : var(--light-text);
+    border : none;
+}
+.checkoutDialog .nobutton {
+    left : 6%;
+}
+.checkoutDialog .yesbutton {
+    right : 6%;
+}
+.checkoutDialog .nobutton:hover, .checkoutDialog .yesbutton:hover {
+    background-color : var(--hover-dark);
+}
+
 
 /* ------------------------- */
 /* Footer */
