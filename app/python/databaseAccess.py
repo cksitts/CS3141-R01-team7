@@ -1,6 +1,8 @@
 from app import mysql
 from app.python import helper
 from time import time
+from waiting import wait, TimeoutExpired
+from app.python.constant import VERIFICATION_TIMEOUT
 
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
@@ -61,7 +63,6 @@ def getLaundryRooms():
     cursor.close()
 
     # return the list as an array
-    print(rooms)
     return rooms
 
 
@@ -116,8 +117,23 @@ def checkEmailTaken(email):
         return False
 
 
-# Registers a new user in the database
-# Returns 0 if successful, otherwise 1
+# Global variable to store form information until users can be added to the database
+# FIXME is this a security issue?
+verificationDict = {}
+
+#Stores form data with the verification code as the key
+def storeUser(form, verificationCode):
+    verificationDict[verificationCode] = form
+
+# Registers a new user in the database (from verification code)
+# Returns new user's username (for use in other functions)
+def verifyUser(verificationCode):
+    username = registerUser(verificationDict[verificationCode])
+    verificationDict.pop(verificationCode)
+    return username
+
+# Registers a new user in the database (from form data)
+# Returns new user's username (for use in other functions)
 def registerUser(form):
     # connect to the database with cursor
     # TODO use ACID transactions to help with concurrent queries
@@ -134,8 +150,7 @@ def registerUser(form):
     # close the database connection
     cursor.close()
     mysql.connection.commit()
-
-    return 0
+    return form['username']
 
 
 # Updates a current user in the database

@@ -1,3 +1,4 @@
+from crypt import methods
 from functools import wraps
 
 from flask import render_template, redirect, url_for, abort
@@ -61,21 +62,21 @@ def signup():
         email = request.form['email'] # get the email from the form
         if(db.checkEmailTaken(email)): #Checks if email is taken
             return redirect(url_for('signup', emailTaken=True))
-        else: #TODO make a page show up to prompt the user to check their email
-            if(emailManagement.isValid(email, request.url_root)): #will pause execution until the code is verified (sends the root url to generate a custom verification url)
-                #Adds the user to the database
-                db.registerUser(request.form)
-                session['username'] = request.form['username'] #registers that a user has signed in (by signing up they are automatically signed in)
-                return redirect(url_for('home')) #redirect to home page
-            else:
-                return redirect(url_for('signup', emailValid=False))
+        else:
+            session['verificationCode'] = emailManagement.sendSignupEmail(email, request.url_root)
+            db.storeUser(request.form, session['verificationCode']) #Stores the user information for adding to the database later
+            return render_template('checkEmail.html')
+
 
 
 @l_app.route('/verify/<verificationCode>')
-def verify(verificationCode=''):
-    if(emailManagement.verifyCode(verificationCode) == 0):
+def verify(verificationCode):
+    if(verificationCode == session.get('verificationCode')):
         # successful verification
-        return "Verified" #TODO make verified html page
+        username = db.verifyUser(verificationCode) #approves the user to be added to the database
+        session.pop('verificationCode') #clears the used session data
+        session['username'] = username #registers that a user has signed in (by signing up they are automatically signed in)
+        return redirect(url_for('home')) #redirect to home page
     else:
         # unsuccessful
         abort(500)

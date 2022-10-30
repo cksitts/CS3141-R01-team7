@@ -41,29 +41,3 @@ def sendSignupEmail(to, url):
     sendEmail("Your link will expire in 5 minutes.\nClick to verify: {}verify/{}".format(url,code), to)
     print("Click to verify: {}verify/{}".format(url,code)) #TEMP prints the verification link as well as emailing
     return code
-
-
-#Global variable to keep track of which codes still need to be verified
-verificationDict = {}
-
-# Validates an email
-# Returns true if valid, otherwise false
-def isValid(email, url) :
-    code = sendSignupEmail(email, url) #sends an email with a verification link
-    verificationDict[code] = False #adds the code to the verificationDict
-    try:
-        # waits until the user goes to the verification page
-        wait(lambda : True if verificationDict[code] == True else False, timeout_seconds = constant.VERIFICATION_TIMEOUT)
-    except TimeoutExpired:
-        # timed out
-        return False
-    verificationDict.pop(code) #removes the code from the verificationDict
-    return True
-
-# Sets a verification code in the dict as verified
-def verifyCode(code):
-    if(code in verificationDict):
-        verificationDict[code] = True
-        return 0
-    else:
-        return 1
