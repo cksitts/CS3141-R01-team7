@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/machineGrid.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/displayMachines.css') }}">
         <script src="{{ url_for('static', filename='js/displayMachines.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/checkoutMachine.js') }}"></script>
         <title>Display Machines</title>
     </head>
     <body>
@@ -58,8 +59,7 @@
                     <script>document.currentScript.previousElementSibling.innerHTML += getRoom("{{ machine['machine-id'] }}")</script>
 
                     {% if machine['available'] %}
-                        <!--TODO button functionality-->
-                        <button type="button">Check Out</button>
+                        <button type="button" onclick='showCheckoutDialog("{{ machine }}")'>Check Out</button>
                     {% endif %}
                     </div>
                 {% endif %}

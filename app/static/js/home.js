@@ -1,3 +1,4 @@
+//Profile info dropdown animation
 function dropdownDown() {
     document.getElementById('profileDropdown').style.animationName = 'dropdownAnimation';
     document.getElementById('profileDropdown').style.animationPlayState = 'running';

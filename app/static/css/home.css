@@ -117,6 +117,23 @@ hr {
 }
 
 /* ------------------------- */
+/* Checkout Machine Box */
+.checkoutDialog {
+    display : none;
+    
+    position : fixed;
+    top : 50%;
+    left : 50%;
+    margin-left : -250px; /* half width */
+    margin-top : -100px; /* half height */
+
+    width : 500px;
+    height : 200px;
+
+    background-color : lightblue;
+}
+
+/* ------------------------- */
 /* Footer */
 footer {
     background-color : var(--main-dark);

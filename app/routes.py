@@ -131,3 +131,10 @@ def home():
     roomList = db.getLaundryRooms()
     
     return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
+
+
+@l_app.route('/checkout/<machineId>')
+@login_required
+def checkout(machineId):
+    #TODO checkout machine functionality
+    return redirect(url_for('home')) #redrect to home page
