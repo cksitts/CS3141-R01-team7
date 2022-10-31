@@ -1,15 +1,6 @@
 from app import mysql
 from app.python import helper
-from time import time
 from app.python.constant import VERIFICATION_TIMEOUT
-
-#Returns the time remaining given a machine start time
-def getTimeRemaining(startTime): # start time (SEC) 1666901715
-    current_time = int(time())
-    time_elapsed = int( (current_time - startTime) / 60 )      # the time that the machine has left until finishing (MIN)
-    return (60 - time_elapsed) if (time_elapsed < 60 and time_elapsed >= 0) else 0
-
-
 
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
@@ -37,8 +28,9 @@ def getLaundryRooms():
     # all distinct room numbers and their building
     cursor.execute( '''     SELECT DISTINCT
 	                            SUBSTRING_INDEX(machine_id, '_', 1) as Room,
-                                SUBSTRING_INDEX(substring_index(machine_id, '_', -2), '_' ,1) as Building
-                            FROM Machine;
+                                SUBSTRING_INDEX(SUBSTRING_INDEX(machine_id, '_', -2), '_' ,1) as Building
+                            FROM Machine
+                            WHERE NOT machine_id='';
                     ''' )
     all_room_tuples = cursor.fetchall()
 
@@ -56,10 +48,7 @@ def getLaundryRooms():
         rooms.append(room + " " + building)
 
     # all distinct locations
-    cursor.execute( '''     SELECT DISTINCT
-	                        LOCATION as Location
-                            from Machine;
-                    ''' )
+    cursor.execute( ''' SELECT DISTINCT location FROM Machine WHERE NOT location='' ''' )
     all_room_tuples = cursor.fetchall()
 
     i = 0
@@ -87,12 +76,13 @@ def getAllMachines():
                                 SELECT machine_id, username, time_started, 0 AS available 
                                 FROM Machine NATURAL JOIN UsingMachine
                             ) inUseMachines
+                            WHERE NOT machine_id=''
                     ''' )
     all_machine_tuples = cursor.fetchall()
 
     for t in all_machine_tuples:
         machines.append({  'machine-id' : t[0], 'machine-type' : t[1], 'location' : t[2],    
-                            'username' : t[3], 'time-remaining' : getTimeRemaining(int(t[4])), 'available' : bool(t[5]) })
+                            'username' : t[3], 'time-remaining' : helper.getTimeRemaining(int(t[4])), 'available' : bool(t[5]) })
 
     cursor.close()
 
@@ -174,21 +164,16 @@ def getUserMachines(username):
     cursor = mysql.connection.cursor()      # open database connection
 
     # all machines, doesn't show whether or not they are in use.
-    cursor.execute( '''     SELECT 
-                            a.machine_id				AS machine_id, 
-                            b.machine_type				AS machine_type,
-                            b.location					AS location,
-                            a.time_started				AS time_started
-                            FROM UsingMachine a, Machine b
-                            WHERE 
-                            a.machine_id = b.machine_id AND
-                            a.username = '{}';
-                    '''.format(username) )
+    cursor.execute( ''' 
+                        SELECT machine_id, machine_type, location, time_started
+                        FROM UsingMachine NATURAL JOIN Machine
+                        WHERE username = %s
+                    ''', (username,) )
     all_machine_tuples = cursor.fetchall()
 
     for t in all_machine_tuples:
         machines.append({  'machine-id' : t[0], 'machine-type' : t[1], 'location' : t[2], 
-                            'time-remaining' : getTimeRemaining(int(t[3]))  })
+                            'time-remaining' : helper.getTimeRemaining(int(t[3]))  })
 
     cursor.close()
 
@@ -200,6 +185,22 @@ def getUserMachines(username):
 # Marks a machine as checked out to a user
 def checkout(machineID, username):
     #TODO checkout(machineID, username)
+    # update UsingMachine with the correct info
+    # TODO get the user email
+
+    cursor = mysql.connection.cursor()
+    # get the user's email
+    cursor.execute(''' SELECT email FROM MachineUser WHERE username=%s ''', (username,))
+    t = cursor.fetchall()
+    email = t[0]
+
+    # add this machine to the UsingMachine table
+    # TODO isolated transactions with a write lock so that simultaneous writes cannot occur
+    cursor.execute(''' INSERT INTO UsingMachine VALUE (%s, %s, %s, %s) ''', (machineID, email, username, helper.getCurrentTime()))
+
+    cursor.close()
+    mysql.connection.commit()
+
     print(machineID + " checked out to " + username)
     return 0
 
@@ -207,6 +208,14 @@ def checkout(machineID, username):
 
 # Marks a machine as checked in by a user
 def checkin(machineID, username):
-    #TODO checkin(machineID, username)
+    cursor = mysql.connection.cursor()
+
+    #TODO WRITE LOCK
+    # remove this machine from the UsingMachine table
+    cursor.execute(''' DELETE FROM UsingMachine WHERE machine_id=%s AND username=%s ''', (machineID, username))
+
+    cursor.close()
+    mysql.connection.commit()
+
     print(machineID + " checked in by " + username)
     return 0

@@ -147,7 +147,7 @@ def checkout(machineId):
 def checkin(machineId):
     if(db.checkin(machineId, session['username']) == 0):
         #successful
-        return redirect(url_for('home')) #redrect to home page
+        return redirect(url_for('home')) #redirect to home page
     else:
         #unsuccessful
         abort(500)

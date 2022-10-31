@@ -1,5 +1,6 @@
 import secrets
 from hashlib import sha256
+from time import time
 
 """
 Generate just a hash for an input string.
@@ -31,3 +32,13 @@ def generateHashAndSalt(password):
     _hash = getHash( str(password + salt) )
 
     return [_hash, salt]                             # return the tuple
+
+#Returns the time remaining given a machine start time
+def getTimeRemaining(startTime): # start time (SEC)
+    current_time = int(time())
+    time_elapsed = int( (current_time - startTime) / 60 )      # the time that the machine has left until finishing (MIN)
+    return (60 - time_elapsed) if (time_elapsed < 60 and time_elapsed >= 0) else 0
+
+# Returns the current time as an integer in the form that other functions expect
+def getCurrentTime():
+    return int(time())
