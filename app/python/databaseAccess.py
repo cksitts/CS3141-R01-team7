@@ -3,6 +3,14 @@ from app.python import helper
 from time import time
 from app.python.constant import VERIFICATION_TIMEOUT
 
+#Returns the time remaining given a machine start time
+def getTimeRemaining(startTime): # start time (SEC) 1666901715
+    current_time = int(time())
+    time_elapsed = int( (current_time - startTime) / 60 )      # the time that the machine has left until finishing (MIN)
+    return (60 - time_elapsed) if (time_elapsed < 60 and time_elapsed >= 0) else 0
+
+
+
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
 def validLogin(username, password):
@@ -84,13 +92,8 @@ def getAllMachines():
     all_machine_tuples = cursor.fetchall()
 
     for t in all_machine_tuples:
-        start_time = int(t[4])                                  # start time (SEC) 1666901715
-        current_time = int(time())
-        time_elapsed = int( (current_time - start_time) / 60 )      # the time that the machine has left until finishing (MIN)
-        time_remaining = (60 - time_elapsed) if (time_elapsed < 60 and time_elapsed >= 0) else 0
-
         machines.append({  'machine-id' : t[0], 'machine-type' : t[1], 'location' : t[2],    
-                            'username' : t[3], 'time-remaining' : time_remaining, 'available' : bool(t[5]) })
+                            'username' : t[3], 'time-remaining' : getTimeRemaining(int(t[4])), 'available' : bool(t[5]) })
 
     cursor.close()
 
@@ -168,7 +171,31 @@ def getUserData(username):
 # Returns a list of machines that the user has checked out
 def getUserMachines(username):
     #TODO getUserMachines(username)
-    return[]
+    machines = []                           # array holds all machines
+
+    cursor = mysql.connection.cursor()      # open database connection
+
+    # all machines, doesn't show whether or not they are in use.
+    cursor.execute( '''     SELECT 
+                            a.machine_id				AS machine_id, 
+                            b.machine_type				AS machine_type,
+                            b.location					AS location,
+                            a.time_started				AS time_started
+                            FROM UsingMachine a, Machine b
+                            WHERE 
+                            a.machine_id = b.machine_id AND
+                            a.username = '{}';
+                    '''.format(username) )
+    all_machine_tuples = cursor.fetchall()
+
+    for t in all_machine_tuples:
+        machines.append({  'machine-id' : t[0], 'machine-type' : t[1], 'location' : t[2], 
+                            'time-remaining' : getTimeRemaining(int(t[3]))  })
+
+    cursor.close()
+
+    # return the list as an array
+    return machines
 
 
 

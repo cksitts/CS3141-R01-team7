@@ -1,7 +1,6 @@
 import secrets
 import smtplib
 import os
-from waiting import wait, TimeoutExpired
 
 from app.python import constant
 
