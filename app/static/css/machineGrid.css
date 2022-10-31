@@ -121,5 +121,5 @@
 /* Grid Layout */
 .gridContainer {
     display : grid;
-    grid-template-columns : auto auto auto auto auto auto auto;
+    grid-template-columns : auto auto auto auto auto auto auto; /* TODO make number of columns responsive to page width */
 }

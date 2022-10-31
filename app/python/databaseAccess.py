@@ -202,3 +202,11 @@ def checkout(machineID, username):
     #TODO checkout(machineID, username)
     print(machineID + " checked out to " + username)
     return 0
+
+
+
+# Marks a machine as checked in by a user
+def checkin(machineID, username):
+    #TODO checkin(machineID, username)
+    print(machineID + " checked in by " + username)
+    return 0

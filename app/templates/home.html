@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
         <script src="{{ url_for('static', filename='js/home.js') }}"></script>
         <script src="{{ url_for('static', filename='js/checkoutMachine.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/checkinMachine.js') }}"></script>
         <title>Home</title>
     </head>
     <header>
@@ -32,8 +33,18 @@
             <h3>Check Out</h3>
             <p>Would you like to check out washer 3 from Wads 335E for one hour?</p>
             <p>Due back at 10:32pm</p>
-            <button onclick="closeDialog()" class="nobutton">No</button> 
-            <button onclick="closeDialog()" class="closeButton">&times</button>
+            <button onclick="closeCheckoutDialog()" class="nobutton">No</button> 
+            <button onclick="closeCheckoutDialog()" class="closeButton">&times</button>
+            <form action='/checkout/machineId'>
+                <input type="submit" value="Yes" class="yesbutton">
+            </form>
+        </div>
+        <!-- Machine Checkin Dialog -->
+        <div class="checkinDialog" id="checkinDialogDiv"> 
+            <h3>Check In</h3>
+            <p>Would you like to check in washer 3 from Wads 335E?</p>
+            <button onclick="closeCheckinDialog()" class="nobutton">No</button> 
+            <button onclick="closeCheckinDialog()" class="closeButton">&times</button>
             <form action='/checkout/machineId'>
                 <input type="submit" value="Yes" class="yesbutton">
             </form>

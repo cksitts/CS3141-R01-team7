@@ -33,6 +33,7 @@ function showCheckoutDialog(machine) {
 
 
 //Close dialog box
-function closeDialog() {
+function closeCheckoutDialog() {
+    div = document.getElementById('checkoutDialogDiv')
     div.style.display = 'none'
 }

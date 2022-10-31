@@ -142,3 +142,14 @@ def checkout(machineId):
     else:
         #unsuccessful
         abort(500)
+
+
+@l_app.route('/checkin/<machineId>')
+@login_required
+def checkin(machineId):
+    if(db.checkin(machineId, session['username']) == 0):
+        #successful
+        return redirect(url_for('home')) #redrect to home page
+    else:
+        #unsuccessful
+        abort(500)

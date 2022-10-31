@@ -118,8 +118,8 @@ hr {
 }
 
 /* ------------------------- */
-/* Checkout Machine Box */
-.checkoutDialog {
+/* Checkout/Checkin Machine Box */
+.checkoutDialog, .checkinDialog {
     display : none;
     
     position : fixed;
@@ -135,7 +135,7 @@ hr {
     border : 2px solid var(--main-dark);
     border-radius : 20px;
 }
-.checkoutDialog h3 {
+.checkoutDialog h3, .checkinDialog h3 {
     position : absolute;
     margin-top : 0;
     top : 0;
@@ -149,7 +149,7 @@ hr {
     color : var(--light-text);
     border-radius : 18px 18px 0px 0px;
 }
-.checkoutDialog p {
+.checkoutDialog p, .checkinDialog p {
     text-align : center;
     margin-left : 1em;
     margin-right : 1em;
@@ -157,7 +157,10 @@ hr {
 .checkoutDialog p:first-of-type {
     margin-top : 50px;
 }
-.checkoutDialog .closeButton {
+.checkinDialog p:first-of-type {
+    margin-top : 75px;
+}
+.closeButton {
     position : absolute;
     top : 0;
     right : 0;
@@ -170,11 +173,11 @@ hr {
     font-size : 1.75em;
     border-radius : 0px 20px 0px 0px;
 }
-.checkoutDialog .closeButton:hover {
+.closeButton:hover {
     background-color : var(--hover-dark);
     cursor : pointer;
 }
-.checkoutDialog .nobutton, .checkoutDialog .yesbutton {
+.nobutton, .yesbutton {
     position : absolute;
     bottom : 15px;
 
@@ -183,15 +186,15 @@ hr {
 
     background-color: var(--main-dark);
     color : var(--light-text);
-    border : none;
+    font-size : 1em;
 }
-.checkoutDialog .nobutton {
+.nobutton {
     left : 6%;
 }
-.checkoutDialog .yesbutton {
+.yesbutton {
     right : 6%;
 }
-.checkoutDialog .nobutton:hover, .checkoutDialog .yesbutton:hover {
+.nobutton:hover, .yesbutton:hover {
     background-color : var(--hover-dark);
     cursor : pointer;
 }

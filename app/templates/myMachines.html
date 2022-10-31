@@ -4,11 +4,11 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/myMachines.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/runningMachineAnimation.css') }}">
         <script src="{{ url_for('static', filename='js/myMachines.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/checkinMachine.js') }}"></script>
         <title>My Machines</title>
     </head>
     <body>
         <h2>My Machines</h2> 
-        <!--TODO get list of user machines in a more efficient way-->
         {% for machine in userMachines | sort(attribute='time-remaining') %}
             <!--TODO check in button-->
             <div class="machineInfo">
@@ -25,6 +25,7 @@
                     <p class="timeRemainingDone">Done</p>
                     <progress class="timeRemainingDone" id="progressBar" value="60" max="60"></progress>
                     <div class="doneHighlight"></div>
+                    <button type="button" id="checkoutButton" onclick='showCheckinDialog("{{ machine }}")'>Check In</button>
                 {% else %}
                     <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
                     <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress>
