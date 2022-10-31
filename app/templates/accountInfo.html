@@ -55,17 +55,17 @@
                 </select>
                 
                 {% if requestType == "signup" %}
-                    <button type="button" onclick="location.href='/index'">Cancel</button>
+                    <a href="{{ url_for('index') }}">Cancel</a>
                     <input type="submit" value="Sign Up">
                 {% elif requestType == "edit" %}
-                    <button type="button" onclick="location.href='/home'">Cancel</button>
+                    <a href="{{ url_for('home') }}">Cancel</a>
                     <input type="submit" value="Save Changes">
                 {% endif %}
             </form>
             {% if requestType == "signup" %}
-                <script>document.getElementById('form').action="/signup"</script>
+                <script>document.getElementById('form').action="{{ url_for('signup') }}"</script>
             {% elif requestType == "edit" %}
-                <script>document.getElementById('form').action="/editaccount"</script>
+                <script>document.getElementById('form').action="{{ url_for('editaccount') }}"</script>
             {% endif %}
         </div>
     </body>

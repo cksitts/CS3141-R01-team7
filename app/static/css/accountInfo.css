@@ -21,7 +21,7 @@ form.inputForm {
 }
 
 /* Cancel & Sign Up Buttons */
-.inputForm button, .inputForm input[type=submit] {
+.inputForm a, .inputForm input[type=submit] {
     width : 35%;
     margin-top : 25px;
     padding : 10px 0px;
@@ -30,13 +30,20 @@ form.inputForm {
     border-width : 2px solid var(--main-dark);
     border-radius: 5px;
     background-color: var(--main-light);
+    color : var(--dark-text);
 }
-.inputForm button:hover, .inputForm input[type=submit]:hover {
+.inputForm a:hover, .inputForm input[type=submit]:hover {
     background-color : var(--hover-light);
     cursor : pointer;
 }
-.inputForm button {
+.inputForm a {
     margin-left : 12%;
+
+    /* Make it look like a button */
+    display : inline-block;
+    text-align : center;
+    text-decoration : none;
+    border : 1.5px outset rgb(118,118,118);
 }
 .inputForm input[type=submit] {
     margin-left : 6%;
