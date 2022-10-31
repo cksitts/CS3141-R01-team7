@@ -45,10 +45,23 @@ function updateDropdownFilter(dropdown) {
     updateVisible()
 }
 
+//Updates time slider filter
+function updateSliderFilter(form) {
+    document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+        if(block.querySelector('h3').innerHTML == 'Unavailable' && parseInt(block.querySelector('p.timeRemaining').innerHTML.split(' ')[0]) > parseInt(timeInput.value)) {
+           block.dataset.showTime = "False"
+        } else {
+            block.dataset.showTime = "True" //filter doesn't affect available machines
+        }
+    })
+
+    updateVisible()
+}
+
 
 function updateVisible() {
     document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
-            if (block.dataset.showType == "True" && block.dataset.showLocation == "True") {
+            if (block.dataset.showType == "True" && block.dataset.showLocation == "True" && block.dataset.showTime == "True") {
                 block.style.display = 'block'
             } else {
                 block.style.display = 'none'

@@ -26,7 +26,7 @@
             </select>
             <br>
         {% if filter == 'unavailable' %}
-            <form oninput="timeSliderValue.value=parseInt(timeInput.value) + ' minutes'">
+            <form oninput="timeSliderValue.value=parseInt(timeInput.value) + ' minutes'; updateSliderFilter(this)">
                 <label for="timeInput" class="timeSlider">Max time remaining:</label>
                 <input type="range" id="timeInput" class="timeSlider" min="0" max="60" value="60">
                 <output id="timeSliderValue" for="timeInput" class="timeSlider">60 minutes</output> <!--TODO time slider filter functionality-->
