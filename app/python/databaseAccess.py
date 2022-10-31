@@ -74,7 +74,6 @@ def getLaundryRooms():
 
 
 # Returns a list of all machines and their data from the database
-# TODO machines that are specifically in use (we will just have to decide how we want to get this data)
 #   - in use machines is a subset of all machines
 def getAllMachines():
     machines = []                           # array holds all machines
@@ -170,7 +169,6 @@ def getUserData(username):
 
 # Returns a list of machines that the user has checked out
 def getUserMachines(username):
-    #TODO getUserMachines(username)
     machines = []                           # array holds all machines
 
     cursor = mysql.connection.cursor()      # open database connection

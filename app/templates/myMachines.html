@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/myMachines.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/runningMachineAnimation.css') }}">
         <script src="{{ url_for('static', filename='js/myMachines.js') }}"></script>
         <title>My Machines</title>
     </head>
@@ -27,6 +28,7 @@
                 {% else %}
                     <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
                     <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress>
+                    <script>document.currentScript.parentElement.firstElementChild.classList.add('running')</script>
                 {% endif %}
             </div>
             <br><br>
