@@ -1,7 +1,6 @@
 from app import mysql
 from app.python import helper
 from time import time
-from waiting import wait, TimeoutExpired
 from app.python.constant import VERIFICATION_TIMEOUT
 
 # Checks if a given username/password is in the database
