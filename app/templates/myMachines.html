@@ -10,7 +10,6 @@
     <body>
         <h2>My Machines</h2> 
         {% for machine in userMachines | sort(attribute='time-remaining') %}
-            <!--TODO check in button-->
             <div class="machineInfo">
                 {% if machine['machine-type'] == 'Washer' %}
                     <img src="{{ url_for('static', filename='images/full_washer_icon.png') }}">

@@ -21,12 +21,10 @@ def login_required(f):
 #Error handling
 @l_app.errorhandler(404)
 def page_not_found(error):
-    #TODO return render_template('404.html'), 404
-    return "Page not found, 404", 404
+    return render_template('error404.html'), 404
 @l_app.errorhandler(500)
 def internal_error(error):
-    #TODO return render_template('500.html'), 500
-    return "Internal server error, 500", 500
+    return render_template('error500.html'), 500
 
 
 @l_app.route('/')
@@ -87,7 +85,7 @@ def verify(verificationCode):
 @login_required
 def passwordReset():
     #TODO whole method (return 501 means not implemented)
-    return "password reset", 501
+    return render_template('passwordReset.html'), 501
 
 
 @l_app.route('/editaccount', methods=['GET','POST'])
