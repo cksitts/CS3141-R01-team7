@@ -12,9 +12,9 @@
                 <!--TODO check in button-->
                 <div class="machineInfo">
                     {% if machine['type'] == 'washer' %}
-                        <img src="{{ url_for('static', filename='images/washer_icon.png') }}">
+                        <img src="{{ url_for('static', filename='images/full_washer_icon.png') }}">
                     {% else %}
-                        <img src="{{ url_for('static', filename='images/dryer_icon.png') }}">
+                        <img src="{{ url_for('static', filename='images/full_dryer_icon.png') }}">
                     {% endif %}
 
                     <p class="info">{{ machine['type'] | capitalize }} - {{ machine['location'] }}</p>

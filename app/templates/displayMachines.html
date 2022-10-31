@@ -38,20 +38,29 @@
             {% for machine in allMachines | sort(attribute='time-remaining') %}
                 {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
                     {% if machine['available'] %}
-                    <div class="availableMachineBlock" data-show-location="True" data-show-type="True">
-                        <h3>Available</h3>
-                        <div class="backgroundHighlight"></div>
+                        <div class="availableMachineBlock" data-show-location="True" data-show-type="True">
+                            <h3>Available</h3>
+                            <div class="backgroundHighlight"></div>
                     {% else %}
-                    <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True">
-                        <h3>Unavailable</h3>
-                        <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
-                        <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
+                        <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True">
+                            <h3>Unavailable</h3>
+                            <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
+                            <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
                     {% endif %}
 
-                    {% if machine['machine-type'] == 'Washer' %}
-                        <img src="{{ url_for('static', filename='images/washer_icon.png') }}">
-                    {% else %}
-                        <img src="{{ url_for('static', filename='images/dryer_icon.png') }}">
+                    <!-- Chooses which image to display -->
+                    {% if (machine['available']) and (machine['machine-type'] == 'Washer') %}
+                        <!-- Available Washer -->
+                        <img src="{{ url_for('static', filename='images/empty_washer_icon.png') }}">
+                    {% elif (machine['available']) and (machine['machine-type'] == 'Dryer') %}
+                        <!-- Available Dryer -->
+                        <img src="{{ url_for('static', filename='images/empty_dryer_icon.png') }}">
+                    {% elif (not machine['available']) and (machine['machine-type'] == 'Washer') %}
+                        <!-- Unavailable Washer -->
+                        <img src="{{ url_for('static', filename='images/full_washer_icon.png') }}">
+                    {% elif (not machine['available']) and (machine['machine-type'] == 'Dryer') %}
+                        <!-- Unavailable Dryer -->
+                        <img src="{{ url_for('static', filename='images/full_dryer_icon.png') }}">
                     {% endif %}
 
                     <p class="machineType">{{ machine['machine-type'] }}</p>

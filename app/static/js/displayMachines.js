@@ -1,5 +1,4 @@
 //TODO make text full opacity when background isn't
-
 //Element parameter is the button being clicked, this counteracts the fact that Jinja creates multiple buttons with the same ID
 function toggle(element) {
     if(getComputedStyle(element).getPropertyValue("opacity") == 1) {
