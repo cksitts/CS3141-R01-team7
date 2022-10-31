@@ -46,3 +46,10 @@
 .filterButtons label.timeSlider, .filterButtons output.timeSlider {
     font-size : 0.85em;
 }
+
+
+
+/* TODO In Use Machine Animation */
+.running {
+    background-color : blue;
+}
