@@ -5,9 +5,11 @@
         <title>My Machines</title>
     </head>
     <body>
-        <h2>My Machines</h2>
+        <h2>My Machines</h2> 
+        <!--TODO get list of user machines in a more efficient way-->
         {% for machine in allMachines | sort(attribute='time-remaining') %}
             {% if machine['code'] in userMachines %}
+                <!--TODO check in button-->
                 <div class="machineInfo">
                     {% if machine['type'] == 'washer' %}
                         <img src="{{ url_for('static', filename='images/washer_icon.png') }}">

@@ -168,5 +168,13 @@ def getUserData(username):
 
 # Returns a list of machines that the user has checked out
 def getUserMachines(username):
-    #TODO
+    #TODO getUserMachines(username)
     return[]
+
+
+
+# Marks a machine as checked out to a user
+def checkout(machineID, username):
+    #TODO checkout(machineID, username)
+    print(machineID + " checked out to " + username)
+    return 0

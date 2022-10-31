@@ -24,7 +24,6 @@
 }
 
 /* Input Icons */
-/*BUG when a user uses a suggested input the image disappears*/
 .inputForm #usernameInput {
     background-image : url("https://img.icons8.com/material-outlined/344/user--v1.png");
     background-repeat : no-repeat;

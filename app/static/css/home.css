@@ -37,6 +37,7 @@ header > h1 {
 }
 .dropdownButton:hover {
     background-color: var(--hover-light);
+    cursor : pointer;
 }
 /* Dropdown Content */
 .dropdownContent {
@@ -171,6 +172,7 @@ hr {
 }
 .checkoutDialog .closeButton:hover {
     background-color : var(--hover-dark);
+    cursor : pointer;
 }
 .checkoutDialog .nobutton, .checkoutDialog .yesbutton {
     position : absolute;
@@ -191,6 +193,7 @@ hr {
 }
 .checkoutDialog .nobutton:hover, .checkoutDialog .yesbutton:hover {
     background-color : var(--hover-dark);
+    cursor : pointer;
 }
 
 
@@ -218,4 +221,5 @@ footer {
 }
 .footerLinks > a:hover {
     color : var(--hover-light);
+    cursor : pointer;
 }

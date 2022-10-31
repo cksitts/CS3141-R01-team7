@@ -136,5 +136,9 @@ def home():
 @l_app.route('/checkout/<machineId>')
 @login_required
 def checkout(machineId):
-    #TODO checkout machine functionality
-    return redirect(url_for('home')) #redrect to home page
+    if(db.checkout(machineId, session['username']) == 0):
+        #successful
+        return redirect(url_for('home')) #redrect to home page
+    else:
+        #unsuccessful
+        abort(500)

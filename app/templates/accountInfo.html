@@ -18,7 +18,7 @@
                 <a href="{{ url_for('home') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
                 <h1>Edit Account</h1>
             {% endif %}
-            <form id="form" onsubmit="return validateForm()" method="post" class="inputForm">
+            <form id="form" onsubmit="return validateForm()" method="post" class="inputForm" autocomplete='off'>
                 {% if userData %}
                     <!--keeps track of the old email so we know which record to update in the database-->
                     <input type="hidden" name="oldEmail" value="{{ userData['email'] }}" required>

@@ -33,6 +33,7 @@ form.inputForm {
 }
 .inputForm button:hover, .inputForm input[type=submit]:hover {
     background-color : var(--hover-light);
+    cursor : pointer;
 }
 .inputForm button {
     margin-left : 12%;

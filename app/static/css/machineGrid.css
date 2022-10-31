@@ -70,6 +70,7 @@
 }
 .availableMachineBlock > button:hover {
     background-color: var(--hover-dark);
+    cursor : pointer;
 }
 
 
