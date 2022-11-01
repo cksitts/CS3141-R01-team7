@@ -12,7 +12,7 @@
         <div class="rightCol">
             <div class="position">
                 <h2>Sign In</h2>
-                <form action="login" method="post" class="inputForm" autocomplete="off">
+                <form action="{{ url_for('index') }}" method="post" class="inputForm" autocomplete="off">
                     <label for="usernameInput">Username:</label>
                     <input type="text" id="usernameInput" name="username" required>
                     <br>
@@ -25,8 +25,8 @@
                     <span id="invalidMessage">Invalid email or password</span> 
                     {% endif %}
                     <br>
-                    <form action="/signup" class="signUp"><button type="submit" class="signUp">Sign Up</button></form>
-                    <form action="passwordReset" class="forgotPassword"><button type="submit" class="forgotPassword">Forgot?</button></form>
+                    <form action="{{ url_for('signup') }}" class="signUp"><button type="submit" class="signUp">Sign Up</button></form>
+                    <form action="{{ url_for('passwordReset') }}" class="forgotPassword"><button type="submit" class="forgotPassword">Forgot?</button></form>
                 </div>
                 <script>positionMessage()</script>
             </div>
