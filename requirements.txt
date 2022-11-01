@@ -8,6 +8,5 @@ MarkupSafe==2.1.1
 mysqlclient==2.1.1
 numpy==1.23.4
 python-dotenv==0.21.0
-waiting==1.4.1
 Werkzeug==2.2.2
 zipp==3.9.0

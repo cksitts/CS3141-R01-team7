@@ -18,7 +18,7 @@
                 <a href="{{ url_for('home') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
                 <h1>Edit Account</h1>
             {% endif %}
-            <form id="form" onsubmit="return validateForm()" method="post" class="inputForm">
+            <form id="form" onsubmit="return validateForm()" method="post" class="inputForm" autocomplete='off'>
                 {% if userData %}
                     <!--keeps track of the old email so we know which record to update in the database-->
                     <input type="hidden" name="oldEmail" value="{{ userData['email'] }}" required>
@@ -55,17 +55,17 @@
                 </select>
                 
                 {% if requestType == "signup" %}
-                    <button type="button" onclick="location.href='/index'">Cancel</button>
+                    <a href="{{ url_for('index') }}">Cancel</a>
                     <input type="submit" value="Sign Up">
                 {% elif requestType == "edit" %}
-                    <button type="button" onclick="location.href='/home'">Cancel</button>
+                    <a href="{{ url_for('home') }}">Cancel</a>
                     <input type="submit" value="Save Changes">
                 {% endif %}
             </form>
             {% if requestType == "signup" %}
-                <script>document.getElementById('form').action="/signup"</script>
+                <script>document.getElementById('form').action="{{ url_for('signup') }}"</script>
             {% elif requestType == "edit" %}
-                <script>document.getElementById('form').action="/editaccount"</script>
+                <script>document.getElementById('form').action="{{ url_for('editaccount') }}"</script>
             {% endif %}
         </div>
     </body>

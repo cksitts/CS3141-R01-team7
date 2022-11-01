@@ -3,7 +3,9 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/machineGrid.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/displayMachines.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/runningMachineAnimation.css') }}">
         <script src="{{ url_for('static', filename='js/displayMachines.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/checkoutMachine.js') }}"></script>
         <title>Display Machines</title>
     </head>
     <body>
@@ -13,18 +15,18 @@
             <h2>Unavailable Machines</h2>
         {% endif %}
 
-        <!--TODO filter functionality-->
         <div class="filterButtons">
-            <button onclick="toggle(this)" class="toggleButton" id="washerToggle" type="button">Washer</button>
-            <button onclick="toggle(this)" class="toggleButton" id="dryerToggle" type="button">Dryer</button>
-            <select class="dropdownSelect" id="roomDropdown" name="preferredRoom">
+            <button onclick="toggle(this)" class="toggleButton" id="WasherToggle" type="button">Washer</button>
+            <button onclick="toggle(this)" class="toggleButton" id="DryerToggle" type="button">Dryer</button>
+            <select class="dropdownSelect" id="roomDropdown" name="preferredRoom" onchange="updateDropdownFilter(this)">
+                <option value="all" selected>All Laundry Rooms</option>
                 {% for room in laundryRoomList %}
                     <option value='{{ room }}'>{{ room }}</option>
                 {% endfor %}
             </select>
             <br>
         {% if filter == 'unavailable' %}
-            <form oninput="timeSliderValue.value=parseInt(timeInput.value) + ' minutes'">
+            <form oninput="timeSliderValue.value=parseInt(timeInput.value) + ' minutes'; updateSliderFilter(this)">
                 <label for="timeInput" class="timeSlider">Max time remaining:</label>
                 <input type="range" id="timeInput" class="timeSlider" min="0" max="60" value="60">
                 <output id="timeSliderValue" for="timeInput" class="timeSlider">60 minutes</output>
@@ -33,35 +35,48 @@
         </div>
 
 
-        {% for machine in allMachines | sort(attribute='time-remaining') %}
-            {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
-                <!--TODO implement filtering from above-->
-                {% if machine['available'] %}
-                <div class="availableMachineBlock">
-                    <h3>Available</h3>
-                    <div class="backgroundHighlight"></div>
-                {% else %}
-                <div class="unavailableMachineBlock">
-                    <h3>Unavailable</h3>
-                    <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
-                    <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
-                {% endif %}
+        <div class="gridContainer">
+            {% for machine in allMachines | sort(attribute='time-remaining') %}
+                {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
+                    {% if machine['available'] %}
+                        <div class="availableMachineBlock" data-show-location="True" data-show-type="True">
+                            <h3>Available</h3>
+                            <div class="backgroundHighlight"></div>
+                    {% else %}
+                        <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True">
+                            <h3>Unavailable</h3>
+                            <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
+                            <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
+                    {% endif %}
 
-                {% if machine['type'] == 'washer' %}
-                    <img src="{{ url_for('static', filename='images/washer_icon.png') }}">
-                {% else %}
-                    <img src="{{ url_for('static', filename='images/dryer_icon.png') }}">
-                {% endif %}
+                    {% if (machine['available']) and (machine['machine-type'] == 'Washer') %}
+                        <!-- Available Washer -->
+                        <img src="{{ url_for('static', filename='images/empty_washer_icon.png') }}">
+                    {% elif (machine['available']) and (machine['machine-type'] == 'Dryer') %}
+                        <!-- Available Dryer -->
+                        <img src="{{ url_for('static', filename='images/empty_dryer_icon.png') }}">
+                    {% elif (not machine['available']) and (machine['machine-type'] == 'Washer') %}
+                        <!-- Unavailable Washer -->
+                        <img src="{{ url_for('static', filename='images/full_washer_icon.png') }}">
+                    {% elif (not machine['available']) and (machine['machine-type'] == 'Dryer') %}
+                        <!-- Unavailable Dryer -->
+                        <img src="{{ url_for('static', filename='images/full_dryer_icon.png') }}">
+                    {% endif %}
 
-                <p class="machineType">{{ machine['type'] | capitalize }}</p>
-                <p class="machineLocation">{{ machine['location'] }}</p>
+                    {% if (not machine['available']) and (machine['time-remaining'] > 0) %}
+                        <script>document.currentScript.previousElementSibling.classList.add('running')</script>
+                    {% endif %}
 
-                {% if machine['available'] %}
-                    <!--TODO button functionality-->
-                    <button type="button">Check Out</button>
+                    <p class="machineType">{{ machine['machine-type'] }}</p>
+                    <p class="machineLocation">{{ machine['location'] }}<br></p>
+                    <script>document.currentScript.previousElementSibling.innerHTML += getRoom("{{ machine['machine-id'] }}")</script>
+
+                    {% if machine['available'] %}
+                        <button type="button" onclick='showCheckoutDialog("{{ machine }}")'>Check Out</button>
+                    {% endif %}
+                    </div>
                 {% endif %}
-                </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </div>
     </body>
 </html>

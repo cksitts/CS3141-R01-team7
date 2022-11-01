@@ -1,6 +1,6 @@
 from app import mysql
 from app.python import helper
-from time import time
+from app.python.constant import VERIFICATION_TIMEOUT
 
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
@@ -21,12 +21,48 @@ def validLogin(username, password):
 
 # Returns a list of laundry rooms from the database
 def getLaundryRooms():
-    #TODO
-    return ['G23E Wads (Ground floor east)','134E Wads (First floor east)','154W Wads (First floor west)']
+    rooms = []                           # array holds room strings
+
+    cursor = mysql.connection.cursor()      # open database connection
+
+    # all distinct room numbers and their building
+    cursor.execute( '''     SELECT DISTINCT
+	                            SUBSTRING_INDEX(machine_id, '_', 1) as Room,
+                                SUBSTRING_INDEX(SUBSTRING_INDEX(machine_id, '_', -2), '_' ,1) as Building
+                            FROM Machine
+                            WHERE NOT machine_id='';
+                    ''' )
+    all_room_tuples = cursor.fetchall()
+
+    for t in all_room_tuples:
+        room = t[0]
+        if t[1] == "WH":
+            building = "Wads"
+        elif t[1] == "MH":
+            building = "McNair"
+        elif t[1] == "DHH":
+            building = "DHH"
+        else:
+            building = ""
+
+        rooms.append(room + " " + building)
+
+    # all distinct locations
+    cursor.execute( ''' SELECT DISTINCT location FROM Machine WHERE NOT location='' ''' )
+    all_room_tuples = cursor.fetchall()
+
+    i = 0
+    for t in all_room_tuples:
+        rooms[i] = rooms[i] + " (" + t[0] + ")"
+        i += 1
+
+    cursor.close()
+
+    # return the list as an array
+    return rooms
 
 
 # Returns a list of all machines and their data from the database
-# TODO machines that are specifically in use (we will just have to decide how we want to get this data)
 #   - in use machines is a subset of all machines
 def getAllMachines():
     machines = []                           # array holds all machines
@@ -40,17 +76,13 @@ def getAllMachines():
                                 SELECT machine_id, username, time_started, 0 AS available 
                                 FROM Machine NATURAL JOIN UsingMachine
                             ) inUseMachines
+                            WHERE NOT machine_id=''
                     ''' )
     all_machine_tuples = cursor.fetchall()
 
     for t in all_machine_tuples:
-        start_time = int(t[4])                                  # start time (SEC) 1666901715
-        current_time = int(time())
-        time_elapsed = int( (current_time - start_time) / 60 )      # the time that the machine has left until finishing (MIN)
-        time_remaining = (60 - time_elapsed) if (time_elapsed < 60 and time_elapsed >= 0) else 0
-
         machines.append({  'machine-id' : t[0], 'machine-type' : t[1], 'location' : t[2],    
-                            'username' : t[3], 'time-remaining' : time_remaining, 'available' : bool(t[5]) })
+                            'username' : t[3], 'time-remaining' : helper.getTimeRemaining(int(t[4])), 'available' : bool(t[5]) })
 
     cursor.close()
 
@@ -67,19 +99,32 @@ def checkEmailTaken(email):
     # check the database to see if the email already exists
     cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
     if(len(cursor.fetchall()) != 0): 
-        print("Email Taken")
         # close the database connection
         cursor.close()
         return True
     else:
-        print("Email Available")
         # close the database connection
         cursor.close()
         return False
 
 
-# Registers a new user in the database
-# Returns 0 if successful, otherwise 1
+# Global variable to store form information until users can be added to the database
+# FIXME is this a security issue?
+verificationDict = {}
+
+#Stores form data with the verification code as the key
+def storeUser(form, verificationCode):
+    verificationDict[verificationCode] = form
+
+# Registers a new user in the database (from verification code)
+# Returns new user's username (for use in other functions)
+def verifyUser(verificationCode):
+    username = registerUser(verificationDict[verificationCode])
+    verificationDict.pop(verificationCode)
+    return username
+
+# Registers a new user in the database (from form data)
+# Returns new user's username (for use in other functions)
 def registerUser(form):
     # connect to the database with cursor
     # TODO use ACID transactions to help with concurrent queries
@@ -96,8 +141,7 @@ def registerUser(form):
     # close the database connection
     cursor.close()
     mysql.connection.commit()
-
-    return 0
+    return form['username']
 
 
 # Updates a current user in the database
@@ -115,5 +159,63 @@ def getUserData(username):
 
 # Returns a list of machines that the user has checked out
 def getUserMachines(username):
-    #TODO
-    return[]
+    machines = []                           # array holds all machines
+
+    cursor = mysql.connection.cursor()      # open database connection
+
+    # all machines, doesn't show whether or not they are in use.
+    cursor.execute( ''' 
+                        SELECT machine_id, machine_type, location, time_started
+                        FROM UsingMachine NATURAL JOIN Machine
+                        WHERE username = %s
+                    ''', (username,) )
+    all_machine_tuples = cursor.fetchall()
+
+    for t in all_machine_tuples:
+        machines.append({  'machine-id' : t[0], 'machine-type' : t[1], 'location' : t[2], 
+                            'time-remaining' : helper.getTimeRemaining(int(t[3]))  })
+
+    cursor.close()
+
+    # return the list as an array
+    return machines
+
+
+
+# Marks a machine as checked out to a user
+def checkout(machineID, username):
+    #TODO checkout(machineID, username)
+    # update UsingMachine with the correct info
+    # TODO get the user email
+
+    cursor = mysql.connection.cursor()
+    # get the user's email
+    cursor.execute(''' SELECT email FROM MachineUser WHERE username=%s ''', (username,))
+    t = cursor.fetchall()
+    email = t[0]
+
+    # add this machine to the UsingMachine table
+    # TODO isolated transactions with a write lock so that simultaneous writes cannot occur
+    cursor.execute(''' INSERT INTO UsingMachine VALUE (%s, %s, %s, %s) ''', (machineID, email, username, helper.getCurrentTime()))
+
+    cursor.close()
+    mysql.connection.commit()
+
+    print(machineID + " checked out to " + username)
+    return 0
+
+
+
+# Marks a machine as checked in by a user
+def checkin(machineID, username):
+    cursor = mysql.connection.cursor()
+
+    #TODO WRITE LOCK
+    # remove this machine from the UsingMachine table
+    cursor.execute(''' DELETE FROM UsingMachine WHERE machine_id=%s AND username=%s ''', (machineID, username))
+
+    cursor.close()
+    mysql.connection.commit()
+
+    print(machineID + " checked in by " + username)
+    return 0

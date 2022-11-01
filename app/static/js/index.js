@@ -1,10 +1,15 @@
-function positionMessage() { //BUG message doesn't move when screen resizes
+window.onresize = function() {
+    positionMessage();
+}
+
+function positionMessage() {
     const errorMessage = document.getElementById('invalidMessage');
     
-    errorMessage.style.position = 'absolute';
-    errorMessage.style.width = '100%';
-    errorMessage.style.fontSize = '0.8em';
-    errorMessage.style.textAlign = 'center';
-    errorMessage.style.marginTop = '35px';
-    errorMessage.style.top = `${document.getElementById('usernameInput').getBoundingClientRect().top}px`;
+    if(errorMessage) {
+        errorMessage.style.position = 'absolute';
+        errorMessage.style.width = '100%';
+        errorMessage.style.fontSize = '0.8em';
+        errorMessage.style.textAlign = 'center';
+        errorMessage.style.top = `${document.getElementById('usernameInput').getBoundingClientRect().bottom}px`;
+    }
 }

@@ -20,6 +20,7 @@
 }
 .filterButtons .toggleButton:hover {
     background-color: var(--hover-light);
+    cursor : pointer;
 }
 .filterButtons .dropdownSelect {
     width : 250px;
@@ -35,7 +36,9 @@
 }
 .filterButtons .dropdownSelect:hover {
     background-color: var(--hover-light);
+    cursor : pointer;
 }
+
 /* TODO slider hover color change */
 .filterButtons input.timeSlider {
     accent-color: var(--main-dark);
@@ -43,3 +46,4 @@
 .filterButtons label.timeSlider, .filterButtons output.timeSlider {
     font-size : 0.85em;
 }
+

@@ -1,3 +1,4 @@
+from crypt import methods
 from functools import wraps
 
 from flask import render_template, redirect, url_for, abort
@@ -20,12 +21,10 @@ def login_required(f):
 #Error handling
 @l_app.errorhandler(404)
 def page_not_found(error):
-    #TODO return render_template('404.html'), 404
-    return "Page not found, 404", 404
+    return render_template('error404.html'), 404
 @l_app.errorhandler(500)
 def internal_error(error):
-    #TODO return render_template('500.html'), 500
-    return "Internal server error, 500", 500
+    return render_template('error500.html'), 500
 
 
 @l_app.route('/')
@@ -61,21 +60,21 @@ def signup():
         email = request.form['email'] # get the email from the form
         if(db.checkEmailTaken(email)): #Checks if email is taken
             return redirect(url_for('signup', emailTaken=True))
-        else: #TODO make a page show up to prompt the user to check their email
-            if(emailManagement.isValid(email, request.url_root)): #will pause execution until the code is verified (sends the root url to generate a custom verification url)
-                #Adds the user to the database
-                db.registerUser(request.form)
-                session['username'] = request.form['username'] #registers that a user has signed in (by signing up they are automatically signed in)
-                return redirect(url_for('home')) #redirect to home page
-            else:
-                return redirect(url_for('signup', emailValid=False))
+        else:
+            session['verificationCode'] = emailManagement.sendSignupEmail(email, request.url_root)
+            db.storeUser(request.form, session['verificationCode']) #Stores the user information for adding to the database later
+            return render_template('checkEmail.html')
+
 
 
 @l_app.route('/verify/<verificationCode>')
-def verify(verificationCode=''):
-    if(emailManagement.verifyCode(verificationCode) == 0):
+def verify(verificationCode):
+    if(verificationCode == session.get('verificationCode')):
         # successful verification
-        return "Verified" #TODO make verified html page
+        username = db.verifyUser(verificationCode) #approves the user to be added to the database
+        session.pop('verificationCode') #clears the used session data
+        session['username'] = username #registers that a user has signed in (by signing up they are automatically signed in)
+        return redirect(url_for('home')) #redirect to home page
     else:
         # unsuccessful
         abort(500)
@@ -86,7 +85,7 @@ def verify(verificationCode=''):
 @login_required
 def passwordReset():
     #TODO whole method (return 501 means not implemented)
-    return "password reset", 501
+    return render_template('passwordReset.html'), 501
 
 
 @l_app.route('/editaccount', methods=['GET','POST'])
@@ -122,8 +121,6 @@ def editAccount(emailTaken=False, emailValid=True):
 @l_app.route('/home')
 @login_required
 def home():
-    #TODO pull actual data from database and format better based on how database works
-
     # userMachines represents the machines that a user currently has checked out (is using)
     # allMachines shows all machines and their status
     # laundryRoomList contains the names of the laundry rooms
@@ -132,3 +129,25 @@ def home():
     roomList = db.getLaundryRooms()
     
     return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
+
+
+@l_app.route('/checkout/<machineId>')
+@login_required
+def checkout(machineId):
+    if(db.checkout(machineId, session['username']) == 0):
+        #successful
+        return redirect(url_for('home')) #redrect to home page
+    else:
+        #unsuccessful
+        abort(500)
+
+
+@l_app.route('/checkin/<machineId>')
+@login_required
+def checkin(machineId):
+    if(db.checkin(machineId, session['username']) == 0):
+        #successful
+        return redirect(url_for('home')) #redirect to home page
+    else:
+        #unsuccessful
+        abort(500)

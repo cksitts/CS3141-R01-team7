@@ -13,7 +13,7 @@
     position : absolute;
     left : 30px;
     top : 0;
-
+    
     width : 86px;
     height : 100px;
 }
@@ -63,4 +63,25 @@
 
     background-color: var(--main-light);
     opacity: 0.5;
+}
+
+/* Checkout Button */
+.machineInfo #checkoutButton {
+    display : none;
+
+    position : absolute;
+    top : 5px;
+    right : 30px;
+    height : 30px;
+    width : 100px;
+
+    background-color : var(--main-dark);
+    color : var(--light-text)
+}
+.machineInfo #checkoutButton:hover {
+    background-color : var(--hover-dark);
+    cursor : pointer;
+}
+.machineInfo:hover #checkoutButton {
+    display : block;
 }

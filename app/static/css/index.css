@@ -105,6 +105,7 @@ button.signUp {
 }
 button.signUp:hover {
     background-color: var(--hover-light);
+    cursor : pointer;
 }
 .rightCol > .position input[type=submit] {
     position: relative;
@@ -114,4 +115,5 @@ button.signUp:hover {
 }
 .rightCol > .position input[type=submit]:hover {
     background-color: var(--hover-light);
+    cursor : pointer;
 }
