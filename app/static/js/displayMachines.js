@@ -1,26 +1,40 @@
 //TODO make text full opacity when background isn't
 //Element parameter is the button being clicked, this counteracts the fact that Jinja creates multiple buttons with the same ID
+var checkStyleWasher = 0;
+var checkStyleDryer = 0;
 function toggle(element) {
-    if(getComputedStyle(element).getPropertyValue("opacity") == 1) {
-        //Toggle off
-        element.style.opacity = 0.5
+    if(element.id == "washerToggle") {
+        if (checkStyleWasher == 0) {
+            checkStyleWasher = 1;
+            document.getElementById("washerToggle").style.fontWeight = "bold";
+            document.getElementById("washerToggle").style.borderWidth = "thick";
+            document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+                if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
+                    block.dataset.showType = "False"
+                }
+            })
+        } else {
+            checkStyleWasher = 0;
+            document.getElementById("washerToggle").style.fontWeight = "normal";
+            document.getElementById("washerToggle").style.borderWidth = "thin";
+        }
 
-        document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
-            if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
-                block.dataset.showType = "False"
-            }
-        })
-    } else {
-        //Toggle on
-        element.style.opacity = 1
-
-        document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
-            if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
-                block.dataset.showType = "True"
-            }
-        })
+    } else if (element.id = "dryerToggle") {
+        if (checkStyleDryer == 0) {
+            checkStyleDryer = 1;
+            document.getElementById("dryerToggle").style.fontWeight = "bold";
+            document.getElementById("dryerToggle").style.borderWidth = "thick";
+            document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
+                if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
+                    block.dataset.showType = "True"
+                }
+            })
+        } else {
+            checkStyleDryer = 0;
+            document.getElementById("dryerToggle").style.fontWeight = "normal";
+            document.getElementById("dryerToggle").style.borderWidth = "thin";
+        }
     }
-
     updateVisible()
 }
 

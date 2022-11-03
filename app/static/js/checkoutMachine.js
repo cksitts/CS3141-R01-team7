@@ -37,3 +37,15 @@ function closeCheckoutDialog() {
     div = document.getElementById('checkoutDialogDiv')
     div.style.display = 'none'
 }
+
+var timeValue = 0;
+function progressTimer() {
+    var progressBar = document.getElementById('progressBar');
+    setInterval( function() {
+    if (timeValue < 61) {
+        timeValue++;
+        progressBar.value = timeValue
+    }
+    timer();
+    }, 1000)
+}

@@ -41,7 +41,7 @@
 
 /* TODO slider hover color change */
 .filterButtons input.timeSlider {
-    accent-color: var(--main-dark);
+    accent-color: var(--hover-dark);
 }
 .filterButtons label.timeSlider, .filterButtons output.timeSlider {
     font-size : 0.85em;
