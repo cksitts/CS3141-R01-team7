@@ -39,11 +39,11 @@
             {% for machine in allMachines | sort(attribute='time-remaining') %}
                 {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
                     {% if machine['available'] %}
-                        <div class="availableMachineBlock" data-show-location="True" data-show-type="True">
+                        <div class="availableMachineBlock" data-show-location="True" data-show-type="True" data-show-time="True">
                             <h3>Available</h3>
                             <div class="backgroundHighlight"></div>
                     {% else %}
-                        <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True">
+                        <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True" data-show-time="True">
                             <h3>Unavailable</h3>
                             <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
                             <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
