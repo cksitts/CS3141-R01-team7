@@ -127,8 +127,9 @@ def home():
     userMachines = db.getUserMachines(session['username'])
     allMachines = db.getAllMachines()
     roomList = db.getLaundryRooms()
+    preferredRoom = db.getPreferredRoom(session['username'])
     
-    return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
+    return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList, preferredRoom=preferredRoom)
 
 
 @l_app.route('/checkout/<machineId>')

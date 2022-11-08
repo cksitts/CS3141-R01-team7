@@ -140,8 +140,8 @@ def registerUser(form):
     # the password is only now pulled from the form
     pass_hash = helper.generateHashAndSalt(str(form['password']))
 
-    cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s)'''), 
-                    (str(form['email']), str(form['username']), str(pass_hash[0]), str(pass_hash[1])) )
+    cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s, %s)'''), 
+                    (str(form['email']), str(form['username']), str(form['preferredRoom']), str(pass_hash[0]), str(pass_hash[1])) )
 
     # close the database connection
     cursor.close()
@@ -160,6 +160,12 @@ def updateUser(oldEmail, newEmail, username, password):
 def getUserData(username):
     #TODO get user data based on username
     return {'email':'user@gmail.com','username':'testUser','preferredRoom':'154W Wads (First floor west)'}
+
+
+# Returns the preferred room for a user based on username
+def getPreferredRoom(username):
+    #TODO get room based on username
+    return "356E Wads (Danger Zone/Valhalla)";
 
 
 # Returns a list of machines that the user has checked out
