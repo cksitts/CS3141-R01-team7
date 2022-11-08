@@ -15,8 +15,8 @@ def validLogin(username, password):
     tuple = cursor.fetchone()
     if tuple != None:
         # username is in the database so get the password hash
-        t_hash = tuple[2]                                           # get the password hash stored in the
-        hash = helper.getHash( str(password + tuple[3]) )           # generate a hash to compare
+        t_hash = tuple[3]                                           # get the password hash stored in the
+        hash = helper.getHash( str(password + tuple[4]) )           # generate a hash to compare
         cursor.execute(''' COMMIT ''')                              # end and commit the transaction
         return hash == t_hash                                       # return true if the generated hash equals the stored hash
 
