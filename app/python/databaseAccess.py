@@ -5,17 +5,22 @@ from app.python.constant import VERIFICATION_TIMEOUT
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
 def validLogin(username, password):
-    cursor = mysql.connection.cursor()
-
     # get this user's data if it exists
+    cursor = mysql.connection.cursor()
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
+    cursor.execute(''' START TRANSACTION ''')
+
     cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (str(username),))
+
     tuple = cursor.fetchone()
     if tuple != None:
         # username is in the database so get the password hash
         t_hash = tuple[2]                                           # get the password hash stored in the
         hash = helper.getHash( str(password + tuple[3]) )           # generate a hash to compare
+        cursor.execute(''' COMMIT ''')                              # end and commit the transaction
         return hash == t_hash                                       # return true if the generated hash equals the stored hash
 
+    cursor.execute(''' ROLLBACK ''')
     return False
 
 

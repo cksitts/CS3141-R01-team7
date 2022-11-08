@@ -10,9 +10,9 @@ l_app.secret_key = os.environ.get('TSP_SECRET_KEY')
 # create the mysql parent object
 mysql = MySQL(l_app)
 
-l_app.config['MYSQL_HOST'] = 'localhost'
+l_app.config['MYSQL_PASSWORD'] = os.environ.get('TSP_DB_PASS')
 l_app.config['MYSQL_USER'] = 'root'
 l_app.config['MYSQL_DB'] = 'laundry_tracker_db'
-l_app.config['MYSQL_PASSWORD'] = os.environ.get('TSP_DB_PASS')
+l_app.config['MYSQL_HOST'] = 'localhost'
 
 from app import routes
