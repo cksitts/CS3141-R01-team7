@@ -163,6 +163,12 @@ def getUserData(username):
     return {'email':'user@gmail.com','username':'testUser','preferredRoom':'154W Wads (First floor west)'}
 
 
+# Returns the preferred room for a user based on username
+def getPreferredRoom(username):
+    #TODO get room based on username
+    return "356E Wads (Danger Zone/Valhalla)";
+
+
 # Returns a list of machines that the user has checked out
 def getUserMachines(username):
     machines = []                           # array holds all machines
