@@ -17,6 +17,13 @@ def login_required(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function  
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if(session.get('admin') == 0):
+            abort(403) #go to unauthorized error page
+        return f(*args, **kwargs)
+    return decorated_function  
 
 #Error handling
 @l_app.errorhandler(404)
@@ -25,6 +32,9 @@ def page_not_found(error):
 @l_app.errorhandler(500)
 def internal_error(error):
     return render_template('error500.html'), 500
+@l_app.errorhandler(403)
+def forbidden_page(error):
+    return render_template('error403.html'), 403
 
 
 @l_app.route('/')
@@ -34,10 +44,14 @@ def index():
     if(request.method == 'GET'):
         return render_template('index.html', validLogin=request.args.get('validLogin'))
     else:
-        loginValid = db.validLogin(request.form['username'], request.form['password'])
+        username = request.form['username']
+        loginValid = db.validLogin(username, request.form['password'])
     
         if(loginValid):
-            session['username'] = request.form['username'] #will be used for the @login_required flag to validate that someone is logged in
+            session['username'] = username #will be used for the @login_required flag to validate that someone is logged in
+            session['admin'] = db.isAdmin(username) #1 if admin, 0 otherwise
+
+
             return redirect(url_for('home'))
         else:
             return redirect(url_for('index', validLogin=False)) #show invalid login error and have them try again
@@ -74,6 +88,7 @@ def verify(verificationCode):
         username = db.verifyUser(verificationCode) #approves the user to be added to the database
         session.pop('verificationCode') #clears the used session data
         session['username'] = username #registers that a user has signed in (by signing up they are automatically signed in)
+        session['admin'] = 0 #ensures new users are not registered as admins
         return redirect(url_for('home')) #redirect to home page
     else:
         # unsuccessful
@@ -152,3 +167,9 @@ def checkin(machineId):
     else:
         #unsuccessful
         abort(500)
+
+
+@l_app.route('/addmachines')
+@admin_only
+def addMachines():
+    return "admin page"

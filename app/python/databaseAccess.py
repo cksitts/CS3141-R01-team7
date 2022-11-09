@@ -159,7 +159,16 @@ def updateUser(oldEmail, newEmail, username, password):
 # Returns the data for a user based on username
 def getUserData(username):
     #TODO get user data based on username
-    return {'email':'user@gmail.com','username':'testUser','preferredRoom':'154W Wads (First floor west)'}
+    return {'email':'user@gmail.com','username':'testUser','preferredRoom':'222W Wads (Armada/Citadel)'}
+
+# Checks if a user is an admin, returns 1 if admin, otherwise 0
+def isAdmin(username):
+    #TODO get user admin status based on username
+    #TEMP two different users with different status
+    if(username == 'ekrummer'):
+        return 1
+    else:
+        return 0
 
 
 # Returns the preferred room for a user based on username

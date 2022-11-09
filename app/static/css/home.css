@@ -20,6 +20,7 @@ header > h1 {
     padding : 40px 0px;
     color : var(--light-text);
 }
+
 /* Dropdown Button */
 .dropdownButton {
     background-color: var(--main-light);
@@ -39,6 +40,7 @@ header > h1 {
     background-color: var(--hover-light);
     cursor : pointer;
 }
+
 /* Dropdown Content */
 .dropdownContent {
     background-color: var(--main-light);
@@ -48,7 +50,8 @@ header > h1 {
     border-radius : 25px 25px 25px 25px;
 
     width : 120px;
-    height : 50px;
+    --dropdownHeight : 50px;
+    height : var(--dropdownHeight);
     
     position : absolute;
     top : 16px;
@@ -58,6 +61,22 @@ header > h1 {
     animation-duration : 0.5s;
     animation-direction: normal;
     animation-fill-mode: both;
+}
+
+.dropdownContent.admin {
+    --dropdownHeight : 75px;
+}
+
+.dropdownContent a {
+    text-decoration : none;
+    color : var(--dark-text);
+}
+.dropdownContent a:hover {
+    color : var(--main-dark);
+}
+.dropdownContent p {
+    margin : 0px;
+    font-weight : bold;
 }
 
 @keyframes dropdownAnimation {
@@ -78,7 +97,7 @@ header > h1 {
         padding-right : 4em;
         border-radius : 25px 25px 25px 25px;
         width : 120px;
-        height : 50px;
+        height : var(--dropdownHeight);
     }
 }
 
@@ -89,7 +108,7 @@ header > h1 {
         padding-right : 4em;
         border-radius : 25px 25px 25px 25px;
         width : 120px;
-        height : 50px;
+        height : var(--dropdownHeight);
     }
     20% {
         font-size: 0.7em;
