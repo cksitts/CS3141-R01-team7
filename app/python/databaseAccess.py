@@ -13,6 +13,7 @@ def validLogin(username, password):
     cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (str(username),))
 
     tuple = cursor.fetchone()
+    print("Username: " + tuple[1] + ", Password: " + password)
     if tuple != None:
         # username is in the database so get the password hash
         t_hash = tuple[3]                                           # get the password hash stored in the
