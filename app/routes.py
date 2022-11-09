@@ -169,7 +169,18 @@ def checkin(machineId):
         abort(500)
 
 
-@l_app.route('/addmachines')
+@l_app.route('/addmachines', methods=['GET','POST'])
 @admin_only
 def addMachines():
-    return "admin page"
+    if(request.method == 'GET'):
+        return render_template('addMachines.html', locationList=db.getLocations(), successMessage=request.args.get('successMessage', default=False), machineAlreadyExists = request.args.get('machineAlreadyExists', default=False))
+    else:
+        id = "{roomNum}_{building}_{machineNum}".format(roomNum=request.form['roomNumber'], building=request.form['building'], machineNum=request.form['machineNum'])
+        location = request.form['location']
+        type = request.form['machineType']
+        if(db.addMachine(id, location, type) == 0):
+            #successfully added
+            return redirect(url_for('addMachines', successMessage=True))
+        else:
+            #not successful
+            return redirect(url_for('addMachines', machineAlreadyExists=True))

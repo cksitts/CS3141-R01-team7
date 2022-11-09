@@ -67,6 +67,25 @@ def getLaundryRooms():
     return rooms
 
 
+# Returns a list of locations (hall names) from the database
+def getLocations():
+    halls = []                           # array holds hall strings
+
+    cursor = mysql.connection.cursor()      # open database connection
+
+    # all distinct locations
+    cursor.execute( ''' SELECT DISTINCT location FROM Machine WHERE NOT location='' ''' )
+    all_hall_tuples = cursor.fetchall()
+
+    for t in all_hall_tuples:
+        halls.append(t[0])
+
+    cursor.close()
+
+    # return the list as an array
+    return halls
+
+
 # Returns a list of all machines and their data from the database
 #   - in use machines is a subset of all machines
 def getAllMachines():
@@ -200,6 +219,32 @@ def getUserMachines(username):
     # return the list as an array
     return machines
 
+
+# Adds a machine to the database
+# Returns 0 if successful, otherwise 1 (1 is also returned if the machine already exists in the database)
+def addMachine(machineID, location, type):
+    # connect to the database with cursor
+    # TODO use ACID transactions to help with concurrent queries
+    #   - set transaction isolation level serializable
+    cursor = mysql.connection.cursor()
+
+    # check if the machine id is already in the database
+    cursor.execute('''SELECT * FROM Machine WHERE machine_id=%s''', (str(machineID),))
+    all_machine_tuples = cursor.fetchall()
+    
+    if(len(all_machine_tuples) != 0):
+        return 1 #fail - machine already in database
+
+
+    # store the new machine in the database
+    cursor.execute( ('''INSERT INTO Machine VALUES (%s, %s, %s)'''), 
+                    (str(machineID), str(location), str(type),) )
+
+    # close the database connection
+    cursor.close()
+    mysql.connection.commit()
+
+    return 0 #success
 
 
 # Marks a machine as checked out to a user
