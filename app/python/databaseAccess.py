@@ -13,10 +13,11 @@ def validLogin(username, password):
     cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (str(username),))
 
     tuple = cursor.fetchone()
+    print("Username: " + tuple[1] + ", Password: " + password)
     if tuple != None:
         # username is in the database so get the password hash
-        t_hash = tuple[2]                                           # get the password hash stored in the
-        hash = helper.getHash( str(password + tuple[3]) )           # generate a hash to compare
+        t_hash = tuple[3]                                           # get the password hash stored in the
+        hash = helper.getHash( str(password + tuple[4]) )           # generate a hash to compare
         cursor.execute(''' COMMIT ''')                              # end and commit the transaction
         return hash == t_hash                                       # return true if the generated hash equals the stored hash
 
@@ -140,8 +141,8 @@ def registerUser(form):
     # the password is only now pulled from the form
     pass_hash = helper.generateHashAndSalt(str(form['password']))
 
-    cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s)'''), 
-                    (str(form['email']), str(form['username']), str(pass_hash[0]), str(pass_hash[1])) )
+    cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s, %s)'''), 
+                    (str(form['email']), str(form['username']), str(form['preferredRoom']), str(pass_hash[0]), str(pass_hash[1])) )
 
     # close the database connection
     cursor.close()
