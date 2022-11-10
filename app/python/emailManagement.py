@@ -32,11 +32,11 @@ Function to send an email with a verification link specifically for signups
 @param url: the root url of the website
 @return the verification code
 """
-def sendSignupEmail(to, url):
+def sendSignupEmail(to):
     # generate a random verification code using a random hex sequence
     # the length of the sequence is 6 total digits (3 bytes converted to 2 digits each)
     code_length = 3
     code = str(secrets.token_hex(code_length)).upper()
-    sendEmail("Your link will expire in 5 minutes.\nClick to verify: {}verify/{}".format(url,code), to)
-    print("Click to verify: {}verify/{}".format(url,code)) #TEMP prints the verification link as well as emailing
+    sendEmail("Your code will expire in 5 minutes\nVerification Code: %s" % code, to)
+    print("Verification code: %s" % code) #TEMP prints the verification link as well as emailing
     return code

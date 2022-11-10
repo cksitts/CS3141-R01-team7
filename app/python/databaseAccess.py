@@ -10,10 +10,9 @@ def validLogin(username, password):
     cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
     cursor.execute(''' START TRANSACTION ''')
 
-    cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (str(username),))
+    cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s OR email=%s ''', (username, username))
 
     tuple = cursor.fetchone()
-    print("Username: " + tuple[1] + ", Password: " + password)
     if tuple != None:
         # username is in the database so get the password hash
         t_hash = tuple[3]                                           # get the password hash stored in the
@@ -88,7 +87,7 @@ def getLocations():
 
 
 # Returns a list of all machines and their data from the database
-#   - in use machines is a subset of all machines
+#   - maintains information about which machines are in use and by whom
 def getAllMachines():
     machines = []                           # array holds all machines
 
@@ -133,40 +132,39 @@ def checkEmailTaken(email):
         return False
 
 
-# Global variable to store form information until users can be added to the database
-# FIXME is this a security issue?
-verificationDict = {}
-
-#Stores form data with the verification code as the key
-def storeUser(form, verificationCode):
-    verificationDict[verificationCode] = form
-
-# Registers a new user in the database (from verification code)
-# Returns new user's username (for use in other functions)
-def verifyUser(verificationCode):
-    username = registerUser(verificationDict[verificationCode])
-    verificationDict.pop(verificationCode)
-    return username
-
 # Registers a new user in the database (from form data)
 # Returns new user's username (for use in other functions)
-def registerUser(form):
+def registerUser(storedUser):
     # connect to the database with cursor
-    # TODO use ACID transactions to help with concurrent queries
-    #   - set transaction isolation level serializable
     cursor = mysql.connection.cursor()
+    cursor.execute('SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE')
+    cursor.execute('START TRANSACTION')
 
     # First, salt and hash the password and store all of the info in the database
     # the password is only now pulled from the form
-    pass_hash = helper.generateHashAndSalt(str(form['password']))
+    pass_hash = helper.generateHashAndSalt(str(storedUser['password']))
 
     cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s, %s)'''), 
-                    (str(form['email']), str(form['username']), str(form['preferredRoom']), str(pass_hash[0]), str(pass_hash[1])) )
+                    (   str(storedUser['email']), 
+                        str(storedUser['username']), 
+                        str(storedUser['preferredRoom']), 
+                        str(pass_hash[0]), 
+                        str(pass_hash[1])) )
 
-    # close the database connection
+    # if there was an error in inserting or if the transaction timed out
+    cursor.execute(''' SELECT * FROM MachineUser WHERE email=%s ''', (storedUser['email'],))
+    if (len(cursor.fetchall()) == 0):
+        cursor.execute('ROLLBACK')
+        cursor.close()
+        mysql.connection.commit()
+        return None
+
+    # no errors: close the database connection and return the username
+    cursor.execute('COMMIT')
     cursor.close()
     mysql.connection.commit()
-    return form['username']
+
+    return storedUser['username']
 
 
 # Updates a current user in the database
@@ -194,7 +192,7 @@ def isAdmin(username):
 # Returns the preferred room for a user based on username
 def getPreferredRoom(username):
     #TODO get room based on username
-    return "356E Wads (Danger Zone/Valhalla)";
+    return "356E Wads (Danger Zone/Valhalla)"
 
 
 # Returns a list of machines that the user has checked out
