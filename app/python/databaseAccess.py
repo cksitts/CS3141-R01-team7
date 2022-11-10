@@ -5,17 +5,22 @@ from app.python.constant import VERIFICATION_TIMEOUT
 # Checks if a given username/password is in the database
 # Returns true if valid, otherwise false
 def validLogin(username, password):
-    cursor = mysql.connection.cursor()
-
     # get this user's data if it exists
-    cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (str(username),))
+    cursor = mysql.connection.cursor()
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
+    cursor.execute(''' START TRANSACTION ''')
+
+    cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s OR email=%s ''', (username, username))
+
     tuple = cursor.fetchone()
     if tuple != None:
         # username is in the database so get the password hash
-        t_hash = tuple[2]                                           # get the password hash stored in the
-        hash = helper.getHash( str(password + tuple[3]) )           # generate a hash to compare
+        t_hash = tuple[3]                                           # get the password hash stored in the
+        hash = helper.getHash( str(password + tuple[4]) )           # generate a hash to compare
+        cursor.execute(''' COMMIT ''')                              # end and commit the transaction
         return hash == t_hash                                       # return true if the generated hash equals the stored hash
 
+    cursor.execute(''' ROLLBACK ''')
     return False
 
 
@@ -62,8 +67,27 @@ def getLaundryRooms():
     return rooms
 
 
+# Returns a list of locations (hall names) from the database
+def getLocations():
+    halls = []                           # array holds hall strings
+
+    cursor = mysql.connection.cursor()      # open database connection
+
+    # all distinct locations
+    cursor.execute( ''' SELECT DISTINCT location FROM Machine WHERE NOT location='' ''' )
+    all_hall_tuples = cursor.fetchall()
+
+    for t in all_hall_tuples:
+        halls.append(t[0])
+
+    cursor.close()
+
+    # return the list as an array
+    return halls
+
+
 # Returns a list of all machines and their data from the database
-#   - in use machines is a subset of all machines
+#   - maintains information about which machines are in use and by whom
 def getAllMachines():
     machines = []                           # array holds all machines
 
@@ -108,40 +132,39 @@ def checkEmailTaken(email):
         return False
 
 
-# Global variable to store form information until users can be added to the database
-# FIXME is this a security issue?
-verificationDict = {}
-
-#Stores form data with the verification code as the key
-def storeUser(form, verificationCode):
-    verificationDict[verificationCode] = form
-
-# Registers a new user in the database (from verification code)
-# Returns new user's username (for use in other functions)
-def verifyUser(verificationCode):
-    username = registerUser(verificationDict[verificationCode])
-    verificationDict.pop(verificationCode)
-    return username
-
 # Registers a new user in the database (from form data)
 # Returns new user's username (for use in other functions)
-def registerUser(form):
+def registerUser(storedUser):
     # connect to the database with cursor
-    # TODO use ACID transactions to help with concurrent queries
-    #   - set transaction isolation level serializable
     cursor = mysql.connection.cursor()
+    cursor.execute('SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE')
+    cursor.execute('START TRANSACTION')
 
     # First, salt and hash the password and store all of the info in the database
     # the password is only now pulled from the form
-    pass_hash = helper.generateHashAndSalt(str(form['password']))
+    pass_hash = helper.generateHashAndSalt(str(storedUser['password']))
 
-    cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s)'''), 
-                    (str(form['email']), str(form['username']), str(pass_hash[0]), str(pass_hash[1])) )
+    cursor.execute( ('''INSERT INTO MachineUser VALUES (%s, %s, %s, %s, %s)'''), 
+                    (   str(storedUser['email']), 
+                        str(storedUser['username']), 
+                        str(storedUser['preferredRoom']), 
+                        str(pass_hash[0]), 
+                        str(pass_hash[1])) )
 
-    # close the database connection
+    # if there was an error in inserting or if the transaction timed out
+    cursor.execute(''' SELECT * FROM MachineUser WHERE email=%s ''', (storedUser['email'],))
+    if (len(cursor.fetchall()) == 0):
+        cursor.execute('ROLLBACK')
+        cursor.close()
+        mysql.connection.commit()
+        return None
+
+    # no errors: close the database connection and return the username
+    cursor.execute('COMMIT')
     cursor.close()
     mysql.connection.commit()
-    return form['username']
+
+    return storedUser['username']
 
 
 # Updates a current user in the database
@@ -154,7 +177,22 @@ def updateUser(oldEmail, newEmail, username, password):
 # Returns the data for a user based on username
 def getUserData(username):
     #TODO get user data based on username
-    return {'email':'user@gmail.com','username':'testUser','preferredRoom':'154W Wads (First floor west)'}
+    return {'email':'user@gmail.com','username':'testUser','preferredRoom':'222W Wads (Armada/Citadel)'}
+
+# Checks if a user is an admin, returns 1 if admin, otherwise 0
+def isAdmin(username):
+    #TODO get user admin status based on username
+    #TEMP two different users with different status
+    if(username == 'ekrummer'):
+        return 1
+    else:
+        return 0
+
+
+# Returns the preferred room for a user based on username
+def getPreferredRoom(username):
+    #TODO get room based on username
+    return "356E Wads (Danger Zone/Valhalla)"
 
 
 # Returns a list of machines that the user has checked out
@@ -180,6 +218,32 @@ def getUserMachines(username):
     # return the list as an array
     return machines
 
+
+# Adds a machine to the database
+# Returns 0 if successful, otherwise 1 (1 is also returned if the machine already exists in the database)
+def addMachine(machineID, location, type):
+    # connect to the database with cursor
+    # TODO use ACID transactions to help with concurrent queries
+    #   - set transaction isolation level serializable
+    cursor = mysql.connection.cursor()
+
+    # check if the machine id is already in the database
+    cursor.execute('''SELECT * FROM Machine WHERE machine_id=%s''', (str(machineID),))
+    all_machine_tuples = cursor.fetchall()
+    
+    if(len(all_machine_tuples) != 0):
+        return 1 #fail - machine already in database
+
+
+    # store the new machine in the database
+    cursor.execute( ('''INSERT INTO Machine VALUES (%s, %s, %s)'''), 
+                    (str(machineID), str(location), str(type),) )
+
+    # close the database connection
+    cursor.close()
+    mysql.connection.commit()
+
+    return 0 #success
 
 
 # Marks a machine as checked out to a user

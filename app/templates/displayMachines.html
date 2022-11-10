@@ -19,9 +19,14 @@
             <button onclick="toggle(this)" class="toggleButton" id="washerToggle" type="button">Washer</button>
             <button onclick="toggle(this)" class="toggleButton" id="dryerToggle" type="button">Dryer</button>
             <select class="dropdownSelect" id="roomDropdown" name="preferredRoom" onchange="updateDropdownFilter(this)">
-                <option value="all" selected>All Laundry Rooms</option>
+                <option value="all">All Laundry Rooms</option>
                 {% for room in laundryRoomList %}
-                    <option value='{{ room }}'>{{ room }}</option>
+                    {% if room == preferredRoom %}
+                        <option value='{{ room }}' selected>{{ room }}</option>
+                        <script>updateDropdownFilter(document.currentScript.previousElementSibling)</script>
+                    {% else %}
+                        <option value='{{ room }}'>{{ room }}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
             <br>
@@ -39,11 +44,11 @@
             {% for machine in allMachines | sort(attribute='time-remaining') %}
                 {% if( (filter == 'available' and machine['available']) or (filter == 'unavailable' and not machine['available']) ) %} <!--apply filters-->
                     {% if machine['available'] %}
-                        <div class="availableMachineBlock" data-show-location="True" data-show-type="True">
+                        <div class="availableMachineBlock" data-show-location="True" data-show-type="True" data-show-time="True">
                             <h3>Available</h3>
                             <div class="backgroundHighlight"></div>
                     {% else %}
-                        <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True">
+                        <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True" data-show-time="True">
                             <h3>Unavailable</h3>
                             <p class="timeRemaining" {{ machine['time-remaining'] }} minutes remaining</p>
                             <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>

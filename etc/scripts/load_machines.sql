@@ -9,3 +9,6 @@ load data local infile './etc/scripts/load_machines.txt' into table Machine
 lines terminated by '\r\n';
 
 set global local_infile = false;
+
+-- remove empty tuple
+delete from Machine where machine_id = '';

@@ -17,6 +17,13 @@ def login_required(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function  
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if(session.get('admin') == 0):
+            abort(403) #go to unauthorized error page
+        return f(*args, **kwargs)
+    return decorated_function  
 
 #Error handling
 @l_app.errorhandler(404)
@@ -25,6 +32,9 @@ def page_not_found(error):
 @l_app.errorhandler(500)
 def internal_error(error):
     return render_template('error500.html'), 500
+@l_app.errorhandler(403)
+def forbidden_page(error):
+    return render_template('error403.html'), 403
 
 
 @l_app.route('/')
@@ -34,10 +44,14 @@ def index():
     if(request.method == 'GET'):
         return render_template('index.html', validLogin=request.args.get('validLogin'))
     else:
-        loginValid = db.validLogin(request.form['username'], request.form['password'])
+        username = request.form['username']
+        loginValid = db.validLogin(username, request.form['password'])
     
         if(loginValid):
-            session['username'] = request.form['username'] #will be used for the @login_required flag to validate that someone is logged in
+            session['username'] = username #will be used for the @login_required flag to validate that someone is logged in
+            session['admin'] = db.isAdmin(username) #1 if admin, 0 otherwise
+
+
             return redirect(url_for('home'))
         else:
             return redirect(url_for('index', validLogin=False)) #show invalid login error and have them try again
@@ -54,30 +68,55 @@ def logout():
 def signup():
     if (request.method == 'GET'):
         roomList = db.getLaundryRooms()
-        return render_template('accountInfo.html', requestType='signup', roomList=roomList, emailTaken=request.args.get('emailTaken', default=False), emailValid=request.args.get('emailValid', default=True))
-
+        return render_template('accountInfo.html',  requestType='signup', 
+                                                    roomList=roomList, 
+                                                    emailTaken=request.args.get('emailTaken', default=False), 
+                                                    emailValid=request.args.get('emailValid', default=True))
     else:
         email = request.form['email'] # get the email from the form
         if(db.checkEmailTaken(email)): #Checks if email is taken
             return redirect(url_for('signup', emailTaken=True))
         else:
-            session['verificationCode'] = emailManagement.sendSignupEmail(email, request.url_root)
-            db.storeUser(request.form, session['verificationCode']) #Stores the user information for adding to the database later
-            return render_template('checkEmail.html')
+            # if the email is not taken then generate a verification code, email the user, and move on to email verification
+            session['verificationCode'] = emailManagement.sendSignupEmail(email)
 
+            # store the current user in the session dict for later use (hopefully)
+            storedUser = request.form
+            session['storedUser'] = storedUser
+            session['inputCount'] = 0
 
+            return redirect(url_for('verify', validCode=True, inputCount=session['inputCount']))
 
-@l_app.route('/verify/<verificationCode>')
-def verify(verificationCode):
-    if(verificationCode == session.get('verificationCode')):
-        # successful verification
-        username = db.verifyUser(verificationCode) #approves the user to be added to the database
-        session.pop('verificationCode') #clears the used session data
-        session['username'] = username #registers that a user has signed in (by signing up they are automatically signed in)
-        return redirect(url_for('home')) #redirect to home page
+@l_app.route('/verify', methods=['GET', 'POST'])
+@l_app.route('/verify/<validCode>/<inputCount>', methods=['GET'])
+def verify(validCode=True, inputCount=0):
+
+    if (request.method == 'GET'):
+        return render_template('verifyEmail.html', validCode=validCode, inputCount=session['inputCount'])
     else:
-        # unsuccessful
-        abort(500)
+        verificationCode = request.form['codeInput']
+        if(verificationCode == session['verificationCode']):
+            # successful verification
+            # db.verifyUser(verificationCode) #approves the user to be added to the database
+
+            # register the user in the database
+            db.registerUser(session['storedUser'])
+
+            session.pop('verificationCode') #clears the used session data
+            session.pop('storedUser')
+            session.pop('inputCount')
+
+            # redirect to the login page; users should attempt a login after signing up to verify data integrity
+            return redirect(url_for('index'))
+        else:
+            # if the user has input more than 5 times, reject the validation attempt
+            if (session['inputCount'] < 3):
+                session['inputCount'] += 1
+                return redirect(url_for('verify', validCode=False, inputCount=session['inputCount']))
+            else:
+                # unsuccessful
+                return redirect(url_for('signup'))
+            
 
 
 
@@ -127,8 +166,9 @@ def home():
     userMachines = db.getUserMachines(session['username'])
     allMachines = db.getAllMachines()
     roomList = db.getLaundryRooms()
+    preferredRoom = db.getPreferredRoom(session['username'])
     
-    return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList)
+    return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList, preferredRoom=preferredRoom)
 
 
 @l_app.route('/checkout/<machineId>')
@@ -151,3 +191,20 @@ def checkin(machineId):
     else:
         #unsuccessful
         abort(500)
+
+
+@l_app.route('/addmachines', methods=['GET','POST'])
+@admin_only
+def addMachines():
+    if(request.method == 'GET'):
+        return render_template('addMachines.html', locationList=db.getLocations(), successMessage=request.args.get('successMessage', default=False), machineAlreadyExists = request.args.get('machineAlreadyExists', default=False))
+    else:
+        id = "{roomNum}_{building}_{machineNum}".format(roomNum=request.form['roomNumber'], building=request.form['building'], machineNum=request.form['machineNum'])
+        location = request.form['location']
+        type = request.form['machineType']
+        if(db.addMachine(id, location, type) == 0):
+            #successfully added
+            return redirect(url_for('addMachines', successMessage=True))
+        else:
+            #not successful
+            return redirect(url_for('addMachines', machineAlreadyExists=True))
