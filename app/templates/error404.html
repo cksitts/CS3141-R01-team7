@@ -1,10 +1,15 @@
-<!-- TODO whole page -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
         <title>Error 404</title>
     </head>
+    <header>
+        <h1>Laundry Tracker Lite</h1>
+    </header>
     <body>
-        Page not found, 404
+        <h3>Page not found, 404</h3>
+        <p>The page either does not exist or is temporarily unavailable.</p>
     </body>
 </html>

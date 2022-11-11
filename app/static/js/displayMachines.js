@@ -9,16 +9,15 @@ function toggle(element) {
             document.getElementById("washerToggle").style.fontWeight = "bold";
             document.getElementById("washerToggle").style.borderWidth = "thick";
             document.querySelectorAll('.availableMachineBlock, .unavailableMachineBlock').forEach((block) => {
-                if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
-                    block.dataset.showType = "False"
-                }
-            })
+            if (block.querySelector('p.machineType').innerHTML == element.id.substring(0, element.id.length - 6)) {
+                block.dataset.showType = "False"
+            }
+        })
         } else {
             checkStyleWasher = 0;
             document.getElementById("washerToggle").style.fontWeight = "normal";
             document.getElementById("washerToggle").style.borderWidth = "thin";
         }
-
     } else if (element.id = "dryerToggle") {
         if (checkStyleDryer == 0) {
             checkStyleDryer = 1;

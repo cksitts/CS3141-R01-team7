@@ -1,10 +1,16 @@
-<!-- TODO whole page -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
         <title>Error 500</title>
     </head>
+    <header>
+        <h1>Laundry Tracker Lite</h1>
+    </header>
     <body>
-        Internal server error, 500
+        <h3>Internal server error, 500</h3>
+        <p>The server encountered an unexpected condition that prevented it from fulfilling the requested action.</p>
+        <p>Try refreshing the page or coming back later.</p>
     </body>
 </html>
