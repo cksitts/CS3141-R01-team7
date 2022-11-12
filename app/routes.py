@@ -156,6 +156,12 @@ def editAccount(emailTaken=False, emailValid=True):
         return redirect(url_for('home')) #redirect to home page
     
 
+@l_app.route('/deleteaccount', methods=['POST'])
+@login_required
+def deleteAccount():
+    db.deleteUser(request.form['email'])
+    return redirect(url_for('home')) #redirect to home page
+
 
 @l_app.route('/home')
 @login_required

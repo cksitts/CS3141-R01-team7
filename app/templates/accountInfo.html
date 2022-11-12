@@ -74,7 +74,9 @@
                     <p>Would you like to delete your account?</p>
                     <p>This is PERMANENT</p>
                     <button onclick="hideDeleteAccountPopup()" class="noButton">No</button>
-                    <form action='/deleteaccount'> <!--TODO make action correct-->
+                    <form action='{{ url_for('deleteAccount') }}' method="post">
+                        <!--keeps track of the old email so we know which record to update in the database-->
+                        <input type="hidden" name="email" value="{{ userData['email'] }}" required>
                         <input type="submit" value="Yes" class="yesButton">
                     </form>
                     <button onclick="hideDeleteAccountPopup()" class="closeButton">X</button>
