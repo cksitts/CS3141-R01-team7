@@ -173,6 +173,25 @@ def updateUser(oldEmail, newEmail, username, password):
     #TODO update user data based on oldEmail (email may or may not change)
     return 0
 
+# delete a user's account data from the database
+#   - UsingMachine data is also deleted
+# 
+def deleteUser(email):
+    cursor = mysql.connection.cursor()
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED ''')
+    cursor.execute(''' START TRANSACTION ''')
+
+    cursor.execute(''' DELETE FROM MachineUser WHERE email=%s ''', (email,))
+    cursor.execute(''' SELECT * FROM MachineUser WHERE email=%s ''', (email,))
+    if (len(cursor.fetchall()) != 0):
+        cursor.execute(''' ROLLBACK ''')
+        return False
+
+    cursor.execute(''' COMMIT ''')
+    cursor.close()
+    mysql.connection.commit()
+    return True
+
 
 # Returns the data for a user based on username
 def getUserData(username):
@@ -214,26 +233,35 @@ def getUserMachines(username):
 
 
 # Adds a machine to the database
-# Returns 0 if successful, otherwise 1 (1 is also returned if the machine already exists in the database)
+# Returns a status code:
+#   - 0 if successful
+#   - 1 if machine is already in the database
+#   - 2 if the database failed to add the machine
 def addMachine(machineID, location, type):
-    # connect to the database with cursor
-    # TODO use ACID transactions to help with concurrent queries
-    #   - set transaction isolation level serializable
     cursor = mysql.connection.cursor()
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
+    cursor.execute(''' START TRANSACTION ''')
 
     # check if the machine id is already in the database
-    cursor.execute('''SELECT * FROM Machine WHERE machine_id=%s''', (str(machineID),))
+    cursor.execute('''SELECT * FROM Machine WHERE machine_id=%s''', (machineID,))
     all_machine_tuples = cursor.fetchall()
     
     if(len(all_machine_tuples) != 0):
+        cursor.execute(''' ROLLBACK ''')
         return 1 #fail - machine already in database
 
 
     # store the new machine in the database
-    cursor.execute( ('''INSERT INTO Machine VALUES (%s, %s, %s)'''), 
-                    (str(machineID), str(location), str(type),) )
+    cursor.execute( '''INSERT INTO Machine VALUES (%s, %s, %s)''', (machineID, location, type) )
+
+    # ensure machine storage went well
+    cursor.execute(''' SELECT * FROM Machine WHERE machineID=%s ''', (machineID,))
+    if (len(cursor.fetchall()) == 0):
+        cursor.execute(''' ROLLBACK ''')
+        return 2
 
     # close the database connection
+    cursor.execute(''' COMMIT ''')
     cursor.close()
     mysql.connection.commit()
 
@@ -250,6 +278,8 @@ def checkout(machineID, username):
     # get the user's email
     cursor.execute(''' SELECT email FROM MachineUser WHERE username=%s ''', (username,))
     t = cursor.fetchall()
+    if (len(t) == 0):
+        return 1
     email = t[0]
 
     # add this machine to the UsingMachine table
