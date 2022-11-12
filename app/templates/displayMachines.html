@@ -16,8 +16,8 @@
         {% endif %}
 
         <div class="filterButtons">
-            <button onclick="toggle(this)" class="toggleButton" id="washerToggle" type="button">Washer</button>
-            <button onclick="toggle(this)" class="toggleButton" id="dryerToggle" type="button">Dryer</button>
+            <button onclick="toggle(this)" class="toggleButton" id="WasherToggle" type="button" data-toggle-on="True" data-filter-type="{{ filter }}">Washer</button>
+            <button onclick="toggle(this)" class="toggleButton" id="DryerToggle" type="button" data-toggle-on="True" data-filter-type="{{ filter }}">Dryer</button>
             <select class="dropdownSelect" id="roomDropdown" name="preferredRoom" onchange="updateDropdownFilter(this)">
                 <option value="all">All Laundry Rooms</option>
                 {% for room in laundryRoomList %}
