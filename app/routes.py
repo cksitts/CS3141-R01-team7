@@ -166,7 +166,7 @@ def home():
     userMachines = db.getUserMachines(session['username'])
     allMachines = db.getAllMachines()
     roomList = db.getLaundryRooms()
-    preferredRoom = db.getPreferredRoom(session['username'])
+    preferredRoom = db.getUserData(session['username'])['preferredRoom']
     
     return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList, preferredRoom=preferredRoom)
 

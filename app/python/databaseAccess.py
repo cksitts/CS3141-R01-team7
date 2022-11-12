@@ -189,12 +189,6 @@ def isAdmin(username):
         return 0
 
 
-# Returns the preferred room for a user based on username
-def getPreferredRoom(username):
-    #TODO get room based on username
-    return "356E Wads (Danger Zone/Valhalla)"
-
-
 # Returns a list of machines that the user has checked out
 def getUserMachines(username):
     machines = []                           # array holds all machines
