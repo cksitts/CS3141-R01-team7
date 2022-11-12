@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/inputPage.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/accountInfo.css') }}">
         <script src="{{ url_for('static', filename='js/backButton.js') }}"></script>
         <script src="{{ url_for('static', filename='js/accountInfo.js') }}"></script>
         {% if requestType == "signup" %}
@@ -67,6 +68,17 @@
                 <script>document.getElementById('form').action="{{ url_for('signup') }}"</script>
             {% elif requestType == "edit" %}
                 <script>document.getElementById('form').action="{{ url_for('editAccount') }}"</script>
+                <button class="deleteAccountButton" onclick="showDeleteAccountPopup()">Delete Account</button>
+                <div class="deleteAccountPopup" id="delAccPopupDiv">
+                    <h3>Delete Account</h3>
+                    <p>Would you like to delete your account?</p>
+                    <p>This is PERMANENT</p>
+                    <button onclick="hideDeleteAccountPopup()" class="noButton">No</button>
+                    <form action='/deleteaccount'> <!--TODO make action correct-->
+                        <input type="submit" value="Yes" class="yesButton">
+                    </form>
+                    <button onclick="hideDeleteAccountPopup()" class="closeButton">X</button>
+                </div>
             {% endif %}
         </div>
     </body>

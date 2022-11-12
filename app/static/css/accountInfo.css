@@ -1,6 +1,6 @@
 @import "global.css";
 
-/* Input Icons */
+/* Icons */
 .inputForm #usernameInput {
     background-image : url("https://img.icons8.com/material-outlined/344/user--v1.png");
     background-repeat : no-repeat;
@@ -20,8 +20,154 @@
     background-position : 5px;
 }
 .inputForm #roomDropdown {
-    background-image : url("https://img.icons8.com/ios/344/washing-machine.png");
+    background-image : url("https://img.icons8.com/ios/512/place-marker.png");
     background-repeat : no-repeat;
     background-size : calc(1em + 10px);
     background-position : 5px;
+}
+
+/* Cancel & Sign Up Buttons */
+.inputForm a, .inputForm input[type=submit] {
+    width : 35%;
+    margin-top : 25px;
+    padding : 10px 0px;
+
+    font-size : 1em;
+    border-width : 2px solid var(--main-dark);
+    border-radius: 5px;
+    background-color: var(--main-light);
+    color : var(--dark-text);
+}
+.inputForm a:hover, .inputForm input[type=submit]:hover {
+    background-color : var(--hover-light);
+    cursor : pointer;
+}
+.inputForm a {
+    margin-left : 12%;
+
+    /* Make it look like a button */
+    display : inline-block;
+    text-align : center;
+    text-decoration : none;
+    border : 1.5px outset rgb(118,118,118);
+}
+.inputForm input[type=submit] {
+    margin-left : 6%;
+}
+
+
+/* Back Button */
+#backButton {
+    position: fixed;
+    left : 2px;
+    top : 2px;
+    height : 30px;
+    line-height : 30px;
+    overflow : hidden;
+
+    padding : 5px;
+    padding-left : 45px;
+    text-decoration : none;
+    color : var(--main-dark);
+    font-size : 1.1em;
+
+    background-image : url("https://img.icons8.com/ios-glyphs/344/circled-left-2.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
+}
+
+
+/* Delete Account Popup */
+.deleteAccountButton {
+    position : relative;
+    top : 20px;
+
+    font-size : 0.9em;
+
+    color : var(--contrast);
+    background-color : transparent;
+    border : none;
+}
+.deleteAccountButton:hover {
+    color : var(--hover-contrast);
+}
+.deleteAccountPopup {
+    display : none;
+
+    position : fixed;
+    top : 50%;
+    left : 50%;
+    margin-left : -200px;
+    margin-top : -100px;
+    
+    width : 400px;
+    height : 200px;
+
+    background-color : var(--contrast);
+    border : 2px solid var(--contrast-dark);
+    border-radius : 20px;
+}
+.deleteAccountPopup h3 {
+    position : absolute;
+    margin-top : 0;
+    top : 0;
+
+    width : 100%;
+    height : 40px;
+    line-height : 40px;
+    text-align : center;
+
+    background-color : var(--contrast-dark);
+    color : var(--light-text);
+    border-radius : 18px 18px 0px 0px;
+}
+.deleteAccountPopup p {
+    text-align : center;
+    margin-left : 1em;
+    margin-right : 1em;
+}
+.deleteAccountPopup p:first-of-type {
+    margin-top : 50px;
+}
+.deleteAccountPopup p:first-of-type {
+    margin-top : 75px;
+}
+.closeButton {
+    position : absolute;
+    top : 0;
+    right : 0;
+    height : 40px;
+    width : 40px;
+
+    background-color: transparent;
+    color : var(--light-text);
+    border : none;
+    font-size : 1.75em;
+    border-radius : 0px 20px 0px 0px;
+}
+.closeButton:hover {
+    background-color : var(--hover-contrast-dark);
+    cursor : pointer;
+}
+.noButton, .yesButton {
+    position : absolute;
+    bottom : 15px;
+
+    width : 40%;
+    height : 35px;
+
+    background-color: var(--contrast-dark);
+    color : var(--light-text);
+    font-size : 1em;
+}
+.noButton {
+    left : 6%;
+}
+.yesButton {
+    right : 6%;
+}
+.noButton:hover, .yesButton:hover {
+    background-color : var(--hover-contrast-dark);
+    cursor : pointer;
 }

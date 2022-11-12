@@ -11,6 +11,8 @@
     --hover-dark : green;
     --contrast : lightcoral;
     --hover-contrast : indianred;
+    --contrast-dark : darkred;
+    --hover-contrast-dark : crimson;
 }
 
 /* Global Fonts */

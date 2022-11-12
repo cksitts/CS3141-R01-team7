@@ -37,3 +37,13 @@ function positionMessage() {
     errorMessage.style.marginTop = '2px';
     errorMessage.style.top = document.getElementById('emailInput').getBoundingClientRect().y;
 }
+
+
+
+
+function showDeleteAccountPopup() {
+    document.getElementById("delAccPopupDiv").style.display = "block";
+}
+function hideDeleteAccountPopup() {
+    document.getElementById("delAccPopupDiv").style.display = "none";
+}

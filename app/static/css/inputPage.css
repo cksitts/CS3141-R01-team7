@@ -20,6 +20,7 @@ form.inputForm {
     width : 40%;
 }
 
+
 /* Cancel & Submit Buttons */
 .inputForm a, .inputForm input[type=submit] {
     width : 35%;
