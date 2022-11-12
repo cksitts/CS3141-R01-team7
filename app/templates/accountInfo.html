@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/accountInfo.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/inputPage.css') }}">
+        <script src="{{ url_for('static', filename='js/backButton.js') }}"></script>
         <script src="{{ url_for('static', filename='js/accountInfo.js') }}"></script>
         {% if requestType == "signup" %}
             <title>Sign Up</title>

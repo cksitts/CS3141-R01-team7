@@ -1,0 +1,46 @@
+@import "global.css";
+
+/* Add Button */
+.inputForm input[type=submit] {
+    margin-left : 32.5%;
+}
+
+/* Message */
+.message.hidden {
+    color : transparent;
+}
+.message.visible {
+    color : var(--dark-text);
+}
+
+/* Input Icons */
+.inputForm #machineType {
+    background-image : url("https://img.icons8.com/ios/344/washing-machine.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
+}
+.inputForm #roomNumber {
+    background-image : url("https://img.icons8.com/ios/512/numbers-input-form.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
+}
+.inputForm #machineNum {
+    background-image : url("https://img.icons8.com/ios/512/hashtag.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
+}
+.inputForm #building {
+    background-image : url("https://img.icons8.com/ios/512/company.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
+}
+.inputForm #location {
+    background-image : url("https://img.icons8.com/ios/512/place-marker.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
+}

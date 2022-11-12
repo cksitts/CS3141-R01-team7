@@ -204,7 +204,7 @@ def addMachines():
         type = request.form['machineType']
         if(db.addMachine(id, location, type) == 0):
             #successfully added
-            return redirect(url_for('addMachines', successMessage=True))
+            return redirect(url_for('addMachines', successMessage="{} added successfully".format(id)))
         else:
             #not successful
             return redirect(url_for('addMachines', machineAlreadyExists=True))
