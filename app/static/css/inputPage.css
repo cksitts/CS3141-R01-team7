@@ -44,10 +44,15 @@ form.inputForm {
     display : inline-block;
     text-align : center;
     text-decoration : none;
-    border : 1.5px outset rgb(118,118,118);
+    border : 2px outset rgb(118,118,118);
 }
 .inputForm input[type=submit] {
     margin-left : 6%;
+
+    display : inline-block;
+    text-align : center;
+    text-decoration : none;
+    border : 2px outset rgb(118,118,118);
 }
 
 
