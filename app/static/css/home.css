@@ -222,9 +222,11 @@ hr {
 /* ------------------------- */
 /* Footer */
 footer {
-    background-color : var(--main-dark);
+    position : fixed;
+    bottom : 0;
     width : 100%;
     height : 150px;
+    background-color : var(--main-dark);
 }
 
 /* Footer Links */
