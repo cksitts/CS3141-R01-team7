@@ -6,7 +6,7 @@ from app.python.constant import VERIFICATION_TIMEOUT
 # Returns true if valid, otherwise false
 def validLogin(username, password):
     # get this user's data if it exists
-    cursor = mysql.connection.cursor()
+    cursor = mysql.cursor()
     cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
     cursor.execute(''' START TRANSACTION ''')
 
@@ -28,7 +28,7 @@ def validLogin(username, password):
 def getLaundryRooms():
     rooms = []                           # array holds room strings
 
-    cursor = mysql.connection.cursor()      # open database connection
+    cursor = mysql.cursor()      # open database connection
 
     # all distinct room numbers and their building
     cursor.execute( '''     SELECT DISTINCT
@@ -71,7 +71,7 @@ def getLaundryRooms():
 def getLocations():
     halls = []                           # array holds hall strings
 
-    cursor = mysql.connection.cursor()      # open database connection
+    cursor = mysql.cursor()      # open database connection
 
     # all distinct locations
     cursor.execute( ''' SELECT DISTINCT location FROM Machine WHERE NOT location='' ''' )
@@ -91,7 +91,7 @@ def getLocations():
 def getAllMachines():
     machines = []                           # array holds all machines
 
-    cursor = mysql.connection.cursor()      # open database connection
+    cursor = mysql.cursor()      # open database connection
 
     # all machines, doesn't show whether or not they are in use.
     cursor.execute( '''     SELECT  machine_id, machine_type, location, ifnull(username, 'None') as username, 
@@ -117,7 +117,7 @@ def getAllMachines():
 def checkEmailTaken(email):
      # connect to the database with cursor
     #   - set transaction isolation level serializable
-    cursor = mysql.connection.cursor()
+    cursor = mysql.cursor()
 
     # check the database to see if the email already exists
     cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
@@ -135,7 +135,7 @@ def checkEmailTaken(email):
 # Returns new user's username (for use in other functions)
 def registerUser(storedUser):
     # connect to the database with cursor
-    cursor = mysql.connection.cursor()
+    cursor = mysql.cursor()
     cursor.execute('SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE')
     cursor.execute('START TRANSACTION')
 
@@ -155,13 +155,13 @@ def registerUser(storedUser):
     if (len(cursor.fetchall()) == 0):
         cursor.execute('ROLLBACK')
         cursor.close()
-        mysql.connection.commit()
+        mysql.commit()
         return None
 
     # no errors: close the database connection and return the username
     cursor.execute('COMMIT')
     cursor.close()
-    mysql.connection.commit()
+    mysql.commit()
 
     return storedUser['username']
 
@@ -176,7 +176,7 @@ def updateUser(oldEmail, newEmail, username, password):
 #   - UsingMachine data is also deleted
 # 
 def deleteUser(email):
-    cursor = mysql.connection.cursor()
+    cursor = mysql.cursor()
     cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED ''')
     cursor.execute(''' START TRANSACTION ''')
 
@@ -188,7 +188,7 @@ def deleteUser(email):
 
     cursor.execute(''' COMMIT ''')
     cursor.close()
-    mysql.connection.commit()
+    mysql.commit()
     return True
 
 
@@ -211,7 +211,7 @@ def isAdmin(username):
 def getUserMachines(username):
     machines = []                           # array holds all machines
 
-    cursor = mysql.connection.cursor()      # open database connection
+    cursor = mysql.cursor()      # open database connection
 
     # all machines, doesn't show whether or not they are in use.
     cursor.execute( ''' 
@@ -237,7 +237,7 @@ def getUserMachines(username):
 #   - 1 if machine is already in the database
 #   - 2 if the database failed to add the machine
 def addMachine(machineID, location, type):
-    cursor = mysql.connection.cursor()
+    cursor = mysql.cursor()
     cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
     cursor.execute(''' START TRANSACTION ''')
 
@@ -262,7 +262,7 @@ def addMachine(machineID, location, type):
     # close the database connection
     cursor.execute(''' COMMIT ''')
     cursor.close()
-    mysql.connection.commit()
+    mysql.commit()
 
     return 0 #success
 
@@ -271,7 +271,7 @@ def addMachine(machineID, location, type):
 def checkout(machineID, username):
     # update UsingMachine with the correct info
 
-    cursor = mysql.connection.cursor()
+    cursor = mysql.cursor()
     # get the user's email
     cursor.execute(''' SELECT email FROM MachineUser WHERE username=%s ''', (username,))
     t = cursor.fetchall()
@@ -283,7 +283,7 @@ def checkout(machineID, username):
     cursor.execute(''' INSERT INTO UsingMachine VALUE (%s, %s, %s, %s) ''', (machineID, email, username, helper.getCurrentTime()))
 
     cursor.close()
-    mysql.connection.commit()
+    mysql.commit()
 
     print(machineID + " checked out to " + username)
     return 0
@@ -292,13 +292,13 @@ def checkout(machineID, username):
 
 # Marks a machine as checked in by a user
 def checkin(machineID, username):
-    cursor = mysql.connection.cursor()
+    cursor = mysql.cursor()
 
     # remove this machine from the UsingMachine table
     cursor.execute(''' DELETE FROM UsingMachine WHERE machine_id=%s AND username=%s ''', (machineID, username))
 
     cursor.close()
-    mysql.connection.commit()
+    mysql.commit()
 
     print(machineID + " checked in by " + username)
     return 0
