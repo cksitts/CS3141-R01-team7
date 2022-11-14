@@ -150,8 +150,8 @@ hr {
     width : 400px;
     height : 200px;
 
-    background-color : var(--main-light);
-    border : 2px solid var(--main-dark);
+    background-color : var(--contrast);
+    border : 2px solid var(--contrast-dark);
     border-radius : 20px;
 }
 .checkoutDialog h3, .checkinDialog h3 {
@@ -164,7 +164,7 @@ hr {
     line-height : 40px;
     text-align : center;
 
-    background-color : var(--main-dark);
+    background-color : var(--contrast-dark);
     color : var(--light-text);
     border-radius : 18px 18px 0px 0px;
 }
@@ -193,7 +193,7 @@ hr {
     border-radius : 0px 20px 0px 0px;
 }
 .closeButton:hover {
-    background-color : var(--hover-dark);
+    background-color : var(--hover-contrast-dark);
     cursor : pointer;
 }
 .nobutton, .yesbutton {
@@ -203,7 +203,7 @@ hr {
     width : 40%;
     height : 35px;
 
-    background-color: var(--main-dark);
+    background-color: var(--contrast-dark);
     color : var(--light-text);
     font-size : 1em;
 }
@@ -214,7 +214,7 @@ hr {
     right : 6%;
 }
 .nobutton:hover, .yesbutton:hover {
-    background-color : var(--hover-dark);
+    background-color : var(--hover-contrast-dark);
     cursor : pointer;
 }
 
@@ -222,9 +222,11 @@ hr {
 /* ------------------------- */
 /* Footer */
 footer {
-    background-color : var(--main-dark);
+    position : fixed;
+    bottom : 0;
     width : 100%;
     height : 150px;
+    background-color : var(--main-dark);
 }
 
 /* Footer Links */

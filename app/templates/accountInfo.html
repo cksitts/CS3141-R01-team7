@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/inputPage.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/accountInfo.css') }}">
+        <script src="{{ url_for('static', filename='js/backButton.js') }}"></script>
         <script src="{{ url_for('static', filename='js/accountInfo.js') }}"></script>
         {% if requestType == "signup" %}
             <title>Sign Up</title>
@@ -66,6 +68,19 @@
                 <script>document.getElementById('form').action="{{ url_for('signup') }}"</script>
             {% elif requestType == "edit" %}
                 <script>document.getElementById('form').action="{{ url_for('editAccount') }}"</script>
+                <button class="deleteAccountButton" onclick="showDeleteAccountPopup()">Delete Account</button>
+                <div class="deleteAccountPopup" id="delAccPopupDiv">
+                    <h3>Delete Account</h3>
+                    <p>Would you like to delete your account?</p>
+                    <p>This is PERMANENT</p>
+                    <button onclick="hideDeleteAccountPopup()" class="noButton">No</button>
+                    <form action='{{ url_for('deleteAccount') }}' method="post">
+                        <!--keeps track of the old email so we know which record to update in the database-->
+                        <input type="hidden" name="email" value="{{ userData['email'] }}" required>
+                        <input type="submit" value="Yes" class="yesButton">
+                    </form>
+                    <button onclick="hideDeleteAccountPopup()" class="closeButton">X</button>
+                </div>
             {% endif %}
         </div>
     </body>

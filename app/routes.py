@@ -156,6 +156,12 @@ def editAccount(emailTaken=False, emailValid=True):
         return redirect(url_for('home')) #redirect to home page
     
 
+@l_app.route('/deleteaccount', methods=['POST'])
+@login_required
+def deleteAccount():
+    db.deleteUser(request.form['email'])
+    return redirect(url_for('home')) #redirect to home page
+
 
 @l_app.route('/home')
 @login_required
@@ -166,7 +172,7 @@ def home():
     userMachines = db.getUserMachines(session['username'])
     allMachines = db.getAllMachines()
     roomList = db.getLaundryRooms()
-    preferredRoom = db.getPreferredRoom(session['username'])
+    preferredRoom = db.getUserData(session['username'])['preferredRoom']
     
     return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList, preferredRoom=preferredRoom)
 
@@ -204,7 +210,7 @@ def addMachines():
         type = request.form['machineType']
         if(db.addMachine(id, location, type) == 0):
             #successfully added
-            return redirect(url_for('addMachines', successMessage=True))
+            return redirect(url_for('addMachines', successMessage="{} added successfully".format(id)))
         else:
             #not successful
             return redirect(url_for('addMachines', machineAlreadyExists=True))

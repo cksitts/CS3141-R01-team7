@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_mysqldb import MySQL
+import mysql.connector as conn
 
 import os
 
@@ -8,11 +8,13 @@ l_app = Flask(__name__)
 l_app.secret_key = os.environ.get('TSP_SECRET_KEY')
 
 # create the mysql parent object
-mysql = MySQL(l_app)
+mysql = conn.connect(   user='flask', 
+                        password=os.environ.get('TSP_DB_PASS'),
+                        host=os.environ.get('TSP_DB_HOST'),
+                        port=3306,
+                        database='laundry_tracker_db',
+                        ssl_ca='./etc/DigiCertGlobalRootCA.crt.pem',
+                        ssl_disabled=False    )
 
-l_app.config['MYSQL_PASSWORD'] = os.environ.get('TSP_DB_PASS')
-l_app.config['MYSQL_USER'] = 'root'
-l_app.config['MYSQL_DB'] = 'laundry_tracker_db'
-l_app.config['MYSQL_HOST'] = 'localhost'
 
 from app import routes

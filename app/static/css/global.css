@@ -1,16 +1,18 @@
 /* Global Colors */
 :root {
-    /* TODO pick actual colors */
-    --background-color : white;
-    --dark-text : black;
-    --light-text : white;
+    --background-color    : rgb(250, 248, 241);
+    --dark-text           : rgb( 17,  17,  17);
+    --light-text          : rgb(255, 255, 255);
     
-    --main-dark : darkgreen;
-    --main-light : darkseagreen;
-    --hover-light : palegreen;
-    --hover-dark : green;
-    --contrast : lightcoral;
-    --hover-contrast : indianred;
+    --main-dark           : rgb(  0,   0,   0);
+    --hover-dark          : rgb( 25,  25,  25);
+    --main-light          : rgb(248, 215,  75);
+    --hover-light         : rgb(211, 178,  59);
+
+    --contrast            : rgb(221, 239, 246);
+    --hover-contrast      : rgb(195, 226, 239);
+    --contrast-dark       : rgb( 65, 152, 199);
+    --hover-contrast-dark : rgb( 98, 170, 208);
 }
 
 /* Global Fonts */

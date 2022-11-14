@@ -1,7 +1,7 @@
 @import "global.css";
 
 /* Input Fields */
-.inputForm input[type=text],  .inputForm input[type=password], .inputForm input[type=email], .inputForm select {
+.inputForm input[type=text],  .inputForm input[type=password], .inputForm input[type=email], .inputForm input[type=number], .inputForm select {
     display : inline-block;
     box-sizing: content-box;
     font-size : 1em;
@@ -21,30 +21,4 @@
 
     padding : 2px 8px;
     font-size : 0.8em;
-}
-
-/* Input Icons */
-.inputForm #usernameInput {
-    background-image : url("https://img.icons8.com/material-outlined/344/user--v1.png");
-    background-repeat : no-repeat;
-    background-size : calc(1em + 10px);
-    background-position : 5px;
-}
-.inputForm #passwordInput, .inputForm #confirmPassword {
-    background-image : url("https://img.icons8.com/fluency-systems-regular/344/lock--v1.png");
-    background-repeat : no-repeat;
-    background-size : calc(1em + 10px);
-    background-position : 5px;
-}
-.inputForm #emailInput {
-    background-image : url("https://img.icons8.com/cotton/344/secured-letter--v3.png");
-    background-repeat : no-repeat;
-    background-size : calc(1em + 10px);
-    background-position : 5px;
-}
-.inputForm #roomDropdown {
-    background-image : url("https://img.icons8.com/ios/344/washing-machine.png");
-    background-repeat : no-repeat;
-    background-size : calc(1em + 10px);
-    background-position : 5px;
 }

@@ -1,5 +1,4 @@
 @import "global.css";
-@import "inputFields.css";
 
 /* Column Layout */
 body {
@@ -51,6 +50,20 @@ body {
 
 .rightCol > .position .inputForm {
     width : 80%;
+}
+
+/* Icons */
+.inputForm #usernameInput {
+    background-image : url("https://img.icons8.com/material-outlined/344/user--v1.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
+}
+.inputForm #passwordInput {
+    background-image : url("https://img.icons8.com/fluency-systems-regular/344/lock--v1.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
 }
 
 /* Forgot Password Button */

@@ -1,57 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/inputPage.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/addMachines.css') }}">
+        <script src="{{ url_for('static', filename='js/backButton.js') }}"></script>
         <title>Add Machines</title>
     </head>
     <body>
-        <h1>Add Machines</h1>
 
-        <form onsubmit="return addMachines()" method="post">
+        <a href="{{ url_for('home') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
 
-            <label for="machineType">Machine Type:</label>
-            <select id="machineType" name="machineType">
-                <option value="Washer">Washer</option>
-                <option value="Dryer">Dryer</option>
-            </select>
-            
-            <br>
+        <div class="position">
+            <h1>Add Machines</h1>
 
-            <label for="roomNumber">Room Number:</label>
-            <input type="text" id="roomNumber" name="roomNumber">
+            <form onsubmit="return addMachines()" method="post" class="inputForm" autocomplete='off'>
 
-            <br>
+                <label for="machineType">Machine Type:</label>
+                <select id="machineType" name="machineType">
+                    <option value="Washer">Washer</option>
+                    <option value="Dryer">Dryer</option>
+                </select>
+                
+                <br>
 
-            <label for="machineNum">Machine Number:</label>
-            <input type="number" id="machineNum" name="machineNum">
+                <label for="roomNumber">Room Number:</label>
+                <input type="text" id="roomNumber" name="roomNumber" required />
 
-            <br>
+                <br>
 
-            <label for="building">Building:</label>
-            <select id="building" name="building">
-                <option value="WH">Wads</option>
-                <option value="MH">McNair</option>
-                <option value="DHH">DHH</option>
-            </select>
+                <label for="machineNum">Machine Number:</label>
+                <input type="number" id="machineNum" name="machineNum" required />
 
-            <br>
+                <br>
 
-            <label for="location">Hall/Location:</label>
-            <input type="text" list="prevHalls" id="location" name="location">
-            <datalist id="prevHalls">
-                {% for hall in locationList %}
-                    <option value="{{ hall }}">
-                {% endfor %}
-            </datalist>
+                <label for="building">Building:</label>
+                <select id="building" name="building">
+                    <option value="WH">Wads</option>
+                    <option value="MH">McNair</option>
+                    <option value="DHH">DHH</option>
+                </select>
 
-            <br>
-            
-            <input type="submit" value="Add Machine">
-        </form>
+                <br>
 
-        <br>======================<br>
-        Success: {{ successMessage }} <br>
-        Already Exists: {{ machineAlreadyExists }}
-        <br>======================<br>
+                <label for="location">Hall/Location:</label>
+                <input type="text" list="prevHalls" id="location" name="location" required />
+                <datalist id="prevHalls">
+                    {% for hall in locationList %}
+                        <option value="{{ hall }}">
+                    {% endfor %}
+                </datalist>
 
+                <br>
+                
+                <input type="submit" value="Add Machine" />
+            </form>
+
+            <p class="message hidden" id="pMessage">.</p>
+            {% if successMessage != False %}
+                <script>
+                    document.getElementById("pMessage").innerHTML = "{{ successMessage }}"
+                    document.getElementById("pMessage").classList.replace("hidden", "visible")
+                </script>
+            {% endif %}
+            {% if machineAlreadyExists == 'True' %}
+                <script>
+                    document.getElementById("pMessage").innerHTML = "That machine already exists"
+                    document.getElementById("pMessage").classList.replace("hidden", "visible")
+                </script>
+            {% endif %}
+        </div>
     </body>
 </html>
