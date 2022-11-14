@@ -39,7 +39,7 @@
     cursor : pointer;
 }
 
-/* TODO slider hover color change */
+/* slider hover color change */
 .filterButtons input.timeSlider {
     accent-color: var(--hover-dark);
 }

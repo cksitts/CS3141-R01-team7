@@ -116,7 +116,6 @@ def getAllMachines():
 # Checks if an email is already being used in the database
 def checkEmailTaken(email):
      # connect to the database with cursor
-    # TODO use ACID transactions to help with concurrent queries
     #   - set transaction isolation level serializable
     cursor = mysql.connection.cursor()
 
@@ -270,9 +269,7 @@ def addMachine(machineID, location, type):
 
 # Marks a machine as checked out to a user
 def checkout(machineID, username):
-    #TODO checkout(machineID, username)
     # update UsingMachine with the correct info
-    # TODO get the user email
 
     cursor = mysql.connection.cursor()
     # get the user's email
@@ -283,7 +280,6 @@ def checkout(machineID, username):
     email = t[0]
 
     # add this machine to the UsingMachine table
-    # TODO isolated transactions with a write lock so that simultaneous writes cannot occur
     cursor.execute(''' INSERT INTO UsingMachine VALUE (%s, %s, %s, %s) ''', (machineID, email, username, helper.getCurrentTime()))
 
     cursor.close()
@@ -298,7 +294,6 @@ def checkout(machineID, username):
 def checkin(machineID, username):
     cursor = mysql.connection.cursor()
 
-    #TODO WRITE LOCK
     # remove this machine from the UsingMachine table
     cursor.execute(''' DELETE FROM UsingMachine WHERE machine_id=%s AND username=%s ''', (machineID, username))
 
