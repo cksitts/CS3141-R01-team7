@@ -48,7 +48,7 @@ def index():
         loginValid = db.validLogin(username, request.form['password'])
     
         if(loginValid):
-            session['username'] = username #will be used for the @login_required flag to validate that someone is logged in
+            session['username'] = username # will be used for the @login_required flag to validate that someone is logged in
             session['admin'] = db.isAdmin(username) #1 if admin, 0 otherwise
 
 
@@ -182,7 +182,7 @@ def home():
 def checkout(machineId):
     if(db.checkout(machineId, session['username']) == 0):
         #successful
-        return redirect(url_for('home')) #redrect to home page
+        return redirect(url_for('home')) #redirect to home page
     else:
         #unsuccessful
         abort(500)

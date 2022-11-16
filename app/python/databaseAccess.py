@@ -26,9 +26,11 @@ def validLogin(username, password):
 
 # Returns a list of laundry rooms from the database
 def getLaundryRooms():
-    rooms = []                           # array holds room strings
+    rooms = []                   # array holds room strings
 
     cursor = mysql.cursor()      # open database connection
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
+    cursor.execute(''' START TRANSACTION ''')
 
     # all distinct room numbers and their building
     cursor.execute( '''     SELECT DISTINCT
@@ -61,6 +63,7 @@ def getLaundryRooms():
         rooms[i] = rooms[i] + " (" + t[0] + ")"
         i += 1
 
+    cursor.execute(''' COMMIT ''')
     cursor.close()
 
     # return the list as an array
