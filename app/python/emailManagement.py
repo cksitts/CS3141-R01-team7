@@ -9,7 +9,7 @@ from app.python import constant
 
 # function drafts and sends an email with Subject: "Laundry Tracker Lite"
 # the message body and the receiver is provided as a string to this function
-def sendEmail(message, to):
+def sendEmail(code, to):
 	e_password = os.environ.get("TSP_EMAIL_PASS")   # get email and password for sender
 	e_user = os.environ.get('TSP_EMAIL')
 	with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
@@ -24,8 +24,8 @@ def sendEmail(message, to):
 		msg['From'] = 'Laundry Tracker Lite'
 		msg['To'] =  to
 
-		relative_path = "../static/verificationEmail.html"
-		html = open(os.path.join(os.path.split(os.path.abspath(__file__))[0], relative_path)).read()
+		relative_path = "../static/emailTemplates/verificationEmail.html"
+		html = open(os.path.join(os.path.split(os.path.abspath(__file__))[0], relative_path), mode='rt').read().replace("{CODE}", code)
 		msg.set_content(html, subtype='html')
 
         # subject = 'Laundry Tracker Lite!'
@@ -50,6 +50,6 @@ def sendSignupEmail(to):
     # the length of the sequence is 6 total digits (3 bytes converted to 2 digits each)
     code_length = 3
     code = str(secrets.token_hex(code_length)).upper()
-    sendEmail("Your code will expire in 5 minutes\nVerification Code: %s" % code, to)
+    sendEmail(code, to)
     print("Verification code: %s" % code) #TEMP prints the verification link as well as emailing
     return code

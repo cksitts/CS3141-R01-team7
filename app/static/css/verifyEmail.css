@@ -20,7 +20,7 @@ div.position {
     margin : 0;
 }
 form.inputForm {
-    width : 40%;
+    width : 30%;
 }
 
 /* Text */
@@ -51,4 +51,12 @@ form.inputForm {
 .inputForm input[type=submit]:hover {
     background-color : var(--hover-light);
     cursor : pointer;
+}
+
+/* Input field icon */
+.inputForm #codeInput {
+    background-image : url("https://img.icons8.com/fluency-systems-regular/344/lock--v1.png");
+    background-repeat : no-repeat;
+    background-size : calc(1em + 10px);
+    background-position : 5px;
 }
