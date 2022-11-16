@@ -1,10 +1,10 @@
 /* Global Colors */
 :root {
     --background-color    : rgb(250, 248, 241);
-    --dark-text           : rgb( 17,  17,  17);
+    --dark-text           : rgb(  0,   0,   0);
     --light-text          : rgb(255, 255, 255);
     
-    --main-dark           : rgb(  0,   0,   0);
+    --main-dark           : rgb( 17,  17,  17);
     --hover-dark          : rgb( 25,  25,  25);
     --main-light          : rgb(248, 215,  75);
     --hover-light         : rgb(211, 178,  59);
