@@ -1,4 +1,4 @@
-set global local_infile = true;
+-- set global local_infile = true;
 
 -- all OS's => save the load_machines.txt file (add something, then delete it, then save)
 -- MacOS => change "lines terminated by" to '\r'
@@ -8,7 +8,7 @@ set global local_infile = true;
 load data local infile './etc/scripts/load_machines.txt' into table Machine
 lines terminated by '\r\n';
 
-set global local_infile = false;
+-- set global local_infile = false;
 
 -- remove empty tuple
 delete from Machine where machine_id = '';

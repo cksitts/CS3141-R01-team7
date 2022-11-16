@@ -2,10 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/accountInfo.css') }}">
         <title>Email Verification</title>
     </head>
     <body>
-        <form id="codeForm" action="{{url_for('verify')}}", method="post">
+    <div class="position" id="verifyEmailDiv">
+        <p>You should recieve an email with a code soon.  Please enter it here to verify your email address.  Then hit enter to finish verifying your account.</p>
+        <form action="{{url_for('verify')}}", method="post">
             <label for="codeInput">Enter Code: </label>
             <input type="text" id="codeInput" name="codeInput">
             {% if validCode == false %}
@@ -13,5 +16,6 @@
             {% endif %}
             <input type="submit" value="Submit">            
         </form>
+    </div>
     </body>
 </html>
