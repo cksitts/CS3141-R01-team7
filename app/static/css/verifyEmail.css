@@ -1,0 +1,54 @@
+@import "global.css";
+@import "inputFields.css";
+
+/* General Layout */
+body {
+    margin : 0px;
+}
+div.position {
+    display : flex;
+    flex-flow : column nowrap;
+    align-items : center;
+    justify-content : center;
+    height : 100vh;
+    width : 100vw;
+
+    position : relative;
+    bottom : 10vh;
+}
+.position > h1 {
+    margin : 0;
+}
+form.inputForm {
+    width : 40%;
+}
+
+/* Text */
+.position p {
+    text-align : center;
+    line-height: 1.5em;
+}
+
+
+/* Submit Button */
+.inputForm input[type=submit] {
+    width : 35%;
+    margin-top : 25px;
+    padding : 10px 0px;
+
+    font-size : 1em;
+    border-radius: 5px;
+    background-color: var(--main-light);
+    color : var(--dark-text);
+
+    margin-left : calc(50% - (35%/2));
+
+    display : inline-block;
+    text-align : center;
+    text-decoration : none;
+    border : 2px outset rgb(118,118,118);
+}
+.inputForm input[type=submit]:hover {
+    background-color : var(--hover-light);
+    cursor : pointer;
+}
