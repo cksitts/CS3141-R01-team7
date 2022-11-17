@@ -48,7 +48,9 @@ def index():
         loginValid = db.validLogin(username, request.form['password'])
     
         if(loginValid):
-            session['username'] = username # will be used for the @login_required flag to validate that someone is logged in
+            # will be used for the @login_required flag to validate that someone is logged in
+            # if the username is an email, still store the username associated with that email (usernames cannot contain '@')
+            session['username'] = username if '@' not in username else db.getUsernameFromEmail(username)
             session['admin'] = db.isAdmin(username) #1 if admin, 0 otherwise
 
 

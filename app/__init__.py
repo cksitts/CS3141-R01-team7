@@ -16,5 +16,4 @@ mysql = conn.connect(   user='flask',
                         ssl_ca='./etc/DigiCertGlobalRootCA.crt.pem',
                         ssl_disabled=False    )
 
-
 from app import routes

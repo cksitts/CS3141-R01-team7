@@ -195,6 +195,18 @@ def deleteUser(email):
     return True
 
 
+# Get a user's username given their email (used to initialize session)
+def getUsernameFromEmail(email):
+    cursor = mysql.cursor()
+    cursor.execute(''' SELECT username FROM MachineUser WHERE email=%s ''', (email,) )
+
+    username = cursor.fetchall()[0]
+    
+    cursor.close()
+    mysql.commit()
+
+    return username[0]
+
 # Returns the data for a user based on username
 def getUserData(username):
     #TODO get user data based on username
@@ -214,14 +226,13 @@ def isAdmin(username):
 def getUserMachines(username):
     machines = []                           # array holds all machines
 
-    cursor = mysql.cursor()      # open database connection
+    cursor = mysql.cursor()
 
     # all machines, doesn't show whether or not they are in use.
-    cursor.execute( ''' 
-                        SELECT machine_id, machine_type, location, time_started
-                        FROM UsingMachine NATURAL JOIN Machine
-                        WHERE username = %s
-                    ''', (username,) )
+    cursor.execute( ''' SELECT machine_id, machine_type, location, time_started
+                            FROM UsingMachine NATURAL JOIN Machine
+                            WHERE username = %s ''', (username,) )
+
     all_machine_tuples = cursor.fetchall()
 
     for t in all_machine_tuples:
@@ -229,6 +240,7 @@ def getUserMachines(username):
                             'time-remaining' : helper.getTimeRemaining(int(t[3]))  })
 
     cursor.close()
+    mysql.commit()
 
     # return the list as an array
     return machines
