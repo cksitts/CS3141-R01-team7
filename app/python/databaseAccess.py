@@ -292,7 +292,9 @@ def checkout(machineID, username):
     t = cursor.fetchall()
     if (len(t) == 0):
         return 1
-    email = t[0]
+    email = (t[0])[0]
+
+    print((machineID, email, username, helper.getCurrentTime()))
 
     # add this machine to the UsingMachine table
     cursor.execute(''' INSERT INTO UsingMachine VALUE (%s, %s, %s, %s) ''', (machineID, email, username, helper.getCurrentTime()))
