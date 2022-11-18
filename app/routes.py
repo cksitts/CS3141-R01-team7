@@ -35,6 +35,9 @@ def internal_error(error):
 @l_app.errorhandler(403)
 def forbidden_page(error):
     return render_template('error403.html'), 403
+@l_app.errorhandler(418)
+def forbidden_page(error):
+    return render_template('error418.html'), 418
 
 
 @l_app.route('/')
@@ -214,3 +217,8 @@ def addMachines():
         else:
             #not successful
             return redirect(url_for('addMachines', machineAlreadyExists=True))
+
+
+@l_app.route('/teapot')
+def teapotPage():
+    abort(418) 

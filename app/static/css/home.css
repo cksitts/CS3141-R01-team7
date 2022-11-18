@@ -20,6 +20,14 @@ header > h1 {
     padding : 40px 0px;
     color : var(--light-text);
 }
+.logo {
+    position : absolute;
+    top : calc((120px - 75px)/2);
+    left : calc((120px - 75px)/2);
+
+    width : 67px;
+    height : 75px;
+}
 
 /* Dropdown Button */
 .dropdownButton {

@@ -21,6 +21,8 @@
                 <script>document.getElementById("profileDropdown").classList.add("admin")</script>
             {% endif %}
         </div>
+        <img src="{{ url_for('static', filename='images/theboi.png') }}" width="67" height="75" class="logo" id="logoImg">
+        <script>document.getElementById('logoImg').addEventListener('click', () => {location.href="{{ url_for('teapotPage') }}"})</script>
     </header>
     <body>
         <!-- Machine Displays -->
