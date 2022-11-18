@@ -116,22 +116,30 @@ def getAllMachines():
     # return the list as an array
     return machines
 
-# Checks if an email is already being used in the database
-def checkEmailTaken(email):
+# Checks if login is potentially valid
+# return a status code
+# - 0 if success
+# - 1 if email is taken
+# - 2 if username is taken
+# - 3 if both are taken
+def checkEmailAndUsernameTaken(email, username):
      # connect to the database with cursor
     #   - set transaction isolation level serializable
     cursor = mysql.cursor()
 
     # check the database to see if the email already exists
-    cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
+    cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (email,) )
+    email_code = 0
     if(len(cursor.fetchall()) != 0): 
-        # close the database connection
-        cursor.close()
-        return True
-    else:
-        # close the database connection
-        cursor.close()
-        return False
+        email_code = 1
+    
+    # check the database to see if the username already exists
+    cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (username,))
+    username_code = 0
+    if (len(cursor.fetchall()) != 0):
+        username_code = 2
+
+    return email_code + username_code
 
 
 # Registers a new user in the database (from form data)
@@ -195,6 +203,18 @@ def deleteUser(email):
     return True
 
 
+# Get a user's username given their email (used to initialize session)
+def getUsernameFromEmail(email):
+    cursor = mysql.cursor()
+    cursor.execute(''' SELECT username FROM MachineUser WHERE email=%s ''', (email,) )
+
+    username = cursor.fetchall()[0]
+    
+    cursor.close()
+    mysql.commit()
+
+    return username[0]
+
 # Returns the data for a user based on username
 def getUserData(username):
     #TODO get user data based on username
@@ -214,14 +234,13 @@ def isAdmin(username):
 def getUserMachines(username):
     machines = []                           # array holds all machines
 
-    cursor = mysql.cursor()      # open database connection
+    cursor = mysql.cursor()
 
     # all machines, doesn't show whether or not they are in use.
-    cursor.execute( ''' 
-                        SELECT machine_id, machine_type, location, time_started
-                        FROM UsingMachine NATURAL JOIN Machine
-                        WHERE username = %s
-                    ''', (username,) )
+    cursor.execute( ''' SELECT machine_id, machine_type, location, time_started
+                            FROM UsingMachine NATURAL JOIN Machine
+                            WHERE username = %s ''', (username,) )
+
     all_machine_tuples = cursor.fetchall()
 
     for t in all_machine_tuples:
@@ -229,6 +248,7 @@ def getUserMachines(username):
                             'time-remaining' : helper.getTimeRemaining(int(t[3]))  })
 
     cursor.close()
+    mysql.commit()
 
     # return the list as an array
     return machines
@@ -280,7 +300,9 @@ def checkout(machineID, username):
     t = cursor.fetchall()
     if (len(t) == 0):
         return 1
-    email = t[0]
+    email = (t[0])[0]
+
+    print((machineID, email, username, helper.getCurrentTime()))
 
     # add this machine to the UsingMachine table
     cursor.execute(''' INSERT INTO UsingMachine VALUE (%s, %s, %s, %s) ''', (machineID, email, username, helper.getCurrentTime()))

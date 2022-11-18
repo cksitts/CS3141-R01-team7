@@ -51,7 +51,9 @@ def index():
         loginValid = db.validLogin(username, request.form['password'])
     
         if(loginValid):
-            session['username'] = username # will be used for the @login_required flag to validate that someone is logged in
+            # will be used for the @login_required flag to validate that someone is logged in
+            # if the username is an email, still store the username associated with that email (usernames cannot contain '@')
+            session['username'] = username if '@' not in username else db.getUsernameFromEmail(username)
             session['admin'] = db.isAdmin(username) #1 if admin, 0 otherwise
 
 
@@ -73,12 +75,15 @@ def signup():
         roomList = db.getLaundryRooms()
         return render_template('accountInfo.html',  requestType='signup', 
                                                     roomList=roomList, 
-                                                    emailTaken=request.args.get('emailTaken', default=False), 
+                                                    status_code=request.args.get('status_code', default=0), 
                                                     emailValid=request.args.get('emailValid', default=True))
     else:
         email = request.form['email'] # get the email from the form
-        if(db.checkEmailTaken(email)): #Checks if email is taken
-            return redirect(url_for('signup', emailTaken=True))
+        username = request.form['username']
+        status_code = db.checkEmailAndUsernameTaken(email, username) #Checks if email is taken
+
+        if (status_code != 0):
+            return redirect(url_for('signup', status_code=status_code))
         else:
             # if the email is not taken then generate a verification code, email the user, and move on to email verification
             session['verificationCode'] = emailManagement.sendSignupEmail(email)
@@ -86,16 +91,16 @@ def signup():
             # store the current user in the session dict for later use (hopefully)
             storedUser = request.form
             session['storedUser'] = storedUser
-            session['inputCount'] = 0
+            session['inputCount'] = 1
+            session['validCode'] = True
 
-            return redirect(url_for('verify', validCode=True, inputCount=session['inputCount']))
+            return redirect(url_for('verify'))
 
 @l_app.route('/verify', methods=['GET', 'POST'])
-@l_app.route('/verify/<validCode>/<inputCount>', methods=['GET'])
-def verify(validCode=True, inputCount=0):
-
+def verify():
     if (request.method == 'GET'):
-        return render_template('verifyEmail.html', validCode=validCode, inputCount=session['inputCount'])
+        return render_template('verifyEmail.html',  validCode=session['validCode'],
+                                                    inputCount=session['inputCount'])
     else:
         verificationCode = request.form['codeInput']
         if(verificationCode == session['verificationCode']):
