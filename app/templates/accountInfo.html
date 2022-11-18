@@ -28,14 +28,22 @@
                 <label for="emailInput">Email:</label>
                 <input type="email" id="emailInput" name="email" {% if userData %}value="{{ userData['email'] }}"{% endif %} required>
                 
-                {% if emailTaken == "True" %}
+                {% if status_code == "1" %}
                     <p id="invalidMessage">That email already has an account.</p>
                     <script>positionMessage()</script>
+                {% elif status_code == "2" %}
+                    <p id="invalidMessage">That username already has an account.</p>
+                    <script>positionMessage()</script>
+                {% elif status_code == "3" %}
+                    <p id="invalidMessage">That email and username already has an account.</p>
+                    <script>positionMessage()</script>
                 {% endif %}
+
                 {% if emailValid == "False" %}
                     <p id="invalidMessage">That email is invalid.</p>
                     <script>positionMessage()</script>
                 {% endif %}
+
                 <label for="usernameInput">Username:</label>
                 <input type="text" id="usernameInput" name="username" {% if userData %}value="{{ userData['username'] }}"{% endif %} required>
                 

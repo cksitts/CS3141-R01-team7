@@ -116,22 +116,30 @@ def getAllMachines():
     # return the list as an array
     return machines
 
-# Checks if an email is already being used in the database
-def checkEmailTaken(email):
+# Checks if login is potentially valid
+# return a status code
+# - 0 if success
+# - 1 if email is taken
+# - 2 if username is taken
+# - 3 if both are taken
+def checkEmailAndUsernameTaken(email, username):
      # connect to the database with cursor
     #   - set transaction isolation level serializable
     cursor = mysql.cursor()
 
     # check the database to see if the email already exists
-    cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (str(email),) )
+    cursor.execute( '''SELECT * FROM MachineUser WHERE email=%s''', (email,) )
+    email_code = 0
     if(len(cursor.fetchall()) != 0): 
-        # close the database connection
-        cursor.close()
-        return True
-    else:
-        # close the database connection
-        cursor.close()
-        return False
+        email_code = 1
+    
+    # check the database to see if the username already exists
+    cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (username,))
+    username_code = 0
+    if (len(cursor.fetchall()) != 0):
+        username_code = 2
+
+    return email_code + username_code
 
 
 # Registers a new user in the database (from form data)
