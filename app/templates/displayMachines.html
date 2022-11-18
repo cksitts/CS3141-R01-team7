@@ -47,6 +47,7 @@
                         <div class="availableMachineBlock" data-show-location="True" data-show-type="True" data-show-time="True">
                             <h3>Available</h3>
                             <div class="backgroundHighlight"></div>
+                            <script>document.currentScript.parentElement.addEventListener('click', () => { showCheckoutDialog("{{ machine }}") })</script>
                     {% else %}
                         <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True" data-show-time="True">
                             <h3>Unavailable</h3>
@@ -75,10 +76,6 @@
                     <p class="machineType">{{ machine['machine-type'] }}</p>
                     <p class="machineLocation">{{ machine['location'] }}<br></p>
                     <script>document.currentScript.previousElementSibling.innerHTML += getRoom("{{ machine['machine-id'] }}")</script>
-
-                    {% if machine['available'] %}
-                        <button type="button" onclick='showCheckoutDialog("{{ machine }}")'>Check Out</button>
-                    {% endif %}
                     </div>
                 {% endif %}
             {% endfor %}

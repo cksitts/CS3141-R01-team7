@@ -1,7 +1,8 @@
 //Popup dialog for machine checkout
 function showCheckoutDialog(machine) {
     //Parse machine into dictionary
-    machine = JSON.parse(machine.replaceAll("'",'"').replaceAll('True', '"True"').replaceAll('False','"False"'))
+    console.log(machine)
+    machine = JSON.parse(machine.replaceAll('&#39;','"').replaceAll('True', '"True"').replaceAll('False','"False"'))
 
     //Get element references
     div = document.getElementById('checkoutDialogDiv')
