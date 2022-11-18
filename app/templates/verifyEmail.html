@@ -10,11 +10,11 @@
         <form action="{{url_for('verify')}}", method="post" class="inputForm">
             <label for="codeInput">Enter Code: </label>
             <input type="text" id="codeInput" name="codeInput">
-            {% if validCode == "False" %}
-                <p style="color:red">Invalid Code.</p>
-            {% endif %}
             <input type="submit" value="Submit">            
         </form>
+        {% if validCode == "False" %}
+                <p>Invalid Code.</p>
+        {% endif %}
     </div>
     </body>
 </html>
