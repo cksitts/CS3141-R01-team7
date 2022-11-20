@@ -9,9 +9,9 @@
 }
 @keyframes runningAnimation {
     from {
-        transform : rotate(0.75deg);
+        transform : rotate(0.5deg);
     }
     to {
-        transform : rotate(-0.75deg);
+        transform : rotate(-0.5deg);
     }
 }
