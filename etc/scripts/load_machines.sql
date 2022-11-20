@@ -5,8 +5,10 @@
 -- Windows => change "lines terminated by" to '\r\n' (default)
 -- Linux =>  change "lines terminated by" to '\n'
 
+use laundry_tracker_db;
+
 load data local infile './etc/scripts/load_machines.txt' into table Machine
-lines terminated by '\r\n';
+lines terminated by '\n';
 
 -- set global local_infile = false;
 

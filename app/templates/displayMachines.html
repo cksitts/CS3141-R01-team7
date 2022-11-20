@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/runningMachineAnimation.css') }}">
         <script src="{{ url_for('static', filename='js/displayMachines.js') }}"></script>
         <script src="{{ url_for('static', filename='js/checkoutMachine.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/updateAnimation.js') }}"></script>
         <title>Display Machines</title>
     </head>
     <body>
@@ -51,26 +52,26 @@
                     {% else %}
                         <div class="unavailableMachineBlock" data-show-location="True" data-show-type="True" data-show-time="True">
                             <h3>Unavailable</h3>
-                            <p class="timeRemaining" {{ machine['time-remaining'] }} minutes remaining</p>
+                            <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
                             <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress><br>
                     {% endif %}
 
                     {% if (machine['available']) and (machine['machine-type'] == 'Washer') %}
                         <!-- Available Washer -->
-                        <img src="{{ url_for('static', filename='images/empty_washer_icon.png') }}">
+                        <img src="{{ url_for('static', filename='images/empty_washer.png') }}">
                     {% elif (machine['available']) and (machine['machine-type'] == 'Dryer') %}
                         <!-- Available Dryer -->
-                        <img src="{{ url_for('static', filename='images/empty_dryer_icon.png') }}">
+                        <img src="{{ url_for('static', filename='images/empty_dryer.png') }}">
                     {% elif (not machine['available']) and (machine['machine-type'] == 'Washer') %}
                         <!-- Unavailable Washer -->
-                        <img src="{{ url_for('static', filename='images/full_washer_icon.png') }}">
+                        <img src="{{ url_for('static', filename='images/full_washer.png') }}">
                     {% elif (not machine['available']) and (machine['machine-type'] == 'Dryer') %}
                         <!-- Unavailable Dryer -->
-                        <img src="{{ url_for('static', filename='images/full_dryer_icon.png') }}">
+                        <img src="{{ url_for('static', filename='images/full_dryer.png') }}">
                     {% endif %}
 
                     {% if (not machine['available']) and (machine['time-remaining'] > 0) %}
-                        <script>document.currentScript.previousElementSibling.classList.add('running')</script>
+                        <script>updateAnimation(document.currentScript.previousElementSibling)</script>
                     {% endif %}
 
                     <p class="machineType">{{ machine['machine-type'] }}</p>

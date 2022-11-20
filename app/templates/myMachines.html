@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/runningMachineAnimation.css') }}">
         <script src="{{ url_for('static', filename='js/myMachines.js') }}"></script>
         <script src="{{ url_for('static', filename='js/checkinMachine.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/updateAnimation.js') }}"></script>
         <title>My Machines</title>
     </head>
     <body>
@@ -12,9 +13,9 @@
         {% for machine in userMachines | sort(attribute='time-remaining') %}
             <div class="machineInfo">
                 {% if machine['machine-type'] == 'Washer' %}
-                    <img src="{{ url_for('static', filename='images/full_washer_icon.png') }}">
+                    <img src="{{ url_for('static', filename='images/full_washer.png') }}">
                 {% else %}
-                    <img src="{{ url_for('static', filename='images/full_dryer_icon.png') }}">
+                    <img src="{{ url_for('static', filename='images/full_dryer.png') }}">
                 {% endif %}
 
                 <p class="info"></p>
@@ -25,10 +26,11 @@
                     <progress class="timeRemainingDone" id="progressBar" value="60" max="60"></progress>
                     <div class="doneHighlight"></div>
                     <button type="button" id="checkoutButton" onclick='showCheckinDialog("{{ machine }}")'>Check In</button>
+                    <script>updateAnimation(document.currentScript.parentElement.firstElementChild)</script>
                 {% else %}
                     <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
                     <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress>
-                    <script>document.currentScript.parentElement.firstElementChild.classList.add('running')</script>
+                    <script>updateAnimation(document.currentScript.parentElement.firstElementChild)</script>
                 {% endif %}
             </div>
             <br><br>
