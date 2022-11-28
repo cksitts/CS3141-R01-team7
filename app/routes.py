@@ -226,4 +226,11 @@ def addMachines():
 
 @l_app.route('/teapot')
 def teapotPage():
-    abort(418) 
+    abort(418)
+
+@l_app.route('/about')
+def aboutPage():
+    return render_template('about.html')
+@l_app.route('/help')
+def helpPage():
+    return render_template('help.html')
