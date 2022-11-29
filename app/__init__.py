@@ -10,7 +10,7 @@ l_app.secret_key = os.environ.get('TSP_SECRET_KEY')
 
 # create the mysql parent object
 # use the local db if this is true
-use_local_database = True
+use_local_database = False
 
 if (use_local_database):
     mysql = conn.connect(   user='root', 

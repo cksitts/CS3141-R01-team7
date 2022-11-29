@@ -178,10 +178,53 @@ def registerUser(storedUser):
 
 
 # Updates a current user in the database
-# Returns 0 if successful, otherwise 1
-def updateUser(oldEmail, newEmail, username, password):
-    #TODO update user data based on oldEmail (email may or may not change)
-    return 0
+# Returns a status code:
+#   0: success
+#   1: email error (used for displaying)
+#   2: username error (used for displaying)
+#   3: both email and username error (used for displaying)
+#   -1: incorrect password
+def updateUser(oldEmail, newEmail, oldUsername, newUsername, password):
+    cursor = mysql.cursor()
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
+    cursor.execute(''' START TRANSACTION ''')
+
+    status_code = 0
+
+    # if username changed
+    if (oldUsername != newUsername):
+        # is the new username taken?
+        cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (newUsername,))
+        if (len(cursor.fetchall()) != 0):
+            status_code += 2
+
+    # if email changed
+    if (oldEmail != newEmail):
+        # is the new email taken?
+        cursor.execute(''' SELECT * FROM MachineUser WHERE email=%s ''', (newEmail,))
+        if (len(cursor.fetchall()) != 0):
+            status_code += 1
+
+    if (status_code != 0):
+        return status_code
+        
+    # update the database with the new information if the password entered is correct
+    # get the salt for the password
+    cursor.execute(''' SELECT pass_hash, pass_salt FROM MachineUser WHERE email=%s ''', (oldEmail,))
+    t = cursor.fetchall()[0]
+    hash = t[0]
+    salt = t[1]
+
+    if (helper.getHash( password + salt ) == hash):
+        cursor.execute('''  UPDATE MachineUser SET email=%s, username=%s
+                            WHERE email=%s''', (newEmail, newUsername, oldEmail))
+
+        cursor.execute(''' COMMIT ''')
+        cursor.close()
+    else:
+        status_code = -1
+    
+    return status_code
 
 # delete a user's account data from the database
 #   - UsingMachine data is also deleted
@@ -217,8 +260,24 @@ def getUsernameFromEmail(email):
 
 # Returns the data for a user based on username
 def getUserData(username):
-    #TODO get user data based on username
-    return {'email':'user@gmail.com','username':'testUser','preferredRoom':'222W Wads (Armada/Citadel)'}
+    cursor = mysql.cursor()
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
+    cursor.execute(''' START TRANSACTION ''')
+
+    # get the user from the database
+    cursor.execute(''' SELECT * FROM MachineUser WHERE username=%s ''', (username,))
+    r = cursor.fetchall()
+
+    # if something goes wrong in the query, return an error and rollback
+    if (len(r) == 0):
+        print("Error: could not get user data.")
+        cursor.execute(''' ROLLBACK ''')
+        return None
+
+    t = r[0]
+    cursor.execute(''' COMMIT ''')
+    cursor.close()
+    return {'email' : t[0], 'username' : t[1], 'preferredRoom' :  t[2]}
 
 # Checks if a user is an admin, returns 1 if admin, otherwise 0
 def isAdmin(username):

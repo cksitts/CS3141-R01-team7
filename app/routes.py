@@ -136,29 +136,34 @@ def passwordReset():
 
 
 @l_app.route('/editaccount', methods=['GET','POST'])
-@l_app.route('/editaccount/<emailTaken>')
-@l_app.route('/editaccount/<emailValid>')
 @login_required
-def editAccount(emailTaken=False, emailValid=True):
+def editAccount():
+    currentUsername = session['username']
+    userData = db.getUserData(currentUsername)
     if(request.method == 'GET'):
         roomList = db.getLaundryRooms()
-        currentUsername = session['username']
-        userData = db.getUserData(currentUsername)
 
-        return render_template('accountInfo.html', requestType='edit', userData=userData, roomList=roomList, emailTaken=request.args.get('emailTaken'), emailValid=request.args.get('emailValid'))
+        return render_template('accountInfo.html', 
+                                requestType='edit', 
+                                userData=userData, 
+                                roomList=roomList, 
+                                status_code=request.args.get('status_code', default=False), 
+                                emailValid=request.args.get('emailValid', default=True))
     else:
         oldEmail = request.form['oldEmail']
         newEmail = request.form['email']
+
         #If email changed, validate new email
-        if(oldEmail != newEmail):
-            if(db.checkEmailTaken(newEmail)): #Checks if email is taken
-                return redirect(url_for('editAccount', emailTaken=True))
-            if(not emailManagement.isValid(newEmail)): #Checks if email is invalid
-                return redirect(url_for('editAccount', emailValid=False))
+        # if(not emailManagement.isValid(newEmail)): #Checks if email is invalid
+        #     return redirect(url_for('editAccount', emailValid=False))
+
         #If it makes it to here, email is both available and valid
         #Save new details to database
-        db.updateUser(request.form['oldEmail'], request.form['email'], request.form['username'], request.form['password'])
-        #update session information
+        status_code = db.updateUser(oldEmail, newEmail, userData['username'], request.form['username'], request.form['password'])
+        if (status_code != 0):
+            return redirect(url_for('editAccount', status_code=status_code))
+
+        # update session information
         session['username'] = request.form['username']
 
         return redirect(url_for('home')) #redirect to home page
