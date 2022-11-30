@@ -36,7 +36,7 @@ def internal_error(error):
 def forbidden_page(error):
     return render_template('error403.html'), 403
 @l_app.errorhandler(418)
-def forbidden_page(error):
+def im_a_teapot(error):
     return render_template('error418.html'), 418
 
 
