@@ -1,0 +1,21 @@
+#aboutBody {
+    text-align: center;
+}
+#aboutHeader {
+    margin-top: 250px;
+}
+#aboutParagraph {
+    margin: 25px 275px;
+}
+h1 {
+    text-align: center;
+}
+h3 {
+    margin: 25px 100px;
+}
+p {
+    margin: 20px 100px;
+}
+#reportIssueHeader {
+    margin-top: 250px;
+}

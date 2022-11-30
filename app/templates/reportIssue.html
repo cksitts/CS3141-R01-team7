@@ -2,12 +2,12 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/footerPages.css') }}">
         <script src="{{ url_for('static', filename='js/home.js') }}"></script>
-        <title>Error 500</title>
+        <title>About</title>
     </head>
     <header>
-        <h1>Laundry Tracker Lite</h1>
+        <h1 class="aboutHeader">Laundry Tracker Lite</h1>
         <button onmouseenter="dropdownDown()" class="dropdownButton" id="dropdownButton">{{ session['username'][0] | capitalize }}</button>
         <div onmouseleave="dropdownUp()" id="profileDropdown" class="dropdownContent">
             <p>{{ session['username'] }}</p>
@@ -22,9 +22,7 @@
         </div>
     </header>
     <body>
-        <h3>Internal server error, 500</h3>
-        <p>The server encountered an unexpected condition that prevented it from fulfilling the requested action.</p>
-        <p>Try refreshing the page or coming back later.</p>
+        <h1 class="reportIssueHeader">Coming Soon</h1>
     </body>
     <footer>
         <div class="footerLinks">

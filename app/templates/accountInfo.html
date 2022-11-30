@@ -37,6 +37,9 @@
                 {% elif status_code == "3" %}
                     <p id="invalidMessage">That email and username already has an account.</p>
                     <script>positionMessage()</script>
+                {% elif status_code == "-1" %}
+                    <p id="invalidMessage">Incorrect password.</p>
+                    <script>positionMessage()</script>
                 {% endif %}
 
                 {% if emailValid == "False" %}
