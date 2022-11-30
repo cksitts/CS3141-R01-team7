@@ -5,3 +5,4 @@ venv
 .vscode
 etc/email.txt
 wiki/**
+.env

@@ -2,9 +2,8 @@ from crypt import methods
 from functools import wraps
 
 from flask import render_template, redirect, url_for, abort
-from flask import request, session
+from flask import request, session, current_app
 
-from app import l_app
 from app.python import databaseAccess as db
 from app.python import emailManagement
 
@@ -26,23 +25,23 @@ def admin_only(f):
     return decorated_function  
 
 #Error handling
-@l_app.errorhandler(404)
+@current_app.errorhandler(404)
 def page_not_found(error):
     return render_template('error404.html'), 404
-@l_app.errorhandler(500)
+@current_app.errorhandler(500)
 def internal_error(error):
     return render_template('error500.html'), 500
-@l_app.errorhandler(403)
+@current_app.errorhandler(403)
 def forbidden_page(error):
     return render_template('error403.html'), 403
-@l_app.errorhandler(418)
+@current_app.errorhandler(418)
 def im_a_teapot(error):
     return render_template('error418.html'), 418
 
 
-@l_app.route('/')
-@l_app.route('/index', methods=['GET','POST'])
-@l_app.route('/login', methods=['GET','POST'])
+@current_app.route('/')
+@current_app.route('/index', methods=['GET','POST'])
+@current_app.route('/login', methods=['GET','POST'])
 def index():
     if(request.method == 'GET'):
         return render_template('index.html', validLogin=request.args.get('validLogin'))
@@ -62,14 +61,14 @@ def index():
             return redirect(url_for('index', validLogin=False)) #show invalid login error and have them try again
             
 
-@l_app.route('/logout')
+@current_app.route('/logout')
 @login_required
 def logout():
     session.pop('username', default=None)
     return redirect(url_for('index'))
 
 
-@l_app.route('/signup', methods=['GET', 'POST'])
+@current_app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if (request.method == 'GET'):
         roomList = db.getLaundryRooms()
@@ -96,7 +95,7 @@ def signup():
 
             return redirect(url_for('verify'))
 
-@l_app.route('/verify', methods=['GET', 'POST'])
+@current_app.route('/verify', methods=['GET', 'POST'])
 def verify():
     if (request.method == 'GET'):
         return render_template('verifyEmail.html',  validCode=session['validCode'],
@@ -128,14 +127,14 @@ def verify():
 
 
 
-@l_app.route('/passwordreset')
+@current_app.route('/passwordreset')
 @login_required
 def passwordReset():
     #TODO whole method (return 501 means not implemented)
     return render_template('passwordReset.html'), 501
 
 
-@l_app.route('/editaccount', methods=['GET','POST'])
+@current_app.route('/editaccount', methods=['GET','POST'])
 @login_required
 def editAccount():
     currentUsername = session['username']
@@ -169,14 +168,14 @@ def editAccount():
         return redirect(url_for('home')) #redirect to home page
     
 
-@l_app.route('/deleteaccount', methods=['POST'])
+@current_app.route('/deleteaccount', methods=['POST'])
 @login_required
 def deleteAccount():
     db.deleteUser(request.form['email'])
     return redirect(url_for('home')) #redirect to home page
 
 
-@l_app.route('/home')
+@current_app.route('/home')
 @login_required
 def home():
     # userMachines represents the machines that a user currently has checked out (is using)
@@ -190,7 +189,7 @@ def home():
     return render_template('home.html', userMachines=userMachines, allMachines=allMachines, laundryRoomList=roomList, preferredRoom=preferredRoom)
 
 
-@l_app.route('/checkout/<machineId>')
+@current_app.route('/checkout/<machineId>')
 @login_required
 def checkout(machineId):
     if(db.checkout(machineId, session['username']) == 0):
@@ -201,7 +200,7 @@ def checkout(machineId):
         abort(500)
 
 
-@l_app.route('/checkin/<machineId>')
+@current_app.route('/checkin/<machineId>')
 @login_required
 def checkin(machineId):
     if(db.checkin(machineId, session['username']) == 0):
@@ -212,7 +211,7 @@ def checkin(machineId):
         abort(500)
 
 
-@l_app.route('/addmachines', methods=['GET','POST'])
+@current_app.route('/addmachines', methods=['GET','POST'])
 @admin_only
 def addMachines():
     if(request.method == 'GET'):
@@ -229,16 +228,16 @@ def addMachines():
             return redirect(url_for('addMachines', machineAlreadyExists=True))
 
 
-@l_app.route('/teapot')
+@current_app.route('/teapot')
 def teapotPage():
     abort(418)
 
-@l_app.route('/about')
+@current_app.route('/about')
 def aboutPage():
     return render_template('about.html')
-@l_app.route('/help')
+@current_app.route('/help')
 def helpPage():
     return render_template('help.html')
-@l_app.route('/reportIssue')
+@current_app.route('/reportIssue')
 def reportIssuePage():
     return render_template('reportIssue.html')

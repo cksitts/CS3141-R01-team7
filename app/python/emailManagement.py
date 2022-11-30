@@ -9,8 +9,8 @@ from app.python import constant
 # function drafts and sends an email with Subject: "Laundry Tracker Lite"
 # the message body and the receiver is provided as a string to this function
 def sendEmail(code, to):
-	e_password = os.environ.get("TSP_EMAIL_PASS")   # get email and password for sender
-	e_user = os.environ.get('TSP_EMAIL')
+	e_password = os.environ.get("EMAIL_PASS")   # get email and password for sender
+	e_user = os.environ.get('EMAIL')
 	with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
 		smtp.ehlo()         # open an smtp connection (called by default)
 		smtp.starttls()     # change connection type to encrypted (standard TLS encryption)
