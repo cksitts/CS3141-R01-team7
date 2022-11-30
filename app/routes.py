@@ -239,3 +239,6 @@ def aboutPage():
 @l_app.route('/help')
 def helpPage():
     return render_template('help.html')
+@l_app.route('/reportIssue')
+def reportIssuePage():
+    return render_template('reportIssue.html')
