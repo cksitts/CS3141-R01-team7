@@ -24,3 +24,15 @@ class DefaultConfig():
                                 database='laundry_tracker_db',
                                 ssl_ca='./etc/DigiCertGlobalRootCA.crt.pem',
                                 ssl_disabled=False    )
+
+
+class TestingConfig():
+    load_dotenv('.env')
+    DEBUG = True
+    TESTING = True
+    LOCAL_DATABASE = True
+    MYSQL = conn.connect(   user='root', 
+                            password=os.environ.get('DB_PASS'),
+                            host='localhost',
+                            port=3306,
+                            database='laundry_tracker_db'   )
