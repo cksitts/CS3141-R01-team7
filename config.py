@@ -31,8 +31,3 @@ class TestingConfig():
     DEBUG = True
     TESTING = True
     LOCAL_DATABASE = True
-    MYSQL = conn.connect(   user='root', 
-                            password=os.environ.get('DB_PASS'),
-                            host='localhost',
-                            port=3306,
-                            database='laundry_tracker_db'   )
