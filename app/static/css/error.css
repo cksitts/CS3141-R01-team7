@@ -7,3 +7,7 @@ h3 {
 p {
     margin-top: 25px;
 }
+footer {
+    position : absolute;
+    bottom : 0px;
+}
