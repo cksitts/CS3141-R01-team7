@@ -3,8 +3,6 @@ import smtplib
 import os
 import smtplib
 from email.message import EmailMessage
-from app.python import constant
-
 
 # function drafts and sends an email with Subject: "Laundry Tracker Lite"
 # the message body and the receiver is provided as a string to this function
