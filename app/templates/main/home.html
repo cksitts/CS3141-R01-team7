@@ -12,17 +12,17 @@
         <button onmouseenter="dropdownDown()" class="dropdownButton" id="dropdownButton">{{ session['username'][0] | capitalize }}</button>
         <div onmouseleave="dropdownUp()" id="profileDropdown" class="dropdownContent">
             <p>{{ session['username'] }}</p>
-            <a href="{{ url_for('editAccount') }}">Edit Account</a><br>
-            <a href="{{ url_for('logout') }}">Sign Out</a>
+            <a href="{{ url_for('user.editAccount') }}">Edit Account</a><br>
+            <a href="{{ url_for('user.logout') }}">Sign Out</a>
             {% if session['admin'] == 1 %}
                 <!-- Link to admin page -->
-                <br><a href="{{ url_for('addMachines') }}">Add Machines</a>
+                <br><a href="{{ url_for('main.addMachines') }}">Add Machines</a>
                 <!-- Change size of dropdown box -->
                 <script>document.getElementById("profileDropdown").classList.add("admin")</script>
             {% endif %}
         </div>
         <img src="{{ url_for('static', filename='images/theboi.png') }}" width="67" height="75" class="logo" id="logoImg">
-        <script>document.getElementById('logoImg').addEventListener('click', () => {location.href="{{ url_for('teapotPage') }}"})</script>
+        <script>document.getElementById('logoImg').addEventListener('click', () => {location.href="{{ url_for('error.teapotPage') }}"})</script>
     </header>
     <body>
         <!-- Machine Displays -->

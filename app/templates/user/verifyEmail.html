@@ -7,7 +7,7 @@
     <body>
     <div class="position" id="verifyEmailDiv">
         <p>You should recieve an email with a code soon.<br>Please enter it here to verify your email address.<br>Then hit enter to finish verifying your account.</p>
-        <form action="{{url_for('verify')}}", method="post" class="inputForm">
+        <form action="{{url_for('user.verify')}}", method="post" class="inputForm">
             <label for="codeInput">Enter Code: </label>
             <input type="text" id="codeInput" name="codeInput">
             <input type="submit" value="Submit">            

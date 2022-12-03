@@ -14,10 +14,10 @@
     <body>
         <div class="position">
             {% if requestType == "signup" %}
-                <a href="{{ url_for('index') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
+                <a href="{{ url_for('main.index') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
                 <h1>Sign Up</h1>
             {% elif requestType == "edit" %}
-                <a href="{{ url_for('home') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
+                <a href="{{ url_for('main.home') }}" id="backButton" onmouseenter="showBackLabel()" onmouseleave="hideBackLabel()">Back</a>
                 <h1>Edit Account</h1>
             {% endif %}
             <form id="form" onsubmit="return validateForm()" method="post" class="inputForm" autocomplete='off'>
@@ -68,24 +68,24 @@
                 </select>
                 
                 {% if requestType == "signup" %}
-                    <a href="{{ url_for('index') }}">Cancel</a>
+                    <a href="{{ url_for('main.index') }}">Cancel</a>
                     <input type="submit" value="Sign Up">
                 {% elif requestType == "edit" %}
-                    <a href="{{ url_for('home') }}">Cancel</a>
+                    <a href="{{ url_for('main.home') }}">Cancel</a>
                     <input type="submit" value="Save Changes">
                 {% endif %}
             </form>
             {% if requestType == "signup" %}
-                <script>document.getElementById('form').action="{{ url_for('signup') }}"</script>
+                <script>document.getElementById('form').action="{{ url_for('user.signup') }}"</script>
             {% elif requestType == "edit" %}
-                <script>document.getElementById('form').action="{{ url_for('editAccount') }}"</script>
+                <script>document.getElementById('form').action="{{ url_for('user.editAccount') }}"</script>
                 <button class="deleteAccountButton" onclick="showDeleteAccountPopup()">Delete Account</button>
                 <div class="deleteAccountPopup" id="delAccPopupDiv">
                     <h3>Delete Account</h3>
                     <p>Would you like to delete your account?</p>
                     <p>This is PERMANENT</p>
                     <button onclick="hideDeleteAccountPopup()" class="noButton">No</button>
-                    <form action='{{ url_for('deleteAccount') }}' method="post">
+                    <form action="{{ url_for('user.deleteAccount') }}" method="post">
                         <!--keeps track of the old email so we know which record to update in the database-->
                         <input type="hidden" name="email" value="{{ userData['email'] }}" required>
                         <input type="submit" value="Yes" class="yesButton">

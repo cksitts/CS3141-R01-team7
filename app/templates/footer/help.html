@@ -11,11 +11,11 @@
         <button onmouseenter="dropdownDown()" class="dropdownButton" id="dropdownButton">{{ session['username'][0] | capitalize }}</button>
         <div onmouseleave="dropdownUp()" id="profileDropdown" class="dropdownContent">
             <p>{{ session['username'] }}</p>
-            <a href="{{ url_for('editAccount') }}">Edit Account</a><br>
-            <a href="{{ url_for('logout') }}">Sign Out</a>
+            <a href="{{ url_for('user.editAccount') }}">Edit Account</a><br>
+            <a href="{{ url_for('user.logout') }}">Sign Out</a>
             {% if session['admin'] == 1 %}
                 <!-- Link to admin page -->
-                <br><a href="{{ url_for('addMachines') }}">Add Machines</a>
+                <br><a href="{{ url_for('main.addMachines') }}">Add Machines</a>
                 <!-- Change size of dropdown box -->
                 <script>document.getElementById("profileDropdown").classList.add("admin")</script>
             {% endif %}
