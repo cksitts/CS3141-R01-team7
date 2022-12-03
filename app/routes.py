@@ -118,6 +118,7 @@ def verify():
             session.pop('verificationCode') #clears the used session data
             session.pop('storedUser')
             session.pop('inputCount')
+            if(session.get('validCode')): session.pop('validCode')
 
             # redirect to the login page; users should attempt a login after signing up to verify data integrity
             return redirect(url_for('main.index'))
@@ -125,7 +126,8 @@ def verify():
             # if the user has input more than 5 times, reject the validation attempt
             if (session['inputCount'] < 3):
                 session['inputCount'] += 1
-                return redirect(url_for('user.verify', validCode=False, inputCount=session['inputCount']))
+                session['validCode'] = False
+                return redirect(url_for('user.verify'))
             else:
                 # unsuccessful
                 return redirect(url_for('user.signup'))
