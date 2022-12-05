@@ -340,7 +340,7 @@ def addMachine(machineID, location, type):
     cursor.execute( '''INSERT INTO Machine VALUES (%s, %s, %s)''', (machineID, location, type) )
 
     # ensure machine storage went well
-    cursor.execute(''' SELECT * FROM Machine WHERE machineID=%s ''', (machineID,))
+    cursor.execute(''' SELECT * FROM Machine WHERE machine_id=%s ''', (machineID,))
     if (len(cursor.fetchall()) == 0):
         cursor.execute(''' ROLLBACK ''')
         return 2
