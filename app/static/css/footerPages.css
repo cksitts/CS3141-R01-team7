@@ -19,3 +19,8 @@ p {
 #reportIssueHeader {
     margin-top: 250px;
 }
+
+footer {
+    position : absolute;
+    bottom : 0;
+}
