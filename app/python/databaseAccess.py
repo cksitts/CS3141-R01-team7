@@ -142,7 +142,6 @@ def checkEmailAndUsernameTaken(email, username):
 
     return email_code + username_code
 
-
 # Registers a new user in the database (from form data)
 # Returns new user's username (for use in other functions)
 def registerUser(storedUser):
@@ -177,6 +176,11 @@ def registerUser(storedUser):
 
     return storedUser['username']
 
+# change the password info at "username" using the new "password"
+def changePassword(username, password):
+    cursor = mysql.cursor()
+    pass_info = helper.generateHashAndSalt(password)
+    cursor.execute(''' UPDATE MachineUser SET pass_hash=%s, pass_salt=%s WHERE username=%s ''', (pass_info[0], pass_info[1], username))
 
 # Updates a current user in the database
 # Returns a status code:
@@ -260,6 +264,7 @@ def getUsernameFromEmail(email):
     return username[0]
 
 # Returns the data for a user based on username
+# if there is no user data, return None
 def getUserData(username):
     cursor = mysql.cursor()
     cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')

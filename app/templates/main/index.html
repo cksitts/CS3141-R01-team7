@@ -24,7 +24,7 @@
                 </form>
                 {% if validLogin == "False" %}
                     <span id="invalidMessage">Invalid email or password</span> 
-                    {% endif %}
+                {% endif %}
                     <br>
                     <form action="{{ url_for('user.signup') }}" class="signUp"><button type="submit" class="signUp">Sign Up</button></form>
                     <form action="{{ url_for('user.passwordReset') }}" class="forgotPassword"><button type="submit" class="forgotPassword">Forgot?</button></form>
