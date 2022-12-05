@@ -50,7 +50,7 @@ def im_a_teapot(error):
 @main.route('/login', methods=['GET','POST'])
 def index():
     if(request.method == 'GET'):
-        return render_template('user/index.html', validLogin=request.args.get('validLogin'))
+        return render_template('main/index.html', validLogin=request.args.get('validLogin'))
     else:
         username = request.form['username']
         loginValid = db.validLogin(username, request.form['password'])
