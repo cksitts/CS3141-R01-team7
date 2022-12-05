@@ -6,7 +6,7 @@ class DefaultConfig():
     load_dotenv('.env')
     DEBUG = True
     TESTING = False
-    LOCAL_DATABASE = True
+    LOCAL_DATABASE = False
     
 
     # Leave this alone, it sets the values automatically

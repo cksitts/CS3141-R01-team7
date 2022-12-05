@@ -50,7 +50,7 @@ def im_a_teapot(error):
 @main.route('/login', methods=['GET','POST'])
 def index():
     if(request.method == 'GET'):
-        return render_template('main/index.html', validLogin=request.args.get('validLogin'))
+        return render_template('user/index.html', validLogin=request.args.get('validLogin'))
     else:
         username = request.form['username']
         loginValid = db.validLogin(username, request.form['password'])
@@ -98,26 +98,34 @@ def signup():
             session['storedUser'] = storedUser
             session['inputCount'] = 1
             session['validCode'] = True
+            session['resetPass'] = False
 
             return redirect(url_for('user.verify'))
 
 @user.route('/verify', methods=['GET', 'POST'])
 def verify():
     if (request.method == 'GET'):
-        return render_template('user/verifyEmail.html',  validCode=session['validCode'],
-                                                    inputCount=session['inputCount'])
+        return render_template('user/verifyEmail.html', validCode=session['validCode'],
+                                                        inputCount=session['inputCount'])
     else:
         verificationCode = request.form['codeInput']
         if(verificationCode == session['verificationCode']):
             # successful verification
-            # db.verifyUser(verificationCode) #approves the user to be added to the database
 
-            # register the user in the database
-            db.registerUser(session['storedUser'])
-
-            session.pop('verificationCode') #clears the used session data
-            session.pop('storedUser')
+            # if signing up: register the user in the database
+            if (not session['resetPass']):
+                db.registerUser(session['storedUser'])
+                session.pop('storedUser')
+            else:
+                # if we are verifying a password-reset 
+                db.changePassword(session['username'], session['password'])
+                session.pop('username')
+                session.pop('password')
+            
+            session.pop('verificationCode')
             session.pop('inputCount')
+            session.pop('validCode')
+            session.pop('resetPass')
 
             # redirect to the login page; users should attempt a login after signing up to verify data integrity
             return redirect(url_for('main.index'))
@@ -125,19 +133,38 @@ def verify():
             # if the user has input more than 5 times, reject the validation attempt
             if (session['inputCount'] < 3):
                 session['inputCount'] += 1
+                session['validCode'] = False
                 return redirect(url_for('user.verify', validCode=False, inputCount=session['inputCount']))
             else:
                 # unsuccessful
-                return redirect(url_for('user.signup'))
+                reset = session['resetPass']
+                session.pop('resetPass')
+                session.pop('verificationCode')
+                session.pop('inputCount')
+                session.pop('validCode')
+                return redirect(url_for('user.signup')) if not reset else redirect(url_for('main.index'))
             
 
-
-
-@user.route('/passwordreset')
-@login_required
+@user.route('/passwordreset', methods=['GET', 'POST'])
 def passwordReset():
-    #TODO whole method (return 501 means not implemented)
-    return render_template('user/passwordReset.html'), 501
+    if (request.method == 'GET'):
+        return render_template('user/passwordReset.html', validLogin=request.args.get('validLogin', default=True))
+    else:
+        session['username'] = request.form['usernameInput']
+        session['password'] = request.form['passwordInput']
+        
+        user = db.getUserData(session['username'])
+        if (user != None):
+            # user exists and so can reset password if verification passes
+            session['resetPass'] = True
+            session['verificationCode'] = emailManagement.sendPasswordResetEmail(user['email'])
+            session['inputCount'] = 0
+            session['validCode'] = True
+            return redirect( url_for('user.verify', validCode=True, inputCount=session['inputCount']) )
+        else:
+            # failed: user does not exist
+            session.pop('username')
+            return redirect( url_for('user.passwordReset', validLogin=(user != None)) )
 
 
 @user.route('/editaccount', methods=['GET','POST'])
@@ -158,11 +185,6 @@ def editAccount():
         oldEmail = request.form['oldEmail']
         newEmail = request.form['email']
 
-        #If email changed, validate new email
-        # if(not emailManagement.isValid(newEmail)): #Checks if email is invalid
-        #     return redirect(url_for('user.editAccount', emailValid=False))
-
-        #If it makes it to here, email is both available and valid
         #Save new details to database
         status_code = db.updateUser(oldEmail, newEmail, userData['username'], request.form['username'], request.form['password'])
         if (status_code != 0):
@@ -178,8 +200,7 @@ def editAccount():
 @login_required
 def deleteAccount():
     db.deleteUser(request.form['email'])
-    return redirect(url_for('main.home')) #redirect to home page
-
+    return redirect(url_for('main.index')) # redirect to login page
 
 @main.route('/home')
 @login_required
