@@ -31,16 +31,16 @@ def admin_only(f):
     return decorated_function  
 
 #Error handling
-@error.errorhandler(404)
+@error.app_errorhandler(404)
 def page_not_found(error):
     return render_template('errors/error404.html'), 404
-@error.errorhandler(500)
+@error.app_errorhandler(500)
 def internal_error(error):
     return render_template('errors/error500.html'), 500
-@error.errorhandler(403)
+@error.app_errorhandler(403)
 def forbidden_page(error):
     return render_template('errors/error403.html'), 403
-@error.errorhandler(418)
+@error.app_errorhandler(418)
 def im_a_teapot(error):
     return render_template('errors/error418.html'), 418
 
