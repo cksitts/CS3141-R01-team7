@@ -25,7 +25,7 @@ def login_required(f):
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if(session.get('admin') == 0):
+        if(session.get('admin') == 0 or session.get('admin') == None):
             abort(403) #go to unauthorized error page
         return f(*args, **kwargs)
     return decorated_function  
