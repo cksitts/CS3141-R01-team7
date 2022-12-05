@@ -107,6 +107,7 @@ def test_verify_POST_incorrect_code_2_tries(test_client_with_db:Tuple[FlaskClien
     with test_client.session_transaction() as session:
         session['verificationCode'] = 'Correct Code'
         session['inputCount'] = 2
+        session['resetPass'] = False
     response = test_client.post('/verify', data=ImmutableMultiDict([('codeInput','Incorrect Code')]), follow_redirects=True)
     # Check input count increased
     with test_client.session_transaction() as session:
@@ -122,6 +123,8 @@ def test_verify_POST_incorrect_code_3_tries(test_client_with_db:Tuple[FlaskClien
     with test_client.session_transaction() as session:
         session['verificationCode'] = 'Correct Code'
         session['inputCount'] = 3
+        session['resetPass'] = False
+        session['validCode'] = True
     response = test_client.post('/verify', data=ImmutableMultiDict([('codeInput','Incorrect Code')]))
     # Check signup redirect
     assert b'Redirecting...', b'/signup' in response.data
@@ -132,6 +135,8 @@ def test_verify_POST_correct_code(test_client_with_db:Tuple[FlaskClient, any]):
     with test_client.session_transaction() as session:
         session['verificationCode'] = 'Correct Code'
         session['inputCount'] = 0
+        session['resetPass'] = False
+        session['validCode'] = True
         session['storedUser'] = ImmutableMultiDict([('email', 'user@gmail.com'), ('username', 'name'), ('password', 'pass'), ('preferredRoom', 'room')])
     response = test_client.post('/verify', data=ImmutableMultiDict([('codeInput','Correct Code')]))
     # Check user registered
