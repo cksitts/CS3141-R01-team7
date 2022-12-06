@@ -1,10 +1,10 @@
-from flask.testing import FlaskClient
-import logging
-log = logging.getLogger(__name__)
+from app.python.helper import getTimeRemaining
+from time import time
 
-# TODO
 # methods to test:
-# getHash
-# generateHashAndSalt
-# getTimeRemaining
-# getCurrentTime
+# getTimeRemaining (done)
+
+# ---Get Time Remaining---
+def test_helper_time_remaining():
+    result = getTimeRemaining(int(time()) - 1800)
+    assert result == 30

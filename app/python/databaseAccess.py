@@ -176,7 +176,7 @@ def registerUser(storedUser):
 
 # change the password info at "username" using the new "password"
 def changePassword(username, password):
-    cursor = mysql.cursor()
+    cursor = current_app.config['MYSQL'].cursor()
     pass_info = helper.generateHashAndSalt(password)
     cursor.execute(''' UPDATE MachineUser SET pass_hash=%s, pass_salt=%s WHERE username=%s ''', (pass_info[0], pass_info[1], username))
 
