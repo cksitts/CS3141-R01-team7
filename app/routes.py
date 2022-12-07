@@ -266,7 +266,7 @@ def aboutPage():
 @footer.route('/help')
 def helpPage():
     return render_template('footer/help.html')
-@footer.route('/reportIssue')
 
+@footer.route('/reportIssue')
 def reportIssuePage():
     return render_template('footer/reportIssue.html')

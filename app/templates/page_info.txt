@@ -1,9 +1,18 @@
 This .txt file explains which .html files are connected to each route, which urls will lead to them, and a brief summary of when they are used.
 
 Routes:             HTML:                  URLs:                            Function:
-index()             index.html             /, /index                        page the user first sees when accessing the website
+index()             index.html             /, /index, /login                page the user first sees when accessing the website
 logout()                                   /logout                          processes a logout request, redirects to index.html
 signup()            signup.html            /signup                          displays the accountInfo.html page in signup mode
+verify()            verifyEmail.html       /verify                          verifies the user via a code sent to the user's email
 passwordReset()     forgotPassword.html    /passwordreset                   resets the user's password
 editAccount()       editAccount.html       /editaccount                     displays the accountInfo.html page in edit mode
+deleteAccount()                                                             deletes the user's account (POST only)
 home()              home.html              /home                            main data page for the application
+checkout()                                 /checkout/<machineID>            checks out a machine, if successful redirects to home, otherwise error 500
+checkin()                                  /checkin/<machineID>             checks in a machine, if successful redirect to home, otherwise error 500
+addMachines()       addMachines.html       /addmachines                     allows admins to add new machines
+teapotPage()                               /teapot                          throws error 418 (teapot error)
+aboutPage()         about.html             /about                           displays the footer about page
+helpPage()          help.html              /help                            displays the footer help page
+reportIssuePage()   reportIssue.html       /reportIssue                     displays the footer report an issue page (coming soon)
