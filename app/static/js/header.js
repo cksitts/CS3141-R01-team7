@@ -1,11 +1,9 @@
 //Profile info dropdown animation
 window.onload = () => {
     if ("ontouchstart" in document.documentElement) {
-        console.log("Mobile")
         document.getElementById('dropdownButton').addEventListener("click", dropdownDown)
         
     } else {
-        console.log("Desktop")
         document.getElementById('dropdownButton').addEventListener("mouseenter", dropdownDown)
         document.getElementById('profileDropdown').addEventListener("mouseleave", dropdownUp)
     }
