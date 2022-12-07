@@ -4,13 +4,13 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/footerPages.css') }}">
-        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/header.js') }}"></script>
         <title>Help</title>
     </head>
     <header>
         <h1>Laundry Tracker Lite</h1>
-        <button onmouseenter="dropdownDown()" class="dropdownButton" id="dropdownButton">{{ session['username'][0] | capitalize }}</button>
-        <div onmouseleave="dropdownUp()" id="profileDropdown" class="dropdownContent">
+        <button class="dropdownButton" id="dropdownButton">{{ session['username'][0] | capitalize }}</button>
+        <div id="profileDropdown" class="dropdownContent">
             <p>{{ session['username'] }}</p>
             <a href="{{ url_for('user.editAccount') }}">Edit Account</a><br>
             <a href="{{ url_for('user.logout') }}">Sign Out</a>
