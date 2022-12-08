@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import pytest
 import mysql.connector as conn
 import os
@@ -6,12 +7,14 @@ from config import TestingConfig
 
 @pytest.fixture(scope='function')
 def test_client_with_db():
+    load_dotenv('.env')
     flask_app = create_app(TestingConfig)
     
     flask_app.config['MYSQL'] = conn.connect(   user='root', 
-                                password=os.environ.get('DB_PASS'),
-                                host='localhost',
-                                port=3306)
+                            password=os.environ.get('DB_PASS'),
+                            host='localhost',
+                            port=3306,
+                            database='laundry_tracker_db'   )
     
     # Setup Database
     cursor = flask_app.config["MYSQL"].cursor()

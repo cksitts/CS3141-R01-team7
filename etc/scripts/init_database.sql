@@ -4,6 +4,7 @@ create database if not exists laundry_tracker_db;
 -- setup the tables in the new database
 use laundry_tracker_db;
 
+drop table if exists Administrator;
 drop table if exists UsingMachine;
 drop table if exists MachineUser;
 drop table if exists Machine;
@@ -31,3 +32,6 @@ create table UsingMachine (	machine_id char(10) primary key not null,
 							foreign key (username) references MachineUser (username)
 							on update cascade
 							on delete cascade	);
+
+create table Administrator (	email varchar(64) primary key, 
+								foreign key (email) references MachineUser(email)	);
