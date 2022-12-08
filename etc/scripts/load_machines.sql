@@ -10,8 +10,10 @@ use laundry_tracker_db;
 load data local infile './etc/scripts/load_machines.txt' into table Machine
 lines terminated by '\n';
 
-insert into MachineUser value ('person@mtu.edu', 'username', '147E Wads (Mafia/Utopia)', sha2('asdfasdfXXXXX', 256), 'XXXXX');
-insert into Administrator value ('person@mtu.edu');
+insert into MachineUser value ('person@mtu.edu', 'username', '147E Wads (Mafia/Utopia)', sha2('asdfasdfYYYYY', 256), 'YYYYY');
+
+insert into MachineUser value ('admin@mtu.edu', 'admin', '147E Wads (Mafia/Utopia)', sha2('adminXXXXX', 256), 'XXXXX');
+insert into Administrator value ('admin@mtu.edu');
 
 -- set global local_infile = false;
 

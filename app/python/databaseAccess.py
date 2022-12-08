@@ -231,7 +231,6 @@ def updateUser(oldEmail, newEmail, oldUsername, newUsername, password):
 
 # delete a user's account data from the database
 #   - UsingMachine data is also deleted
-# 
 def deleteUser(email):
     cursor = current_app.config['MYSQL'].cursor()
     cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED ''')
@@ -285,12 +284,18 @@ def getUserData(username):
 
 # Checks if a user is an admin, returns 1 if admin, otherwise 0
 def isAdmin(username):
-    #TODO get user admin status based on username
-    #TEMP two different users with different status
-    if(username == 'ekrummer'):
-        return 1
+    cursor = current_app.config['MYSQL'].cursor()
+    cursor.execute(''' SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE ''')
+    
+    #get user's email and check if they are an admin
+    email = getUserData(username)['email']
+    cursor.execute(''' SELECT * FROM MachineUser NATURAL JOIN Administrator WHERE email=%s''', (email,))
+
+    result = cursor.fetchall()
+    if (len(result) != 0):
+        return True
     else:
-        return 0
+        return False
 
 
 # Returns a list of machines that the user has checked out
