@@ -126,28 +126,9 @@ header > h1 {
 }
 
 /* Responsive Layout */
-/* Desktop */
-@media only screen and (min-width:1024px) and (max-width:1920px) and (min-height:768px) and (max-height:1080px) {
-    header {
-        background-color: purple;
-    }
-}
-/* Landscape Tablet */
-@media only screen and (min-width:800px) and (max-width:1280px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
-    header {
-        background-color: blue;
-    }
-}
-/* Portrait Tablet */
-@media only screen and (min-width:601px) and (max-width:962px) and (min-height:800px) and (max-height:1280px) and (orientation:portrait) {
-    header {
-        background-color: red;
-    }
-}
 /* Landscape Mobile */
 @media only screen and (min-width:640px) and (max-width:896px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
     header {
-        background-color: orange;
         height : 75px;
     }
     header > h1 {
@@ -161,7 +142,6 @@ header > h1 {
 /* Portrait Mobile */
 @media only screen and (min-width:360px) and (max-width:414px) and (min-height:640px) and (max-height:896px) and (orientation:portrait) {
     header {
-        background-color: green;
         height : 85px;
         top : calc((85px - 75px)/2);
         left : calc((85px - 75px)/2);
