@@ -106,5 +106,73 @@
 /* Grid Layout */
 .gridContainer {
     display : grid;
-    grid-template-columns : auto auto auto auto auto auto auto; /* TODO make number of columns responsive to page width */
+    grid-template-columns : auto auto auto auto auto auto auto;
+}
+
+
+/* Responsive Layout */
+/* Desktop */
+@media only screen and (min-width:1024px) and (max-width:1180px) and (min-height:768px) and (max-height:1080px) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto auto;
+    }
+}
+@media only screen and (min-width:1181px) and (max-width:1380px) and (min-height:768px) and (max-height:1080px) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto auto auto;
+    }
+}
+@media only screen and (min-width:1381) and (max-width:1580px) and (min-height:768px) and (max-height:1080px) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto auto auto auto;
+    }
+}
+@media only screen and (min-width:1581) and (max-width:1920px) and (min-height:768px) and (max-height:1080px) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto auto auto auto auto;
+    }
+}
+/* Landscape Tablet */
+@media only screen and (min-width:800px) and (max-width:1000px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto;
+    }
+}
+@media only screen and (min-width:1001px) and (max-width:1200px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto auto;
+    }
+}
+@media only screen and (min-width:1201px) and (max-width:1280px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto auto auto;
+    }
+}
+/* Portrait Tablet */
+@media only screen and (min-width:601px) and (max-width:800px) and (min-height:800px) and (max-height:1280px) and (orientation:portrait) {
+    .gridContainer {
+        grid-template-columns : auto auto auto;
+    }
+}
+@media only screen and (min-width:801px) and (max-width:962px) and (min-height:800px) and (max-height:1280px) and (orientation:portrait) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto;
+    }
+}
+/* Landscape Mobile */
+@media only screen and (min-width:640px) and (max-width:750px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
+    .gridContainer {
+        grid-template-columns : auto auto auto;
+    }
+}
+@media only screen and (min-width:751px) and (max-width:896px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
+    .gridContainer {
+        grid-template-columns : auto auto auto auto;
+    }
+}
+/* Portrait Mobile */
+@media only screen and (min-width:360px) and (max-width:414px) and (min-height:640px) and (max-height:896px) and (orientation:portrait) {
+    .gridContainer {
+        grid-template-columns : auto auto;
+    }
 }

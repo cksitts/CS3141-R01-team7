@@ -27,3 +27,32 @@ footer {
     color : var(--hover-light);
     cursor : pointer;
 }
+
+/* Responsive Layout */
+/* Landscape Mobile */
+@media only screen and (min-width:640px) and (max-width:896px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
+    footer {
+        height : 40px;
+    }
+    div.footerLinks {
+        display : table;
+        width : 100vw;
+        padding : 10px 0px;
+    }
+    .footerLinks > a {
+        display : table-cell;
+        width : 33vw;
+    }
+}
+/* Portrait Mobile */
+@media only screen and (min-width:360px) and (max-width:414px) and (min-height:640px) and (max-height:896px) and (orientation:portrait) {
+    footer {
+        height : 80px;
+    }
+    div.footerLinks {
+        padding : 2px 0px;
+    }
+    .footerLinks > a {
+        margin : 2px 0px;
+    }
+}

@@ -130,3 +130,129 @@ button.signUp:hover {
     background-color: var(--hover-light);
     cursor : pointer;
 }
+
+
+/* Responsive Layout */
+/* Desktop */
+@media only screen and (min-width:1024px) and (max-width:1920px) and (min-height:768px) and (max-height:1080px) {
+    
+}
+/* Landscape Tablet */
+@media only screen and (min-width:800px) and (max-width:1280px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
+    button.forgotPassword {
+        left : 75%;
+    }
+    .leftCol {
+        flex : 50%;
+    }
+    .rightCol {
+        flex : 50%;
+    }
+    .rightCol .position .inputForm > input[type=submit], .rightCol .position button.signUp {
+        /* width : 38vw; */
+        width : 15vw;
+    }
+    .rightCol .position .inputForm > input[type=submit] {
+        position : relative;
+        left : 3vw;
+    }
+    .rightCol .position button.signUp {
+        position : relative;
+        left : 2vw;
+    }
+}
+/* Portrait Tablet */
+@media only screen and (min-width:601px) and (max-width:962px) and (min-height:800px) and (max-height:1280px) and (orientation:portrait) {
+    body {
+        display : block;
+    }
+    .leftCol {
+        height : 30vh;
+    }
+    .rightCol {
+        height : 65vh;
+    }
+    .rightCol > .position {
+        justify-content : flex-start;
+        padding-top : 5vh;
+    }
+    .rightCol .position .inputForm > input[type=submit], .rightCol .position button.signUp {
+        width : 28vw;
+        height : 41.5px;
+    }
+    .rightCol .position .inputForm > input[type=submit] {
+        position : absolute;
+        top : 235px;
+        left : 19vw;
+    }
+    .rightCol .position button.signUp {
+        position : absolute;
+        top : 235px;
+        left : 53vw;
+    }
+    button.forgotPassword {
+        bottom : 60px;
+    }
+}
+/* Landscape Mobile */
+@media only screen and (min-width:640px) and (max-width:896px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
+    .leftCol {
+        flex : 35%;
+    }
+    .rightCol {
+        flex : 65%;
+    }
+    .leftCol > h1 {
+        font-size : 2.5em;
+    }
+    .rightCol .position .inputForm > input[type=submit], .rightCol .position button.signUp {
+        width : 20vw;
+        height : 41.5px;
+    }
+    .rightCol .position .inputForm > input[type=submit] {
+        position : absolute;
+        top : 66vh;
+        left : 11vw;
+    }
+    .rightCol .position button.signUp {
+        position : absolute;
+        top : 66vh;
+        left : 34vw;
+    }
+    button.forgotPassword {
+        bottom : 132px;
+    }
+}
+/* Portrait Mobile */
+@media only screen and (min-width:360px) and (max-width:414px) and (min-height:640px) and (max-height:896px) and (orientation:portrait) {
+    body {
+        display : block;
+    }
+    .leftCol {
+        height : 30vh;
+    }
+    .rightCol {
+        height : 65vh;
+    }
+    .leftCol > h1 {
+        font-size : 3em;
+    }
+    .rightCol .position .inputForm > input[type=submit], .rightCol .position button.signUp {
+        /* width : 80vw; */
+        width : 32vw;
+        height : 41.5px;
+    }
+    .rightCol .position .inputForm > input[type=submit] {
+        position : absolute;
+        top : 45vh;
+        left : 16vw;
+    }
+    .rightCol .position button.signUp {
+        position : absolute;
+        top : 45vh;
+        left : 54vw;
+    }
+    button.forgotPassword {
+        bottom : 132px;
+    }
+}

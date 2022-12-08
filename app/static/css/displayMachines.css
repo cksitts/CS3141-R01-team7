@@ -47,3 +47,37 @@
     font-size : 0.85em;
 }
 
+/* Responsive Layout */
+/* Desktop */
+@media only screen and (min-width:1024px) and (max-width:1920px) and (min-height:768px) and (max-height:1080px) {
+    
+}
+/* Landscape Tablet */
+@media only screen and (min-width:800px) and (max-width:1280px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
+    
+}
+/* Portrait Tablet */
+@media only screen and (min-width:601px) and (max-width:962px) and (min-height:800px) and (max-height:1280px) and (orientation:portrait) {
+    
+}
+/* Landscape Mobile */
+@media only screen and (min-width:640px) and (max-width:896px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
+    
+}
+/* Portrait Mobile */
+@media only screen and (min-width:360px) and (max-width:414px) and (min-height:640px) and (max-height:896px) and (orientation:portrait) {
+    .filterButtons {
+        margin : 0px;
+    }
+    .filterButtons > #WasherToggle {
+        margin-left : calc((100vw - 75px - 75px - 20px)/2);
+        margin-right : 5px;
+    }
+    .filterButtons > #DryerToggle {
+        margin-left : 5px;
+        margin-right : calc((100vw - 75px - 75px - 20px)/2);
+    }
+    .filterButtons > #roomDropdown {
+        margin : 0px calc((100vw - 250px)/2);
+    }
+}

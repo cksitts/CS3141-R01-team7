@@ -100,3 +100,51 @@ hr {
     background-color : var(--hover-contrast-dark);
     cursor : pointer;
 }
+
+/* Responsive Layout */
+/* Desktop */
+@media only screen and (min-width:1024px) and (max-width:1920px) and (min-height:768px) and (max-height:1080px) {
+    
+}
+/* Landscape Tablet */
+@media only screen and (min-width:800px) and (max-width:1280px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
+    
+}
+/* Portrait Tablet */
+@media only screen and (min-width:601px) and (max-width:962px) and (min-height:800px) and (max-height:1280px) and (orientation:portrait) {
+    
+}
+/* Landscape Mobile */
+@media only screen and (min-width:640px) and (max-width:896px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
+    
+}
+/* Portrait Mobile */
+@media only screen and (min-width:360px) and (max-width:414px) and (min-height:640px) and (max-height:896px) and (orientation:portrait) {
+    h2 {
+        text-align : center;
+    }
+    .checkoutDialog, .checkinDialog {
+        width : 300px;
+        height : 175px;
+        margin-left : -150px; /* half width */
+        margin-top : -87.5px; /* half height */
+    }
+    .checkoutDialog h3, .checkinDialog h3 {
+        height : 30px;
+        line-height : 30px;
+    }
+    .checkoutDialog p:first-of-type {
+        margin-top : 37.5px;
+    }
+    .checkinDialog p:first-of-type {
+        margin-top : 37.5px;
+    }
+    .closeButton {
+        height : 30px;
+        width : 30px;
+    }
+    .nobutton, .yesbutton {
+        bottom : 11px;
+        height : 26px;
+    }
+}

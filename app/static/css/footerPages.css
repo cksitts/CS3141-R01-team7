@@ -1,26 +1,67 @@
-#aboutBody {
+body h1 {
     text-align: center;
 }
-#aboutHeader {
-    margin-top: 250px;
-}
-#aboutParagraph {
-    margin: 25px 275px;
-}
-h1 {
-    text-align: center;
-}
-h3 {
+body h3 {
     margin: 25px 100px;
 }
-p {
+body p {
     margin: 20px 100px;
 }
-#reportIssueHeader {
-    margin-top: 250px;
-}
 
-footer {
-    position : absolute;
-    bottom : 0;
+/* Responsive Layout */
+/* Desktop */
+@media only screen and (min-width:1024px) and (max-width:1920px) and (min-height:768px) and (max-height:1080px) {
+    footer {
+        position : absolute;
+    }
+    body p {
+        width : 60vw;
+        margin : auto;
+    }
+    body h3 {
+        margin : 25px 19vw;
+    }
+}
+/* Landscape Tablet */
+@media only screen and (min-width:800px) and (max-width:1280px) and (min-height:601px) and (max-height:962px) and (orientation:landscape) {
+    
+}
+/* Portrait Tablet */
+@media only screen and (min-width:601px) and (max-width:962px) and (min-height:800px) and (max-height:1280px) and (orientation:portrait) {
+    footer {
+        position : absolute;
+    }
+    body p {
+        width : 90vw;
+        margin : auto;
+    }
+    body h3 {
+        margin : 25px 4vw;
+    }
+}
+/* Landscape Mobile */
+@media only screen and (min-width:640px) and (max-width:896px) and (min-height:360px) and (max-height:414px) and (orientation:landscape) {
+    footer {
+        margin-top : 25px;
+    }
+    body p {
+        width : 90vw;
+        margin : auto;
+    }
+    body h3 {
+        margin : 25px 4vw;
+    }
+}
+/* Portrait Mobile */
+@media only screen and (min-width:360px) and (max-width:414px) and (min-height:640px) and (max-height:896px) and (orientation:portrait) {
+    footer {
+        margin-top : 25px;
+    }
+    body p {
+        width : 90vw;
+        margin : auto;
+    }
+    body h3 {
+        margin : 25px 4vw;
+    }
 }
