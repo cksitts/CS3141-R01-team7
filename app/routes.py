@@ -2,7 +2,7 @@ from crypt import methods
 from functools import wraps
 
 from flask import render_template, redirect, url_for, abort, Blueprint
-from flask import request, session, current_app
+from flask import request, session
 
 from app.python import databaseAccess as db
 from app.python import emailManagement
@@ -57,10 +57,9 @@ def index():
     
         if(loginValid):
             # will be used for the @login_required flag to validate that someone is logged in
-            # if the username is an email, still store the username associated with that email (usernames cannot contain '@')
+            # if the username is an email, store the username associated with that email (usernames cannot contain '@')
             session['username'] = username if '@' not in username else db.getUsernameFromEmail(username)
             session['admin'] = db.isAdmin(username) #1 if admin, 0 otherwise
-
 
             return redirect(url_for('main.home'))
         else:
