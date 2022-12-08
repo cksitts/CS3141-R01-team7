@@ -27,11 +27,11 @@
                     <progress class="timeRemainingDone" id="progressBar" value="60" max="60"></progress>
                     <div class="doneHighlight"></div>
                     <button type="button" id="checkoutButton" onclick='showCheckinDialog("{{ machine }}")'>Check In</button>
-                    <script>updateAnimation(document.currentScript.parentElement.firstElementChild)</script>
+                    <script>stopRunningAnimation(document.currentScript.parentElement.firstElementChild, "stop")</script>
                 {% else %}
                     <p class="timeRemaining">{{ machine['time-remaining'] }} minutes remaining</p>
                     <progress class="timeRemaining" id="progressBar" value="{{ 60 - machine['time-remaining'] }}" max="60"></progress>
-                    <script>updateAnimation(document.currentScript.parentElement.firstElementChild)</script>
+                    <script>startRunningAnimation(document.currentScript.parentElement.firstElementChild, "start")</script>
                 {% endif %}
             </div>
             <br><br>

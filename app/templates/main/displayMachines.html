@@ -72,7 +72,7 @@
                     {% endif %}
 
                     {% if (not machine['available']) and (machine['time-remaining'] > 0) %}
-                        <script>updateAnimation(document.currentScript.previousElementSibling)</script>
+                        <script>startRunningAnimation(document.currentScript.previousElementSibling)</script>
                     {% endif %}
 
                     <p class="machineType">{{ machine['machine-type'] }}</p>
