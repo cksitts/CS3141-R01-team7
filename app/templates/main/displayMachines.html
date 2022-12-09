@@ -22,7 +22,7 @@
             <button onclick="toggle(this)" class="toggleButton" id="WasherToggle" type="button" data-toggle-on="True" data-filter-type="{{ filter }}">Washer</button>
             <button onclick="toggle(this)" class="toggleButton" id="DryerToggle" type="button" data-toggle-on="True" data-filter-type="{{ filter }}">Dryer</button>
             <select class="dropdownSelect" id="roomDropdown" name="preferredRoom" onchange="updateDropdownFilter(this)">
-                <option value="all">All Laundry Rooms</option>
+                <option value="all">All Mixing Rooms</option>
                 {% for room in laundryRoomList %}
                     {% if room == preferredRoom %}
                         <option value='{{ room }}' selected>{{ room }}</option>
@@ -76,7 +76,7 @@
                         <script>startRunningAnimation(document.currentScript.previousElementSibling)</script>
                     {% endif %}
 
-                    <p class="machineType">{{ machine['machine-type'] }}</p>
+                    <p class="machineType">Mixer</p>
                     <p class="machineLocation">{{ machine['location'] }}<br></p>
                     <script>document.currentScript.previousElementSibling.innerHTML += getRoom("{{ machine['machine-id'] }}")</script>
                     </div>

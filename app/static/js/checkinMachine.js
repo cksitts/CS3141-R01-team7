@@ -10,7 +10,7 @@ function showCheckinDialog(machine) {
 
     //Set text
     div.style.display = 'block'
-    machineInfo.innerHTML = "Would you like to check in " + machine['machine-type'].toLowerCase() + " " + machine['machine-id'].split('_')[2] + " from " + getRoom(machine['machine-id']) + "?"
+    machineInfo.innerHTML = "Would you like to check in mixer " + machine['machine-id'].split('_')[2] + " from " + getRoom(machine['machine-id']) + "?"
 
     //Set form action
     form.action = '/checkin/' + machine['machine-id']

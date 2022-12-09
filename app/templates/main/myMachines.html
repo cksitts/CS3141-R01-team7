@@ -21,7 +21,7 @@
                 {% endif %}
 
                 <p class="info"></p>
-                <script>document.currentScript.previousElementSibling.innerHTML = "{{ machine['machine-type'] }} " + getNumber("{{ machine['machine-id'] }}") + " - " + getRoom("{{ machine['machine-id'] }}") + " ({{ machine['location'] }})"</script>
+                <script>document.currentScript.previousElementSibling.innerHTML = "Mixer " + getNumber("{{ machine['machine-id'] }}") + " - " + getRoom("{{ machine['machine-id'] }}") + " ({{ machine['location'] }})"</script>
 
                 {% if machine['time-remaining'] == 0 %}
                     <p class="timeRemainingDone">Done</p>

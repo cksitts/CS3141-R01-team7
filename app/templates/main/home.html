@@ -12,7 +12,7 @@
         <title>Home</title>
     </head>
     <header>
-        <h1>Laundry Tracker Lite</h1>
+        <h1>Cement Mixer Lite</h1>
         <button class="dropdownButton" id="dropdownButton">{{ session['username'][0] | capitalize }}</button>
         <div id="profileDropdown" class="dropdownContent">
             <p>{{ session['username'] }}</p>
@@ -43,7 +43,7 @@
         <!-- Machine Checkout Dialog -->
         <div class="checkoutDialog" id="checkoutDialogDiv"> 
             <h3>Check Out</h3>
-            <p>Would you like to check out washer 3 from Wads 335E for one hour?</p>
+            <p>Would you like to check out mixer 3 from Wads 335E for one hour?</p>
             <p>Due back at 10:32pm</p>
             <button onclick="closeCheckoutDialog()" class="nobutton">No</button> 
             <button onclick="closeCheckoutDialog()" class="closeButton">&times</button>
@@ -54,7 +54,7 @@
         <!-- Machine Checkin Dialog -->
         <div class="checkinDialog" id="checkinDialogDiv"> 
             <h3>Check In</h3>
-            <p>Would you like to check in washer 3 from Wads 335E?</p>
+            <p>Would you like to check in mixer 3 from Wads 335E?</p>
             <button onclick="closeCheckinDialog()" class="nobutton">No</button> 
             <button onclick="closeCheckinDialog()" class="closeButton">&times</button>
             <form action='/checkout/machineId'>

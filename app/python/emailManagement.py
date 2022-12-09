@@ -4,7 +4,7 @@ import os
 import smtplib
 from email.message import EmailMessage
 
-# function drafts and sends an email with Subject: "Laundry Tracker Lite"
+# function drafts and sends an email with Subject: "Concrete Mixer Lite"
 # the message body and the receiver is provided as a string to this function
 def sendEmail(message, to):
 	e_password = os.environ.get("EMAIL_PASS")   # get email and password for sender
@@ -17,13 +17,13 @@ def sendEmail(message, to):
 		smtp.login(e_user, e_password)  # login to email account via smtp server
 
 		msg = EmailMessage()
-		msg['Subject'] = 'Laundry Tracker Lite Sign up Code'
-		msg['From'] = 'Laundry Tracker Lite'
+		msg['Subject'] = 'Concrete Mixer Lite Sign up Code'
+		msg['From'] = 'Concrete Mixer Lite'
 		msg['To'] =  to
 
 		msg.set_content(message, subtype='html')
 
-        # subject = 'Laundry Tracker Lite!'
+        # subject = 'Concrete Mixer Lite!'
         # body = message
 
         # msg = 'Subject:%s\n\n%s' % (subject, body)

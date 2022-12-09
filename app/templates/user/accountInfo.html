@@ -58,7 +58,7 @@
                 <label for="confirmPassword">Confirm Password:</label>
                 <input type="password" id="confirmPassword" name="passwordConfirm" required>
                 
-                <label for="roomDropdown" class="roomDropdown">Preferred Laundry Room:</label>
+                <label for="roomDropdown" class="roomDropdown">Preferred Mixing Room:</label>
                 <select id="roomDropdown" name="preferredRoom">
                     {% for room in roomList %}
                         {% if( (userData) and (room == userData['preferredRoom']) ) %}
